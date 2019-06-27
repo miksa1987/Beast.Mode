@@ -4,22 +4,25 @@ import {Segment} from 'semantic-ui-react'
 const Dashboard  = (props) => {
   return ( <div>
     <Segment>
-      <img src='img/user.jpg' alt='user' />
-      <strong>USERNAME TÄNNE</strong>
+      <table><tbody><tr>
+        <td><img src={props.user.picture} alt='user' /></td>
+        <td><strong>{props.user.username}</strong>
+        <p>{props.user.info}</p></td>
+      </tr></tbody></table>
     </Segment>
     <table><tbody>
       <tr>
       <td><Segment>
       <table><tbody>
       <tr>
-          <td><img src='img/user.jpg' alt='user' /></td>
-          <td><img src='img/user.jpg' alt='user' /></td>
-          <td><img src='img/user.jpg' alt='user' /></td>
+      <td><img src={props.user.picture} alt='user' /></td>
+      <td><img src={props.user.picture} alt='user' /></td>
+      <td><img src={props.user.picture} alt='user' /></td>
         </tr>
         <tr>
-          <td><img src='img/user.jpg' alt='user' /></td>
-          <td><img src='img/user.jpg' alt='user' /></td>
-          <td><img src='img/user.jpg' alt='user' /></td>
+        <td><img src={props.user.picture} alt='user' /></td>
+        <td><img src={props.user.picture} alt='user' /></td>
+        <td><img src={props.user.picture} alt='user' /></td>
         </tr>
       </tbody></table>
     </Segment></td>

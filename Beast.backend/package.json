@@ -1,0 +1,22 @@
+{
+  "name": "beast.backend",
+  "version": "1.0.0",
+  "description": "beast.mode backend",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.6.1",
+    "mongoose-unique-validator": "^2.0.3",
+    "nodemon": "^1.19.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "watch": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
