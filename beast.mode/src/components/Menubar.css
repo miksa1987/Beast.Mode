@@ -1,0 +1,10 @@
+.Menubar {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  min-width: 100%;
+}
+
+.Search {
+  min-width: 100%;
+}
