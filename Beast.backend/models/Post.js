@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const workoutSchema = mongoose.Schema({
+const postSchema = mongoose.Schema({
   content: String,
   picture: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -8,4 +8,4 @@ const workoutSchema = mongoose.Schema({
   comments: [ {user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, content: String} ]
 })
 
-module.exports = mongoose.model('Workout', workoutSchema)
+module.exports = mongoose.model('Post', postSchema)
