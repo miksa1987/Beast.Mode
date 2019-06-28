@@ -1,4 +1,6 @@
 const workoutRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
+const config = require('../util/config')
 const Workout = require('../models/Workout')
 
 workoutRouter.get('/all', async (request, response) => {
@@ -24,6 +26,27 @@ workoutRouter.post('/', async (request, response, next) => {
   await workout.save()
   response.io.emit('newworkout', workout)
   response.status(204).end()
+})
+
+workoutRouter.post('/:id/comment', async (request, response) => {
+  try {
+    const workout = await Workout.findById(request.params.id)
+    const decodedToken = await jwt.verify(request.body.token, config.SECRET)
+
+    if(!decodedToken) {
+      response.status(401).end()
+    }
+    if(!workout) {
+      response.status(400).end()
+    }
+
+    workout.comments = workout.comments.concat({ content: request.body.comment, user: decodedToken.id })
+    await workout.save()
+
+    response.json(workout)
+  } catch(e) {
+    response.status(400).send({ error: e.message })
+  }
 })
 
 module.exports = workoutRouter

@@ -2,6 +2,6 @@ POST http://localhost:3001/users/new
 Content-type: application/json
 
 {
-  "username": "Miksa2",
+  "username": "Miksa3",
   "password": "Gener4lE"
 }
