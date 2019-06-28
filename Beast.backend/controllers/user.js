@@ -4,9 +4,9 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-userRouter.get('/all', (request, response) => {
-  User.find({})
-    .then(r => response.json(r))
+userRouter.get('/all', async (request, response) => {
+  const users = await User.find({}).populate('friends')
+  response.json(users)
 })
 
 userRouter.get('/:id', (request, response) => {
@@ -31,17 +31,29 @@ userRouter.post('/new', async (request, response) => {
 })
 
 userRouter.post('/addfriend', async (request, response, next) => {
-  const loggerUser = await jwt.verify(request.token, config.SECRET)
-  const newFriend = await User.findById(response.newfriend)
+  const body = request.body
+  const token = request.body.token
 
-  loggedUser.friends.push(newFriend.id)
-  newFriend.friends.push(loggedUser.id)
+  try {
+    const decodedToken = jwt.verify(token, config.SECRET)
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
 
-  await loggerUser.save()
-  await newFriend.save()
+    const user = await User.findById(decodedToken.id)
+    const newFriend = await User.findById(request.body.newfriend)
 
-  response.io.emit('newfriend', newFriend)
-  response.status(200).end()
+    user.friends = user.friends.concat(newFriend.id)
+    newFriend.friends = newFriend.friends.concat(user.id)
+
+    await user.save()
+    await newFriend.save()
+
+    response.status(200).end()
+  } catch(e) {
+    response.status(400).json({ error: e.message })
+  }
+
 })
 
 module.exports = userRouter
