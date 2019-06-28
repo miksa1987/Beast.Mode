@@ -1,6 +1,8 @@
+const config = require('../util/config')
 const userRouter = require('express').Router()
 const User = require('../models/User')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 userRouter.get('/all', (request, response) => {
   User.find({})
@@ -26,6 +28,20 @@ userRouter.post('/new', async (request, response) => {
 
   const savedUser = await user.save()
   response.json(savedUser)
+})
+
+userRouter.post('/addfriend', async (request, response, next) => {
+  const loggerUser = await jwt.verify(request.token, config.SECRET)
+  const newFriend = await User.findById(response.newfriend)
+
+  loggedUser.friends.push(newFriend.id)
+  newFriend.friends.push(loggedUser.id)
+
+  await loggerUser.save()
+  await newFriend.save()
+
+  response.io.emit('newfriend', newFriend)
+  response.status(200).end()
 })
 
 module.exports = userRouter

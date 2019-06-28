@@ -10,7 +10,7 @@ workoutRouter.get('/all', async (request, response) => {
   }
 })
 
-workoutRouter.get('/:id', (request, response) => {
+workoutRouter.get('/:id', async (request, response) => {
   try {
     const workout = await Workout.findById(request.params.id).populate('user')
     response.json(workout)
@@ -19,9 +19,11 @@ workoutRouter.get('/:id', (request, response) => {
   }
 })
 
-workoutRouter.post('/', async (request, response) => {
+workoutRouter.post('/', async (request, response, next) => {
   const workout = new Workout(request.body)
   await workout.save()
-
-  response.status(204)
+  response.io.emit('newworkout', workout)
+  response.status(204).end()
 })
+
+module.exports = workoutRouter

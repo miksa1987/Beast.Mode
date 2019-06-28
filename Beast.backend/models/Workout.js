@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 
 const workoutSchema = mongoose.Schema({
-  content: String,
+  description: String,
+  exercises: [ { name: String, sets: Number, reps: Number, rounds: Number } ],
   picture: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   likes: Number,

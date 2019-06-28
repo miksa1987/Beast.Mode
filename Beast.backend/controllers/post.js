@@ -1,18 +1,31 @@
 const postRouter = require('express').Router()
 const Post = require('../models/Post')
+const io = require('../service/io')
 
 postRouter.get('/all', async (request, response) => {
-  const posts = Post.find({}).populate('user')
+  try {
+    const posts = await Post.find({}).populate('user')
+    response.json(posts)
+  } catch(error) {
+    response.status(404).end()
+  }
 })
 
-postRouter.get('/:id', (request, response) => {
-  Post.findById(request.params.id).then(r => response.json(r))
-    .catch(e => response.status(404).send('Post not found!'))
+postRouter.get('/:id', async (request, response) => {
+  try {
+    const post = await Post.findById(request.params.id).populate('user')
+    response.json(post)
+  } catch(error) {
+    response.status(404).send('Post not found')
+  }
 })
 
-postRouter.post('/', async (request, response) => {
+postRouter.post('/', async (request, response, next) => {
   const post = new Post(request.body)
   await post.save()
+  response.io.emit('newpost', post)
 
-  response.status(204)
+  response.status(204).end()
 })
+
+module.exports = postRouter
