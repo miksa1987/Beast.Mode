@@ -2,6 +2,7 @@ const workoutRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const config = require('../util/config')
 const Workout = require('../models/Workout')
+const User = require('../models/User')
 
 workoutRouter.get('/all', async (request, response) => {
   try {
@@ -21,11 +22,57 @@ workoutRouter.get('/:id', async (request, response) => {
   }
 })
 
+workoutRouter.put('/:id', async (request, response) => {
+  if(!request.body.token) {
+    response.status(401).end()
+  }
+  if(!(request.body.description || request.body.exercises)) {
+    response.status(400).send('Modified description or exercises missing')
+  }
+
+  try {
+    const decodedToken = await jwt.verify(request.body.token, config.SECRET)
+    const workout = Workout.findById(request.params.id)
+    const user = User.findById(decodedToken.id)
+
+    // Not populated now!
+    if(user.id !== workout.user) {
+      response.status(400).end()
+    }
+
+    const moddedWorkout = { ...workout, description: request.body.description, exercises: request.body.exercises }
+    const result = await Workout.findByIdAndUpdate(workout.id, moddedWorkout, { new: true })
+
+    response.json(result)
+  } catch(e) {
+    response.status(400).send({ error: e.message })
+  }
+})
+
 workoutRouter.post('/', async (request, response, next) => {
-  const workout = new Workout(request.body)
-  await workout.save()
-  response.io.emit('newworkout', workout)
-  response.status(204).end()
+  if(!request.body.token) {
+    response.status(401).end()
+  }
+  if(!(request.body.description && request.body.exercises)) {
+    response.status(400).send('Description or exercises missing')
+  }
+  
+  try {
+    const decodedToken = jwt.verify(request.body.token, config.SECRET)
+    const workout = new Workout({
+      description: request.body.description,
+      exercises: request.body.exercises,
+      picture: request.body.picture || '',
+      user: decodedToken.id,
+      likes: 0,
+      comments: []
+    })
+    await workout.save()
+    response.io.emit('newworkout', workout)
+    response.status(201).end()
+  } catch(e) {
+    response.status(400).send({ error: e.message })
+  }
 })
 
 workoutRouter.post('/:id/comment', async (request, response) => {

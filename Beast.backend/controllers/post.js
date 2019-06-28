@@ -1,6 +1,7 @@
 const postRouter = require('express').Router()
 const Post = require('../models/Post')
-const io = require('../service/io')
+const User = require('../models/User')
+const jwt = require('jsonwebtoken')
 
 postRouter.get('/all', async (request, response) => {
   try {
@@ -29,9 +30,15 @@ postRouter.put('/:id', async (request, response) => {
   }
 
   try {
+    const decodedToken = await jwt.verify(request.body.token, config.SECRET)
     const post = await Post.findById(request.params.id)
-    const moddedPost = { ...post, content: request.body.content }
+    const user = await User.findById(decodedToken.id)
 
+    if(!user || post.user !== user.id) {
+      response.status(400).end()
+    }
+
+    const moddedPost = { ...post, content: request.body.content }
     const result = await Post.findByIdAndUpdate(request.params.id, moddedPost, { new: true })
 
     response.json(result)
@@ -41,11 +48,30 @@ postRouter.put('/:id', async (request, response) => {
 })
 
 postRouter.post('/', async (request, response, next) => {
-  const post = new Post(request.body)
-  await post.save()
-  response.io.emit('newpost', post)
+  if(!request.body.token) {
+    response.status(401).end()
+  }
+  if(!(request.body.content)) {
+    response.status(400).send('Content missing')
+  }
+  try {
+    const decodedToken = await jwt.verify(request.body.token, config.SECRET)
 
-  response.status(204).end()
+    const post = new Post({
+      content: request.body.content,
+      picture: request.body.picture || '',
+      user: decodedToken.id,
+      likes: 0,
+      comments: []
+    })
+    await post.save()
+    response.io.emit('newpost', post)
+
+    response.status(204).end()
+  } catch(e) {
+    response.status(400).send({ error: e.message })
+  }
+  
 })
 
 postRouter.post('/:id/comment', async (request, response) => {
