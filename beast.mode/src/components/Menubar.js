@@ -13,14 +13,20 @@ const Menubar = (props) => {
     position: 'fixed',
     top: '0px',
     left: '0px',
-    color: '#ffffff'
+    backgroundColor: '#ffffff'
   }
 
   const searchStyle = {
-    paddingTop: '0px',
-    width: '40%',
+    padding: '0px 10px',
+    align: 'top',
+    width: '65%',
     minWidth: '40%',
     maxWidth: 'auto',
+  }
+
+  const itemStyle = {
+    padding: '5px 10px 10px',
+    backgroundColor: 'white'
   }
 
   const logout = () => {
@@ -29,21 +35,21 @@ const Menubar = (props) => {
 
   return ( <div style={menuStyle}>
     <div>
-    <Link to='/'>
-      <img src='/img/feed.jpg' alt='feed' />
+    <Link to='/' style={itemStyle}>
+      <img src='/img/ui/feed.png' alt='feed' />
     </Link>
-    <Link to='/workouts'>
-      <img src='/img/wrkouts.jpg' alt='workouts' />
+    <Link to='/workouts' style={itemStyle}>
+      <img src='/img/ui/wrkouts.png' alt='workouts' />
     </Link>
-    <Link to='/dash'>
-      <img src='/img/dash.jpg' alt='dashboard' />
+    <Link to='/dash' style={itemStyle}>
+      <img src='/img//ui/dashboard.png' alt='dashboard' />
     </Link>
     <input style={searchStyle} name='search' />
-    <Link to='/settings'>
-      <img src='/img/settings.jpg' alt='settings' />
+    <Link to='/settings' style={itemStyle}>
+      <img src='/img/ui/settings.png' alt='settings' />
     </Link>
-    <Link to='/' onClick={logout}>
-      <img src='/img/logout.jpg' alt='logout' />
+    <Link to='/' onClick={logout} style={itemStyle}>
+      <img src='/img/ui/logout.png' alt='logout' />
     </Link>
     </div>
   </div>)

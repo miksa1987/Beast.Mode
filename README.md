@@ -9,3 +9,6 @@ ja fiidi jossa viimeisimmät päivitykset/tehdyt treenit.
 Backendin tulen tekemään Expressillä, johon on yhdistetty MongoDB. Kuvien tallennus todnäk Google Cloud Storageen, 
 tätä ei ole vielä lyöty lukkoon.
 Frontend tehdään React + Redux-yhdistelmällä.
+
+Käyttöliittymän kuvakkeet ovat Stefan Taubertin käsialaa, ja ne on julkaistu Creative Commons 3.0-lisenssillä. Koko setti löytyy
+osoitteesta https://www.iconfinder.com/iconsets/basic-user-interface-elements .
