@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { logoutUser } from '../reducers/currentUser'
 
 import './Menubar.css'
 
@@ -20,6 +22,11 @@ const Menubar = (props) => {
     minWidth: '40%',
     maxWidth: 'auto',
   }
+
+  const logout = () => {
+    props.logoutUser()
+  }
+
   return ( <div style={menuStyle}>
     <div>
     <Link to='/'>
@@ -35,8 +42,11 @@ const Menubar = (props) => {
     <Link to='/settings'>
       <img src='/img/settings.jpg' alt='settings' />
     </Link>
+    <Link to='/' onClick={logout}>
+      <img src='/img/logout.jpg' alt='logout' />
+    </Link>
     </div>
   </div>)
 }
 
-export default Menubar
+export default connect(null, { logoutUser })(Menubar)
