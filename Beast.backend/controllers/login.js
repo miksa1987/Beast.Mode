@@ -19,7 +19,14 @@ loginRouter.post('/', async (request, response) => {
   } // Sorry, matskussa oli niin hyviä muuttujanimiä etten itse keksi parempia :D
 
   const token = jwt.sign(userForToken, config.SECRET)
-  const data = { token: token, username: user.username, id: user.id }
+  const data = { 
+    token: token, 
+    username: user.username, 
+    id: user.id,
+    friends: user.friends,
+    posts: user.posts,
+    workouts: user.workouts
+  }
 
   response.json(data)
 })

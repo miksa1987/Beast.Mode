@@ -48,17 +48,18 @@ const posts0 = [
   picture: 'img/postpicture.jpg' }
 ]
 
+const feedStyle = {
+  display: 'flex',
+  flexWrap: 'wrap',
+  alignItems: 'flex-start'
+}
+
+
 const Feed = (props) => {
-  return ( <div>
-    <table width='100%'><tbody>
-      <tr><td align='top' width='50%'>
-        <Newpost />
-        {posts0.map(post => <Post key={post.id} post={post} />)}
-      </td>
-      <td align='top' width='50%'>
-        {posts0.map(post => <Post key={post.id} post={post} />)}
-      </td></tr>
-    </tbody></table>
+  return ( <div style={feedStyle}>
+    <Newpost />
+    {posts0.map(post => <Post key={post.id} post={post} />)}
+    {posts0.map(post => <Post key={post.id} post={post} />)}
   </div> )
 }
 
