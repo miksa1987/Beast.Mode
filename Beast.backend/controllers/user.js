@@ -1,6 +1,8 @@
 const config = require('../util/config')
 const userRouter = require('express').Router()
 const User = require('../models/User')
+const Post = require('../models/Post')
+const Workout = require('../models/Workout')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -16,13 +18,13 @@ userRouter.get('/:id', (request, response) => {
 })
 
 userRouter.get('/:id/posts', async (request, response) => {
-  const user = await User.findById(request.params.id).populate('posts')
-  response.json(user.posts)
+  const posts = await Post.find({ user: request.params.id }).populate('user')
+  response.json(posts)
 })
 
 userRouter.get('/:id/workouts', async (request, response) => {
-  const user = await User.findById(request.params.id).populate('workouts')
-  response.json(user.workouts)
+  const workouts = await Workout.find({ user: request.params.id }).populate('user')
+  response.json(workouts)
 })
 
 userRouter.post('/new', async (request, response) => {

@@ -1,4 +1,5 @@
 const postRouter = require('express').Router()
+const config = require('../util/config')
 const Post = require('../models/Post')
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
@@ -67,7 +68,7 @@ postRouter.post('/', async (request, response, next) => {
     await post.save()
     response.io.emit('newpost', post)
 
-    response.status(204).end()
+    response.json(post)
   } catch(e) {
     response.status(400).send({ error: e.message })
   }

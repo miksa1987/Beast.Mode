@@ -20,11 +20,13 @@ const Post = (props) => {
   return ( <div style={elementStyle}><Segment>
     <table><tbody><tr>
       <td><img width='32px' height='32px' 
-        src={props.post.user.picture ? props.post.user.picture : '/img/ui/dashboard.png'} alt='pic' /></td>
+        src={props.post.user.picture && props.post.user.picture !== '' 
+        ? props.post.user.picture : '/img/ui/dashboard.png'} alt='pic' /></td>
       <td><Link to={`/profile/${props.post.user.username}`}><strong>{props.post.user.username}</strong></Link></td>
     </tr></tbody></table>
     <table><tbody><tr>
-      <td><img src={props.post.picture} alt='pic' /></td>
+      {props.post.picture && props.post.picture !== '' 
+        ? <td><img src={props.post.picture} alt='pic' /></td> : null} 
       <td><p>{props.post.content}</p></td>
     </tr></tbody></table>
     <button>Like</button>

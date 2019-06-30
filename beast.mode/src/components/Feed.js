@@ -62,9 +62,13 @@ const Feed = (props) => {
     console.log(props.currentUser)
     props.initFeed(props.currentUser.friends)
   }, [])
+
+  if(props.feed === undefined) {
+    return ( <div><Newpost /></div> )
+  }
+
   return ( <div style={feedStyle}>
     <Newpost />
-    {posts0.map(post => <Post key={post.id} post={post} />)}
     {props.feed.map(post => <Post key={post._id} post={post} />)}
   </div> )
 }
