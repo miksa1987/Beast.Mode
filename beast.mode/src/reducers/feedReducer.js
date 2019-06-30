@@ -32,16 +32,7 @@ export const initFeed = (friends) => {
 }
 
 export const addToFeed = (post) => {
-  return async dispatch => {
-    if(post.type === 'post') {
-      communicationService.post('/posts', post)
-    }
-    if(post.type === 'workout') {
-      communicationService.post('/workouts', post)
-    }
-    
-    dispatch({ type: 'ADD_TOFEED', data: post })
-  }
+  return async dispatch => dispatch({ type: 'ADD_TOFEED', data: post })
 }
 
 export const removeFromFeed = (post) => {

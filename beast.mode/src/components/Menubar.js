@@ -17,7 +17,7 @@ const Menubar = (props) => {
   }
 
   const searchStyle = {
-    padding: '0px 10px',
+    margin: '0px 0px 0px 0px',
     align: 'top',
     width: '65%',
     minWidth: '40%',
