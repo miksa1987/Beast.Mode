@@ -16,9 +16,10 @@ const feedReducer = (state = [], action) => {
   }
 }
 
-export const initFeed = (friends) => {
+export const initFeed = (friends, myID) => {
   return async dispatch => {
-    let feedPosts = []
+    let feedPosts = await communicationService.get(`/users/${myID}/posts`)
+    feedPosts = feedPosts.concat(await communicationService.get(`/users/${myID}/workouts`))
 
     for(let friend of friends) {
       const friendsPosts = await communicationService.get(`/users/${friend}/posts`)
