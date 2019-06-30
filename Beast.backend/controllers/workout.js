@@ -23,7 +23,7 @@ workoutRouter.get('/:id', async (request, response) => {
 })
 
 workoutRouter.put('/:id', async (request, response) => {
-  if(!request.body.token) {
+  if(!request.token) {
     response.status(401).end()
   }
   if(!(request.body.description || request.body.exercises)) {
@@ -31,7 +31,7 @@ workoutRouter.put('/:id', async (request, response) => {
   }
 
   try {
-    const decodedToken = await jwt.verify(request.body.token, config.SECRET)
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
     const workout = Workout.findById(request.params.id)
     const user = User.findById(decodedToken.id)
 
@@ -50,7 +50,7 @@ workoutRouter.put('/:id', async (request, response) => {
 })
 
 workoutRouter.post('/', async (request, response, next) => {
-  if(!request.body.token) {
+  if(!request.token) {
     response.status(401).end()
   }
   if(!(request.body.description && request.body.exercises)) {
@@ -58,7 +58,7 @@ workoutRouter.post('/', async (request, response, next) => {
   }
   
   try {
-    const decodedToken = jwt.verify(request.body.token, config.SECRET)
+    const decodedToken = jwt.verify(request.token, config.SECRET)
     const workout = new Workout({
       description: request.body.description,
       exercises: request.body.exercises,
@@ -78,7 +78,7 @@ workoutRouter.post('/', async (request, response, next) => {
 workoutRouter.post('/:id/comment', async (request, response) => {
   try {
     const workout = await Workout.findById(request.params.id)
-    const decodedToken = await jwt.verify(request.body.token, config.SECRET)
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
 
     if(!decodedToken) {
       response.status(401).end()

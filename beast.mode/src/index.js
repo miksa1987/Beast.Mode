@@ -7,9 +7,11 @@ import thunk from 'redux-thunk'
 import './index.css'
 import App from './App'
 import currentUserReducer from './reducers/currentUser'
+import feedReducer from './reducers/feedReducer'
 
 const reducer = combineReducers({
-  currentUser: currentUserReducer
+  currentUser: currentUserReducer,
+  feed: feedReducer
 })
 
 const store = createStore(reducer, applyMiddleware(thunk))

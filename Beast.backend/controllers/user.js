@@ -15,6 +15,16 @@ userRouter.get('/:id', (request, response) => {
     .catch(e => response.status(404).send('User not found!'))
 })
 
+userRouter.get('/:id/posts', async (request, response) => {
+  const user = await User.findById(request.params.id).populate('posts')
+  response.json(user.posts)
+})
+
+userRouter.get('/:id/workouts', async (request, response) => {
+  const user = await User.findById(request.params.id).populate('workouts')
+  response.json(user.workouts)
+})
+
 userRouter.post('/new', async (request, response) => {
   const saltRounds = 10
   const pwHash = await bcrypt.hash(request.body.password, saltRounds)
@@ -31,11 +41,8 @@ userRouter.post('/new', async (request, response) => {
 })
 
 userRouter.post('/addfriend', async (request, response, next) => {
-  const body = request.body
-  const token = request.body.token
-
   try {
-    const decodedToken = jwt.verify(token, config.SECRET)
+    const decodedToken = jwt.verify(request.token, config.SECRET)
     if (!token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }

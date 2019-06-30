@@ -6,6 +6,7 @@ const express = require('express')
 const app = express()
 const http = require('http').createServer(app)
 const io = require('socket.io')(http)
+const middleware = require('./util/middleware')
 
 const userRouter = require('./controllers/user')
 const postRouter = require('./controllers/post')
@@ -19,6 +20,7 @@ app.use((req, res, next) => {
 
 app.use(cors())
 app.use(bodyParser.json())
+app.use(middleware.tokenExtractor)
 
 app.use('/users', userRouter)
 app.use('/posts', postRouter)

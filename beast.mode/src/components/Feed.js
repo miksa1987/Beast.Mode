@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Newpost from './Newpost'
 import Post from './Post'
+import { connect } from 'react-redux'
+import { initFeed, addToFeed, removeFromFeed } from '../reducers/feedReducer'
 
 // Just for testing purpose
 const posts0 = [
@@ -56,11 +58,26 @@ const feedStyle = {
 
 
 const Feed = (props) => {
+  useEffect(() => {
+    console.log(props.currentUser)
+    props.initFeed(props.currentUser.friends)
+  }, [])
   return ( <div style={feedStyle}>
     <Newpost />
     {posts0.map(post => <Post key={post.id} post={post} />)}
-    {posts0.map(post => <Post key={post.id} post={post} />)}
+    {props.feed.map(post => <Post key={post._id} post={post} />)}
   </div> )
 }
 
-export default Feed
+const mapStateToProps = (state) => {
+  return { 
+    feed: state.feed,
+    currentUser: state.currentUser 
+  }
+}
+
+const mapDispatchToProps = {
+  initFeed, addToFeed, removeFromFeed
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feed)

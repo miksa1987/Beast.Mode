@@ -1,4 +1,5 @@
 import axios from 'axios'
+import communicationService from '../service/communication'
 
 const currentUserReducer = (state = null, action) => {
   switch(action.type) {
@@ -15,7 +16,9 @@ const currentUserReducer = (state = null, action) => {
 
 export const loginUser = (user) => {
   return async dispatch => {
-    const loggedUser = await axios.post('/login', user)
+    const result = await axios.post('/login', user)
+    const loggedUser = result.data
+    communicationService.setToken(loggedUser.token)
     window.localStorage.setItem('currentUser', JSON.stringify(loggedUser))
     console.log(loggedUser)
     dispatch({ type: 'LOGIN_USER', data: loggedUser })
@@ -23,7 +26,10 @@ export const loginUser = (user) => {
 }
 
 export const setUser = (user) => {
-  return dispatch => dispatch({ type: 'SET_USER', data: user })
+  return dispatch => {
+    communicationService.setToken(user.token)
+    dispatch({ type: 'SET_USER', data: user })
+  }
 }
 
 export const logoutUser = () => {

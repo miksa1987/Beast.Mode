@@ -1,6 +1,6 @@
-import axios from 'axios'
+import communicationService from '../service/communication'
 
-const feedReducer = (state = [], action) {
+const feedReducer = (state = [], action) => {
   switch(action.type) {
     case 'INIT_FEED':
       return action.data
@@ -18,14 +18,15 @@ const feedReducer = (state = [], action) {
 
 export const initFeed = (friends) => {
   return async dispatch => {
-    const feedPosts = []
-    friends.forEach(f => {
-      const friendsPosts = await axios.get(`/users/${friend}/posts`)
+    let feedPosts = []
+    friends.forEach(async (friend) => {
+      const friendsPosts = await communicationService.get(`/users/${friend}/posts`)
       feedPosts = feedPosts.concat(friendsPosts)
-      const friendsWorkouts = await axios.get(`/users/${friend}/workouts`)
+      const friendsWorkouts = await communicationService.get(`/users/${friend}/workouts`)
       feedPosts = feedPosts.concat(friendsWorkouts)
     })
 
+    console.log(feedPosts)
     dispatch({ type: 'INIT_FEED', data: feedPosts })
   }
 }
@@ -33,25 +34,27 @@ export const initFeed = (friends) => {
 export const addToFeed = (post) => {
   return async dispatch => {
     if(post.type === 'post') {
-      await axios.post('/posts/add')
+      communicationService.post('/posts', post)
     }
     if(post.type === 'workout') {
-      await axios.post('/workouts/add')
+      communicationService.post('/workouts', post)
     }
     
     dispatch({ type: 'ADD_TOFEED', data: post })
   }
 }
 
-export const removeFromFeed = (id) => {
+export const removeFromFeed = (post) => {
   return async dispatch => {
     if(post.type === 'post') {
-      await axios.delete(`/posts/${id}`)
+      communicationService.delete(`/posts/${post._id}`)
     }
     if(post.type === 'workout') {
-      await axios.delete(`/workouts/${id}`)
+      communicationService.delete(`/workouts/${post._id}`)
     }
 
-    dispatch({ type: 'REMOVE_FROMFEED', data: { id: id } })
+    dispatch({ type: 'REMOVE_FROMFEED', data: { id: post._id } })
   }
 }
+
+export default feedReducer

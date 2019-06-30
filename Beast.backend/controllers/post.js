@@ -22,7 +22,7 @@ postRouter.get('/:id', async (request, response) => {
 })
 
 postRouter.put('/:id', async (request, response) => {
-  if(!request.body.token) {
+  if(!request.token) {
     response.status(401).end()
   }
   if(!request.body.content) {
@@ -30,7 +30,7 @@ postRouter.put('/:id', async (request, response) => {
   }
 
   try {
-    const decodedToken = await jwt.verify(request.body.token, config.SECRET)
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
     const post = await Post.findById(request.params.id)
     const user = await User.findById(decodedToken.id)
 
@@ -48,14 +48,14 @@ postRouter.put('/:id', async (request, response) => {
 })
 
 postRouter.post('/', async (request, response, next) => {
-  if(!request.body.token) {
+  if(!request.token) {
     response.status(401).end()
   }
   if(!(request.body.content)) {
     response.status(400).send('Content missing')
   }
   try {
-    const decodedToken = await jwt.verify(request.body.token, config.SECRET)
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
 
     const post = new Post({
       content: request.body.content,
@@ -77,7 +77,7 @@ postRouter.post('/', async (request, response, next) => {
 postRouter.post('/:id/comment', async (request, response) => {
   try {
     const post = await Post.findById(request.params.id)
-    const decodedToken = await jwt.verify(request.body.token, config.SECRET)
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
 
     if(!decodedToken) {
       response.status(401).end()
