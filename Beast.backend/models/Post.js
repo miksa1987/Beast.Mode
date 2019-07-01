@@ -5,7 +5,8 @@ const postSchema = mongoose.Schema({
   picture: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   likes: Number,
-  comments: [ {user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, content: String} ]
+  comments: [ {user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, content: String} ],
+  date: Date
 })
 
 module.exports = mongoose.model('Post', postSchema)

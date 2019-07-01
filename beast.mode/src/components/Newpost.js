@@ -20,10 +20,9 @@ const buttonStyle = {
 }
 
 const Newpost = (props) => {
-  const post = (event) => {
+  const post = async (event) => {
     event.preventDefault()
     const post = {
-      _id: Math.random()*100000,
       content: event.target.post.value,
       picture: '',
       user: props.currentUser.id,
@@ -31,16 +30,21 @@ const Newpost = (props) => {
       comments: []
     }
     
-    if(parser.isWorkout(post)) {
+    if(parser.isWorkout(post.content)) {
+      console.log('ISWORKOUT')
       post.type = 'workout'
-      communicationService.post('/workouts', post)
+      const addedPost = await communicationService.post('/workouts', post)
+      console.log(addedPost)
+      addedPost.user = props.currentUser.username
+      props.addToFeed(addedPost)
     } else {
       post.type = 'post'
-      communicationService.post('/posts', post)
+      const addedPost = await communicationService.post('/posts', post)
+      
+      addedPost.user = props.currentUser.username
+      console.log(addedPost)
+      props.addToFeed(addedPost)
     }
-
-    post.user = props.currentUser.username
-    props.addToFeed(post)
   }
 
   return ( <div style={elementStyle}>

@@ -11,10 +11,13 @@ userRouter.get('/all', async (request, response) => {
   response.json(users)
 })
 
-userRouter.get('/:id', (request, response) => {
-  User.findById(request.params.id)
-    .then(r => response.json(r))
-    .catch(e => response.status(404).send('User not found!'))
+userRouter.get('/:id', async (request, response) => {
+  try {
+    const user = await User.findById(request.params.id)
+    response.json(user)
+  } catch(e) {
+    response.status(404).send('User not found!')
+  }
 })
 
 userRouter.get('/:id/posts', async (request, response) => {

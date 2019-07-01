@@ -53,7 +53,7 @@ workoutRouter.post('/', async (request, response, next) => {
   if(!request.token) {
     response.status(401).end()
   }
-  if(!(request.body.description && request.body.exercises)) {
+  if(!request.body.content) {
     response.status(400).send('Description or exercises missing')
   }
   
