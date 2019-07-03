@@ -1,4 +1,5 @@
 import React from 'react'
+import { Segment } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'
@@ -34,7 +35,7 @@ const Menubar = (props) => {
   }
 
   return ( <div style={menuStyle}>
-    <div>
+    <div><Segment>
     <Link to='/' style={itemStyle}>
       <img src='/img/ui/feed.png' alt='feed' />
     </Link>
@@ -51,7 +52,7 @@ const Menubar = (props) => {
     <Link to='/' onClick={logout} style={itemStyle}>
       <img src='/img/ui/logout.png' alt='logout' />
     </Link>
-    </div>
+    </Segment></div>
   </div>)
 }
 

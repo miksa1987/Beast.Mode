@@ -12,6 +12,7 @@ const userRouter = require('./controllers/user')
 const postRouter = require('./controllers/post')
 const workoutRouter = require('./controllers/workout')
 const loginRouter = require('./controllers/login')
+const resetRouter = require('./controllers/reset')
 
 app.use((req, res, next) => {
   res.io = io
@@ -26,6 +27,7 @@ app.use('/users', userRouter)
 app.use('/posts', postRouter)
 app.use('/workouts', workoutRouter)
 app.use('/login', loginRouter)
+app.use('/resetonlyifyouarecompletelysureaboutthis', resetRouter)
 
 mongoose.set('useCreateIndex', true)
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })

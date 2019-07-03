@@ -60,12 +60,12 @@ workoutRouter.post('/', async (request, response, next) => {
   try {
     const decodedToken = jwt.verify(request.token, config.SECRET)
     const workout = new Workout({
-      description: request.body.description,
-      exercises: request.body.exercises,
+      content: request.body.content,
       picture: request.body.picture || '',
       user: decodedToken.id,
       likes: 0,
-      comments: []
+      comments: [],
+      date: new Date()
     })
     await workout.save()
     response.io.emit('newworkout', workout)

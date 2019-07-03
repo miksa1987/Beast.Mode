@@ -63,7 +63,8 @@ postRouter.post('/', async (request, response, next) => {
       picture: request.body.picture || '',
       user: decodedToken.id,
       likes: 0,
-      comments: []
+      comments: [],
+      date: new Date()
     })
     await post.save()
     response.io.emit('newpost', post)

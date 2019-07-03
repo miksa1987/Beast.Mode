@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import {Segment, Form, TextArea, Button} from 'semantic-ui-react'
+import {Segment, Form, TextArea, Button, Checkbox} from 'semantic-ui-react'
 import parser from '../service/parser'
 import communicationService from '../service/communication'
 import { addToFeed } from '../reducers/feedReducer'
@@ -20,41 +20,44 @@ const buttonStyle = {
 }
 
 const Newpost = (props) => {
+  const [isWorkout, setIsWorkout] = useState(false)
+  const [textContent, setTextContent] = useState('')
+
+  const changeText = (event) => {
+    setTextContent(event.target.value)
+    if (parser.isWorkout(textContent)) {
+      setIsWorkout(true)
+    } else {
+      setIsWorkout(false)
+    }
+  }
+
   const post = async (event) => {
     event.preventDefault()
     const post = {
-      content: event.target.post.value,
+      content: textContent,
       picture: '',
       user: props.currentUser.id,
       likes: 0,
       comments: []
     }
+
+    isWorkout ? post.type = 'workout' : post.type = 'post'
+    console.log(`type ${post.type}`)
+
+    post.type === 'workout' 
+    ? await communicationService.post('/workouts', post) : await communicationService.post('/posts', post)
     
-    if(parser.isWorkout(post.content)) {
-      console.log('ISWORKOUT')
-      post.type = 'workout'
-      const addedPost = await communicationService.post('/workouts', post)
-      console.log(addedPost)
-      addedPost.user = props.currentUser.username
-      props.addToFeed(addedPost)
-    } else {
-      post.type = 'post'
-      const addedPost = await communicationService.post('/posts', post)
-      
-      addedPost.user = props.currentUser.username
-      console.log(addedPost)
-      props.addToFeed(addedPost)
-    }
+    props.addToFeed({ ...post, _id: Math.random()*10000, user: { username: props.currentUser.username } })
   }
 
   return ( <div style={elementStyle}>
-    <Segment>
       <Form onSubmit={post}>
-        <TextArea name='post' rows={4} placeholder='What have you done?! (tip: you can use hashtags!)' />
+        <TextArea name='post' onChange={changeText} rows={4} placeholder='What have you done?! (tip: you can use hashtags!)' />
+        { isWorkout ? <><Checkbox toggle name='didit'/><strong>Did it!</strong></> : null }
         <Button style={buttonStyle}>Got picture?</Button>
         <Button type='submit' style={buttonStyle}>Post!</Button>
       </Form>
-    </Segment>
   </div> )
 }
 

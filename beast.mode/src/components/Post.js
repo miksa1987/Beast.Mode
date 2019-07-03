@@ -1,13 +1,13 @@
 import React from 'react'
-import { Segment } from 'semantic-ui-react'
+import { Segment, Button } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 
 
 const elementStyle = {
-  minWidth: '50%',
-  maxWidth: '50%',
-  paddingTop: '5px',
-  paddingLeft: '5px',
+  minWidth: '45%',
+  maxWidth: '45%',
+  paddingTop: '15px',
+  paddingLeft: '15px',
   flexGrow: '1',
   flexShrink: '1',
   flexBasis: '50%'
@@ -17,7 +17,7 @@ const Post = (props) => {
   if(props.post === undefined) {
     return null
   }
-  return ( <div style={elementStyle}><Segment>
+  return ( <div style={elementStyle}>
     <table><tbody><tr>
       <td><img width='32px' height='32px' 
         src={props.post.user.picture && props.post.user.picture !== '' 
@@ -29,9 +29,9 @@ const Post = (props) => {
         ? <td><img src={props.post.picture} alt='pic' /></td> : null} 
       <td><p>{props.post.content}</p></td>
     </tr></tbody></table>
-    <button>Like</button>
-    <button>Comments</button>
-  </Segment></div> )
+    <Button>Like</Button>
+    <Button>Comments</Button>
+  </div> )
 }
 
 export default Post
