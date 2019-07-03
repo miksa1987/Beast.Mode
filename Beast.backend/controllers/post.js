@@ -61,6 +61,7 @@ postRouter.post('/', async (request, response, next) => {
     const post = new Post({
       content: request.body.content,
       picture: request.body.picture || '',
+      type: request.body.type,
       user: decodedToken.id,
       likes: 0,
       comments: [],

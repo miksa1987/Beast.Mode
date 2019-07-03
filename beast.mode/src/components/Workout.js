@@ -14,7 +14,7 @@ const elementStyle = {
   whiteSpace: 'pre-line'
 }
 
-const Post = (props) => {
+const Workout = (props) => {
   if(props.post === undefined) {
     return null
   }
@@ -36,4 +36,4 @@ const Post = (props) => {
   </div> )
 }
 
-export default Post
+export default Workout

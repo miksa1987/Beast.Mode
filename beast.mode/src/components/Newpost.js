@@ -6,8 +6,8 @@ import communicationService from '../service/communication'
 import { addToFeed } from '../reducers/feedReducer'
 
 const elementStyle = {
-  minWidth: '50%',
-  maxWidth: '50%',
+  minWidth: '45%',
+  maxWidth: '45%',
   paddingTop: '5px',
   paddingLeft: '5px',
   flexGrow: '1',
@@ -25,6 +25,7 @@ const Newpost = (props) => {
 
   const changeText = (event) => {
     setTextContent(event.target.value)
+    console.log(textContent)
     if (parser.isWorkout(textContent)) {
       setIsWorkout(true)
     } else {
@@ -32,9 +33,11 @@ const Newpost = (props) => {
     }
   }
 
+  const workoutToggleChange = (event, data) => setIsWorkout(data.checked)
+
   const post = async (event) => {
     event.preventDefault()
-    const post = {
+    let post = {
       content: textContent,
       picture: '',
       user: props.currentUser.id,
@@ -54,7 +57,7 @@ const Newpost = (props) => {
   return ( <div style={elementStyle}>
       <Form onSubmit={post}>
         <TextArea name='post' onChange={changeText} rows={4} placeholder='What have you done?! (tip: you can use hashtags!)' />
-        { isWorkout ? <><Checkbox toggle name='didit'/><strong>Did it!</strong></> : null }
+        { isWorkout ? <><Checkbox toggle name='workoutToggle' onChange={workoutToggleChange} /><strong>Did it!</strong></> : null }
         <Button style={buttonStyle}>Got picture?</Button>
         <Button type='submit' style={buttonStyle}>Post!</Button>
       </Form>

@@ -62,6 +62,7 @@ workoutRouter.post('/', async (request, response, next) => {
     const workout = new Workout({
       content: request.body.content,
       picture: request.body.picture || '',
+      type: request.body.type,
       user: decodedToken.id,
       likes: 0,
       comments: [],
