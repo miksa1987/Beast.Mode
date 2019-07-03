@@ -37,8 +37,10 @@ const feedReducer = (state = [], action) => {
   }
 }
 
-export const initFeed = (friends, myID) => {
+export const initFeed = (friends, myID, feedLength) => {
   return async dispatch => {
+    if (feedLength > 0) return
+
     let feedPosts = await communicationService.get(`/users/${myID}/posts`)
     feedPosts = feedPosts.concat(await communicationService.get(`/users/${myID}/workouts`))
 

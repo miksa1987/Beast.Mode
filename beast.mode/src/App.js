@@ -11,6 +11,7 @@ import Workouts from './components/Workouts'
 import Dashboard from './components/Dashboard'
 import Settings from './components/Settings'
 import LoginForm from './components/LoginForm'
+import DoWorkout from './components/DoWorkout'
 
 const usr = {
   username: 'Miksa',
@@ -42,7 +43,8 @@ const App = (props) => {
     <Route exact path='/workouts' render={() => <Workouts />} />
     <Route exact path='/dash' render={() => <Dashboard user={usr}/>} />
     <Route exact path='/settings' render={() => <Settings />} />
-    <Route path='profile/:id' render={() => <Dashboard user={usr} />} />
+    <Route path='/profile/:id' render={() => <Dashboard user={usr} />} />
+    <Route path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />
     <Menubar />
     </Router> 
   </div> )

@@ -18,7 +18,7 @@ const Workouts = (props) => {
   }  
 
   useEffect(() => {
-    props.initWorkouts()
+    props.initWorkouts(props.workouts.length)
   }, [])
   
   return ( <div>

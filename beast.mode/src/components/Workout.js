@@ -1,6 +1,6 @@
 import React from 'react'
-import { Segment, Button } from 'semantic-ui-react'
-import {Link} from 'react-router-dom'
+import { Button } from 'semantic-ui-react'
+import {Link, withRouter} from 'react-router-dom'
 
 
 const elementStyle = {
@@ -18,6 +18,9 @@ const Workout = (props) => {
   if(props.post === undefined) {
     return null
   }
+
+  const redirectToWorkout = () => props.history.push(`/doworkout/${props.post._id}`)
+
   return ( <div style={elementStyle}>
     <table><tbody><tr>
       <td><img width='32px' height='32px' 
@@ -33,7 +36,8 @@ const Workout = (props) => {
     </tr></tbody></table>
     <Button>Like</Button>
     <Button>Comments</Button>
+    <Button color= 'red' onClick={redirectToWorkout}>Do workout</Button>
   </div> )
 }
 
-export default Workout
+export default withRouter(Workout)
