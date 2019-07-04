@@ -1,18 +1,23 @@
 import React from 'react'
-import {Segment} from 'semantic-ui-react'
+import Post from './Post'
 
 const Dashboard  = (props) => {
+  const userTitleStyle = {
+    verticalAlign: 'top'
+  }
+
+  const divStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start'
+  }
+
   return ( <div>
-    <Segment>
-      <table><tbody><tr>
-        <td><img src={props.user.picture} alt='user' /></td>
-        <td><strong>{props.user.username}</strong>
-        <p>{props.user.info}</p></td>
-      </tr></tbody></table>
-    </Segment>
-    <table><tbody>
-      <tr>
-      <td><Segment>
+    <table><tbody><tr>
+      <td><img src={props.user.picture} alt='user' /></td>
+      <td style={userTitleStyle}><strong style={userTitleStyle}>{props.user.username}</strong></td>
+    </tr></tbody></table>
+    <div style={divStyle}>
       <table><tbody>
       <tr>
       <td><img src={props.user.picture} alt='user' /></td>
@@ -25,22 +30,7 @@ const Dashboard  = (props) => {
         <td><img src={props.user.picture} alt='user' /></td>
         </tr>
       </tbody></table>
-    </Segment></td>
-    <td><Segment>
-      <img src='img/user.jpg' alt='HEE' />
-      <p>So this is an update.</p>
-    </Segment></td>
-    </tr>
-    <tr>
-    <td><Segment>
-      <img src='img/user.jpg' alt='HEE' />
-      <p>So this is an update.</p>
-    </Segment></td>
-    <td><Segment>
-      <img src='img/user.jpg' alt='HEE' />
-      <p>So this is an update.</p>
-    </Segment></td>   
-    </tr></tbody></table>
+    </div>
   </div> )
 }
 
