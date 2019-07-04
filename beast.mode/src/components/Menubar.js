@@ -1,5 +1,5 @@
 import React from 'react'
-import { Segment } from 'semantic-ui-react'
+import { Segment, Input } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'
@@ -18,15 +18,24 @@ const Menubar = (props) => {
   }
 
   const searchStyle = {
-    margin: '0px 0px 0px 0px',
+    position: 'fixed',
+    top: '15px',
     align: 'top',
-    width: '65%',
+    width: '50%',
     minWidth: '40%',
     maxWidth: 'auto',
   }
 
   const itemStyle = {
     padding: '5px 10px 10px',
+    backgroundColor: 'white'
+  }
+
+  const itemStyle0 = {
+    position: 'fixed',
+    right: '4px',
+    top: '10px',
+    padding: '5px 10px 0px',
     backgroundColor: 'white'
   }
 
@@ -45,13 +54,15 @@ const Menubar = (props) => {
     <Link to='/dash' style={itemStyle}>
       <img src='/img//ui/dashboard.png' alt='dashboard' />
     </Link>
-    <input style={searchStyle} name='search' />
+    <Input style={searchStyle} size='small' action={{ icon: 'search' }} name='search' />
+    <div style={itemStyle0}>
     <Link to='/settings' style={itemStyle}>
       <img src='/img/ui/settings.png' alt='settings' />
     </Link>
     <Link to='/' onClick={logout} style={itemStyle}>
       <img src='/img/ui/logout.png' alt='logout' />
     </Link>
+    </div>
     </Segment></div>
   </div>)
 }

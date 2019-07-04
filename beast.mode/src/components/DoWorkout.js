@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Segment } from 'semantic-ui-react'
 import Exercise from './Exercise'
 import OneSetExercise from './OneSetExercise'
 import communicationService from '../service/communication'
@@ -53,7 +52,7 @@ const DoWorkout = (props) => {
       const lines = workout.content.split('\n')
 
       lines.forEach(line => {
-        if (parser.isWorkout(line)) exercises.push(line)
+        if (parser.isWorkout(line) && !(line.includes('rounds'))) exercises.push(line)
       })
 
       if (exercises.length > 0) {
@@ -83,7 +82,7 @@ const DoWorkout = (props) => {
   if(parsedWorkout.type === '1') {
     return ( <div>
       <h4>{parsedWorkout.exercises}</h4>
-      <p>{parsedWorkout.rounds} rounds</p>
+      <p>{parsedWorkout.rounds}</p>
     </div> )
   }
   return ( <div style={style}>

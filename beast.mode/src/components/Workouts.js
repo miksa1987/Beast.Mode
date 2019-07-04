@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { initWorkouts } from '../reducers/workoutsReducer'
-import Workout from './Workout'
-
+import { Input } from 'semantic-ui-react'
+import Post from './Post'
 
 const feedStyle = {
   display: 'flex',
@@ -11,24 +11,25 @@ const feedStyle = {
 }
 
 const Workouts = (props) => {
-  const [search, setSearch] = useState('')
-
-  const style = {
-    whiteSpace: 'pre-line'
-  }  
+  const [searchterm, setSearchterm] = useState('')
 
   useEffect(() => {
     props.initWorkouts(props.workouts.length)
   }, [])
+
+  const search = (event) => {
+    event.preventDefault()
+    console.log(searchterm)
+  }
   
   return ( <div>
-    <strong>Find workouts...<br/></strong>
-    <form>
-      <input name='workoutSearch' onChange={ ({ target }) => setSearch(target.value) } />
-      <button type='submit'>Find</button>
+    <h3>Find workouts...<br/></h3>
+    <form onSubmit={search}>
+      <Input fluid size='small' action={{icon: 'search'}} name='workoutSearch' onChange={ ({ target }) => setSearchterm(target.value) } />
     </form>
+    <h3>Featured workouts</h3>
     <div style={feedStyle}>
-      { props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} post={workout} /> ) : null}
+      { props.workouts !== [] ? props.workouts.map(workout => <Post key={workout._id} post={workout} /> ) : null}
     </div>
   </div> )
 }

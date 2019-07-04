@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import {Segment, Form, TextArea, Button, Checkbox} from 'semantic-ui-react'
+import { Form, TextArea, Button, Checkbox } from 'semantic-ui-react'
 import parser from '../service/parser'
 import communicationService from '../service/communication'
 import { addToFeed } from '../reducers/feedReducer'
@@ -56,7 +56,7 @@ const Newpost = (props) => {
 
   return ( <div style={elementStyle}>
       <Form onSubmit={post}>
-        <TextArea name='post' onChange={changeText} rows={4} placeholder='What have you done?! (tip: you can use hashtags!)' />
+        <TextArea name='post' onChange={changeText} rows={8} placeholder='What have you done?! (tip: you can use hashtags!)' />
         { isWorkout ? <><Checkbox toggle name='workoutToggle' onChange={workoutToggleChange} /><strong>Did it!</strong></> : null }
         <Button style={buttonStyle}>Got picture?</Button>
         <Button type='submit' style={buttonStyle}>Post!</Button>
