@@ -1,25 +1,5 @@
 import communicationService from '../service/communication'
-
-const compare = (a, b) => {
-  const date0 = new Date(a.date)
-  const date1 = new Date(b.date)
-  const d0 = date0.getFullYear() 
-    + date0.getMonth() 
-    + date0.getDate() 
-    + date0.getHours() 
-    + date0.getMinutes() 
-    + date0.getSeconds() 
-    + date0.getMilliseconds()
-  const d1 = date1.getFullYear() 
-    + date1.getMonth() 
-    + date1.getDate() 
-    + date1.getHours() 
-    + date1.getMinutes() 
-    + date1.getSeconds() 
-    + date1.getMilliseconds()
-  
-  return d1 - d0
-}
+import sorterService from '../service/sorter'
 
 const feedReducer = (state = [], action) => {
   switch(action.type) {
@@ -40,6 +20,7 @@ const feedReducer = (state = [], action) => {
 export const initFeed = (friends, myID, feedLength) => {
   return async dispatch => {
     if (feedLength > 0) return
+    console.log(myID)
 
     let feedPosts = await communicationService.get(`/users/${myID}/posts`)
     feedPosts = feedPosts.concat(await communicationService.get(`/users/${myID}/workouts`))
@@ -50,10 +31,7 @@ export const initFeed = (friends, myID, feedLength) => {
       const friendsWorkouts = await communicationService.get(`/users/${friend}/workouts`)
       feedPosts = feedPosts.concat(friendsWorkouts)
     }
-    console.log(feedPosts)
-    feedPosts.sort(compare)
-
-    console.log(feedPosts)
+    feedPosts.sort(sorterService.comparePostDates)
     dispatch({ type: 'INIT_FEED', data: feedPosts })
   }
 }

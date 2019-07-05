@@ -9,9 +9,11 @@ import App from './App'
 import currentUserReducer from './reducers/currentUser'
 import feedReducer from './reducers/feedReducer'
 import workoutsReducer from './reducers/workoutsReducer'
+import currentUserPostsReducer from './reducers/currentUserPosts'
 
 const reducer = combineReducers({
   currentUser: currentUserReducer,
+  currentUserPosts: currentUserPostsReducer,
   feed: feedReducer,
   workouts: workoutsReducer
 })
