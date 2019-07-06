@@ -37,34 +37,6 @@ const getExercisesFrom = (post) => {
   return exercises
 }
 
-const parseWorkout = (post) => {
-  if (post !== '') {
-    let workout = { exercises: [], rounds: 0 }
-    const lines = post.split('\n')
-
-    lines.forEach(line => {
-      if (isWorkout(line) && !(line.includes('rounds'))) {
-        workout.exercises.push(line)
-        workout.rounds 
-      }
-    })
-
-    if (exercises.length > 0) {
-      console.log('workout parsing')
-      if (parser.match0(exercises[0])) {
-        console.log('type 0')
-        setParsedWorkout(doWorkoutType0(exercises))
-        console.log(parsedWorkout)
-      }
-      if (parser.match1(exercises[0])) {
-        console.log('type 1')
-        const rounds = lines.find(line => parser.matchRounds(line))
-        setParsedWorkout(doWorkoutType1(exercises, rounds))
-      }
-    }
-  }
-}
-
 // Example: 5 pullups. Returns null if fails.
 const getRepsAndExercise = (text) => {
   if (!match1(text)) return null
@@ -94,30 +66,51 @@ const getRepsSetsAndExercise = (text) => {
   return setsRepsExercises
 }
 
-const doWorkoutType0 = (exercises) => {
-  let readyWorkout = { type: '0', exercises: [] }
+const getRounds = (text) => {
+  const whereToSplit = text.indexOf(' ')
+  return Number(text.substring(0, whereToSplit))
+}
 
-  exercises.forEach(line => {
-    const splits = line.split('x')
-    let sets = []
-    if(splits.length === 2) {
-      for (let i = 0; i < Number(splits[0]); i++) {
-        sets.push(splits[1])
-      }
+// Naming....
+const doExercises = (type, text) => {
+  const exercises = []
+  const lines = text.split('\n')
+
+  if (type === '0') {
+    lines.forEach(line => {
+      if(match0(line)) exercises.push(getRepsSetsAndExercise(line))
+    })
+  }
+  if (type === '1') {
+    lines.forEach(line => {
+      if(match1(line)) exercises.push(getRepsAndExercise(line))
+    })
+  }
+  console.log(exercises)
+  return exercises
+}
+
+const doWorkout = (type, text) => {
+  let workout = {
+    type,
+    exercises: [],
+    rounds: 0,
+    done: false,
+    time: {
+      time: 0,
+      visible: false
     }
-    console.log(`sets ${sets}`)
-    sets = sets.map((set, i) => <Exercise key={i} exercise={set} />)
-    readyWorkout.exercises.push(sets)
-  })
-  console.log(readyWorkout)
-  return readyWorkout
+  }
+
+  if (type === '1') {
+    const lines = text.split('\n')
+    lines.forEach(line => {
+      if(matchRounds(line)) workout.rounds = getRounds(line)
+    })
+  }
+
+  workout.exercises = doExercises(type, text)
+  return workout
 }
 
-// Thought this was going to be longer but....
-const doWorkoutType1 = (exercises, rounds) => {
-  let readyWorkout = { type: '1', exercises, rounds }
-  readyWorkout.exercises = readyWorkout.exercises.map((ex, i) => <OneSetExercise key={i} exercise={ex} />)
-  return readyWorkout
-}
-
-export default { isWorkout, match0, match1, matchRounds, getExercisesFrom, parseWorkout }
+export default { isWorkout, match0, match1, matchRounds, getExercisesFrom, doWorkout }

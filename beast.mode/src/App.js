@@ -13,15 +13,6 @@ import Settings from './components/Settings'
 import LoginForm from './components/LoginForm'
 import DoWorkout from './components/DoWorkout'
 
-const usr = {
-  username: 'Miksa',
-  info: 'Just crazy guy from finland',
-  id: '42536125',
-  weight: '66',
-  height: '171',
-  picture: 'img/user.jpg'
-}
-
 const App = (props) => {
   useEffect(() => {
     const rawUser = window.localStorage.getItem('currentUser')
@@ -41,7 +32,7 @@ const App = (props) => {
     <Router>
     <Route exact path='/' render={() => <Feed />} />
     <Route exact path='/workouts' render={() => <Workouts />} />
-    <Route exact path='/dash' render={() => <Dashboard user={usr}/>} />
+    <Route exact path='/dash' render={() => <Dashboard user={props.currentUser}/>} />
     <Route exact path='/settings' render={() => <Settings />} />
     <Route exact path='/profile/:id' render={() => <Dashboard user={props.currentUser} />} />
     <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />

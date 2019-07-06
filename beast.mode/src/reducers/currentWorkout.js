@@ -29,6 +29,16 @@ export const setCurrentWorkoutExercises = (exercises) => {
   return dispatch => dispatch({ type: 'SET_CURRENT_WORKOUT_EXERCISES', data: exercises })
 }
 
+export const setCurrentWorkoutExerciseDone = (exercise, set, reps) => {
+  return (dispatch, getState) => {
+    let exercises = getState().currentWorkout.exercises
+    exercises[exercise][set].reps = reps
+    exercises[exercise][set].done = true
+
+    dispatch({ type: 'SET_CURRENT_WORKOUT_EXERCISES', data: exercises })
+  }
+}
+
 export const setCurrentWorkoutTime = (time, visible) => {
   return dispatch => dispatch({ type: 'SET_CURRENT_WORKOUT_TIME', data: { time, visible } })
 }
