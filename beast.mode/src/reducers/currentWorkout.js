@@ -1,3 +1,6 @@
+import communicationService from '../service/communication'
+import parser from '../service/parser'
+
 const emptyWorkout = {
   type: null,
   exercises: [],
@@ -11,7 +14,7 @@ const emptyWorkout = {
 const currentWorkoutReducer = (state = emptyWorkout, action) => {
   switch(action.type) {
     case 'INIT_CURRENT_WORKOUT':
-      return emptyWorkout
+      return action.data
     case 'SET_CURRENT_WORKOUT_EXERCISES':
       return { ...state, exercises: action.data }
     case 'SET_CURRENT_WORKOUT_TIME':
@@ -21,8 +24,12 @@ const currentWorkoutReducer = (state = emptyWorkout, action) => {
   }
 }
 
-export const initCurrentWorkout = () => {
-  return dispatch => dispatch({ type: 'INIT_CURRENT_WORKOUT' })
+export const initCurrentWorkout = (workoutid) => {
+  return async dispatch => {
+    const rawWorkout = await communicationService.get(`/workouts/${workoutid}`)
+    const workout = parser.doWorkout(rawWorkout.content)
+    dispatch({ type: 'INIT_CURRENT_WORKOUT', data: workout })
+  }
 }
 
 export const setCurrentWorkoutExercises = (exercises) => {

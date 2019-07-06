@@ -46,7 +46,7 @@ const getRepsAndExercise = (text) => {
 
   if (typeof reps !== 'number') return null
 
-  const exercise = text.substring((whereToSplit + 1), (text.length - whereToSplit))
+  const exercise = text.substring((whereToSplit + 1), (text.length - whereToSplit + 1))
 
   return { exercise, reps, done: false }
 }
@@ -57,7 +57,7 @@ const getRepsSetsAndExercise = (text) => {
   const whereToSplit = text.indexOf('x')
   const sets = Number(text.substring(0, whereToSplit))
   if (typeof sets !== 'number') return null
-  const repsExercise = text.substring((whereToSplit + 1), (text.length - whereToSplit))
+  const repsExercise = text.substring((whereToSplit + 1), (text.length - whereToSplit + 1))
 
   let setsRepsExercises = []
   for (let i = 0; i < sets; i++) setsRepsExercises.push(getRepsAndExercise(repsExercise))
@@ -83,16 +83,16 @@ const doExercises = (type, text) => {
   }
   if (type === '1') {
     lines.forEach(line => {
-      if(match1(line)) exercises.push(getRepsAndExercise(line))
+      if(match1(line) && !matchRounds(line)) exercises.push(getRepsAndExercise(line))
     })
   }
   console.log(exercises)
   return exercises
 }
 
-const doWorkout = (type, text) => {
+const doWorkout = (text) => {
   let workout = {
-    type,
+    type: null,
     exercises: [],
     rounds: 0,
     done: false,
@@ -102,14 +102,18 @@ const doWorkout = (type, text) => {
     }
   }
 
-  if (type === '1') {
+  if(match0(text)) workout.type = '0'
+  if(match1(text)) workout.type = '1'
+
+  if (workout.type === '1') {
     const lines = text.split('\n')
     lines.forEach(line => {
       if(matchRounds(line)) workout.rounds = getRounds(line)
     })
   }
 
-  workout.exercises = doExercises(type, text)
+  workout.exercises = doExercises(workout.type, text)
+  console.log(workout)
   return workout
 }
 

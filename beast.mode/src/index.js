@@ -10,10 +10,12 @@ import currentUserReducer from './reducers/currentUser'
 import feedReducer from './reducers/feedReducer'
 import workoutsReducer from './reducers/workoutsReducer'
 import currentUserPostsReducer from './reducers/currentUserPosts'
+import currentWorkoutReducer from './reducers/currentWorkout'
 
 const reducer = combineReducers({
   currentUser: currentUserReducer,
   currentUserPosts: currentUserPostsReducer,
+  currentWorkout: currentWorkoutReducer,
   feed: feedReducer,
   workouts: workoutsReducer
 })
