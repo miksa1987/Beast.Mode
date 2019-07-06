@@ -48,7 +48,7 @@ const getRepsAndExercise = (text) => {
 
   const exercise = text.substring((whereToSplit + 1), (text.length - whereToSplit + 1))
 
-  return { exercise, reps, done: false }
+  return { exercise, reps, done: false, doneReps: 0 }
 }
 
 // Example: 5x5 pullups. Returns null if fails.

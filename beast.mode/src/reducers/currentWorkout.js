@@ -19,6 +19,8 @@ const currentWorkoutReducer = (state = emptyWorkout, action) => {
       return { ...state, exercises: action.data }
     case 'SET_CURRENT_WORKOUT_TIME':
       return { ...state, time: { time: action.data.time, visible: action.data.visible }}
+    case 'SET_CURRENT_WORKOUT_DONE':
+      return { ...state, done: true }
     default:
       return state
   }
@@ -39,8 +41,8 @@ export const setCurrentWorkoutExercises = (exercises) => {
 export const setCurrentWorkoutExerciseDone = (exercise, set, reps) => {
   return (dispatch, getState) => {
     let exercises = getState().currentWorkout.exercises
-    exercises[exercise][set].reps = reps
     exercises[exercise][set].done = true
+    exercises[exercise][set].doneReps = reps
 
     dispatch({ type: 'SET_CURRENT_WORKOUT_EXERCISES', data: exercises })
   }
@@ -48,6 +50,10 @@ export const setCurrentWorkoutExerciseDone = (exercise, set, reps) => {
 
 export const setCurrentWorkoutTime = (time, visible) => {
   return dispatch => dispatch({ type: 'SET_CURRENT_WORKOUT_TIME', data: { time, visible } })
+}
+
+export const setCurrentWorkoutDone = () => {
+  return dispatch => dispatch({ type: 'SET_CURRENT_WORKOUT_DONE' })
 }
 
 export default currentWorkoutReducer
