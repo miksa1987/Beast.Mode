@@ -38,12 +38,30 @@ export const setCurrentWorkoutExercises = (exercises) => {
   return dispatch => dispatch({ type: 'SET_CURRENT_WORKOUT_EXERCISES', data: exercises })
 }
 
-export const setCurrentWorkoutExerciseDone = (exercise, set, reps) => {
+export const setCurrentWorkoutExerciseDone = (reps, exercise, set) => {
   return (dispatch, getState) => {
     let exercises = getState().currentWorkout.exercises
-    exercises[exercise][set].done = true
-    exercises[exercise][set].doneReps = reps
+    if (!set) {
+      exercises[exercise].done = true
+      exercises[exercise].doneReps = reps
+    } else {
+      exercises[exercise][set].done = true
+      exercises[exercise][set].doneReps = reps
+    }
+    dispatch({ type: 'SET_CURRENT_WORKOUT_EXERCISES', data: exercises })
+  }
+}
 
+export const setCurrentWorkoutExerciseUndone = (exercise, set) => {
+  return (dispatch, getState) => {
+    let exercises = getState().currentWorkout.exercises
+    if (!set) {
+      exercises[exercise].done = false
+      exercises[exercise].doneReps = 0
+    } else {
+      exercises[exercise][set].done = false
+      exercises[exercise][set].doneReps = 0
+    }
     dispatch({ type: 'SET_CURRENT_WORKOUT_EXERCISES', data: exercises })
   }
 }

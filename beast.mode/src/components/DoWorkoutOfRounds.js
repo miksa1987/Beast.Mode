@@ -1,48 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from 'semantic-ui-react'
 import useTimer from '../hooks/useTimer'
+import WorkoutofSetsDone from './WorkoutOfSetsDone'
 
 const DoWorkoutOfRounds = (props) => {
-  const [current, setCurrent] = useState({ exercise: 0, set: 0 })
-  const [currentReps, setCurrentReps] = useState(0)
+  const [current, setCurrent] = useState(1)
+  const [currentReps, setCurrentReps] = useState(5)
   
-  const timer = useTimer(0)
+  // Soon...
   const exerciseTimer = useTimer(0) 
 
-  const setDone = () => {
-    if(props.currentWorkout.done) return
+  const setRoundDone = () => {
+    setCurrent(current + 1)
+  }
 
-    props.setCurrentWorkoutExerciseDone(current.exercise, current.set, currentReps)
-    setCurrent({ ...current, set: current.set + 1 })
-    setTimeout(() => { 
-      if (current.set + 1 > props.currentWorkout.exercises[current.exercise].length - 1) {
-        if (current.exercise  < props.currentWorkout.exercises.length - 1) {
-          setCurrent({ exercise: current.exercise + 1, set: 0 })
-        } else {
-          props.setCurrentWorkoutDone()
-        }
-      }  
-    }, 100)
+  const setWorkoutDone = () => {
+    props.setCurrentWorkoutDone()
   }
 
   if (props.currentWorkout.exercises.length === 0) {
     return ( <div>Loading...</div> )
   }
 
+  if (props.currentWorkout.done) {
+    return ( <div><WorkoutofSetsDone /></div> )
+  }
+
   return ( <div>
     <p>{props.timer.value}</p>
-    <h2>Exercise {current.exercise + 1}</h2>
-    <h3>GOAL:{props.currentWorkout.exercises[current.exercise].length} sets, 
-      {' ' + props.currentWorkout.exercises[current.exercise][0].reps + ' '} reps per set</h3> 
-    <ul>{props.currentWorkout.exercises[current.exercise].map((exercise, i) =>
+    <h2>Round {current}</h2>
+    <h3>GOAL:{props.currentWorkout.rounds} rounds</h3> 
+    <ul>{props.currentWorkout.exercises.map((exercise, i) =>
       <li key={i}>{exercise.reps} {exercise.exercise}
     {exercise.done && <strong>DID {exercise.doneReps} reps!</strong>}</li>)} </ul>
-      <strong>{currentReps} reps</strong>
-    <Button.Group>
-      <Button icon='left chevron' onClick={() => setCurrentReps(currentReps - 1)}></Button>
-      <Button icon='right chevron'  onClick={() => setCurrentReps(currentReps + 1)}></Button>
-    </Button.Group>
-    <Button color='green' onClick={setDone}>Exercise done</Button>
+
+    <Button color='blue' onClick={setRoundDone}>Round done</Button>
+    <Button color='green' onClick={setWorkoutDone}>Workout done</Button>
   </div> )
 }
 

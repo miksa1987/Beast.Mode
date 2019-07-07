@@ -1,4 +1,4 @@
-const regex0 = /\d\d?x\d\d?\s+\D+/
+const regex0 = /^\d\d?x\d\d?\s+\D+/
 const regex1 = /^\d\d?\s+\D+/
 const rounds = /^\d\d\s+rounds/
 
@@ -11,6 +11,7 @@ const isWorkout = (post) => {
 
 const match0 = (text) => {
   if (regex0.exec(text)) return true
+  console.log('no match 0')
   return false
 }
 
@@ -92,7 +93,7 @@ const doExercises = (type, text) => {
 
 const doWorkout = (text) => {
   let workout = {
-    type: null,
+    type: 0,
     exercises: [],
     rounds: 0,
     done: false,
@@ -105,14 +106,16 @@ const doWorkout = (text) => {
   if(match0(text)) workout.type = '0'
   if(match1(text)) workout.type = '1'
 
+  workout.exercises = doExercises(workout.type, text)
+
   if (workout.type === '1') {
     const lines = text.split('\n')
     lines.forEach(line => {
-      if(matchRounds(line)) workout.rounds = getRounds(line)
+      if (matchRounds(line)) workout.rounds = getRounds(line)
+      console.log('set rounds')
     })
   }
 
-  workout.exercises = doExercises(workout.type, text)
   console.log(workout)
   return workout
 }
