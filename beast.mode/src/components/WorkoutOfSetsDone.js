@@ -7,4 +7,4 @@ const WorkoutOfSetsDone = (props) => {
   </div>)
 }
 
-export default WorkoutOfSetsDone
+export default WorkoutOfSetsDone 

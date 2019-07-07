@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken')
 const config = require('../util/config')
 const Workout = require('../models/Workout')
 const User = require('../models/User')
+const multer = require('multer')
+const { storage, cloudinary } = require('../util/imageupload')
+
+const imgparser = multer( {storage: storage })
 
 workoutRouter.get('/all', async (request, response) => {
   try {
@@ -49,7 +53,7 @@ workoutRouter.put('/:id', async (request, response) => {
   }
 })
 
-workoutRouter.post('/', async (request, response, next) => {
+workoutRouter.post('/', imgparser.single('image'), async (request, response, next) => {
   if(!request.token) {
     response.status(401).end()
   }
@@ -59,9 +63,13 @@ workoutRouter.post('/', async (request, response, next) => {
   
   try {
     const decodedToken = jwt.verify(request.token, config.SECRET)
+    
+    request.file.path ? await cloudinary.uploader.upload(request.file.path) : ''
+
     const workout = new Workout({
       content: request.body.content,
-      picture: request.body.picture || '',
+      picture: request.file ? request.file.secure_url : '',
+      pictureThumb: request.file ? request.file.secure_url : '', // TBD change this to real thumbnail
       type: request.body.type,
       user: decodedToken.id,
       likes: 0,

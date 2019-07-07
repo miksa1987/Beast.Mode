@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const postSchema = mongoose.Schema({
   content: String,
   picture: String,
+  pictureThumb: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   likes: Number,
   type: String,

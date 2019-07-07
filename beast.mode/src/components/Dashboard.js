@@ -26,7 +26,7 @@ const Dashboard  = (props) => {
     </tr></tbody></table>
     <div style={divStyle}>
       <table><tbody>
-      <tr><td><strong>{props.currentUser.username}'s photos</strong></td></tr>
+      <tr><td><strong>{props.user.username}'s photos</strong></td></tr>
       <tr>
       <td><img src={props.user.picture} alt='user' /></td>
       <td><img src={props.user.picture} alt='user' /></td>

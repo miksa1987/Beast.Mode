@@ -6,13 +6,15 @@ import communicationService from '../service/communication'
 import { addToFeed } from '../reducers/feedReducer'
 
 const elementStyle = {
-  minWidth: '45%',
-  maxWidth: '45%',
+  align: 'center',
+  margin: 'auto',
+  minWidth: '90%',
+  maxWidth: '90%',
   paddingTop: '5px',
   paddingLeft: '5px',
   flexGrow: '1',
   flexShrink: '1',
-  flexBasis: '50%'
+  flexBasis: '90%'
 }
 
 const buttonStyle = {
@@ -22,6 +24,7 @@ const buttonStyle = {
 const Newpost = (props) => {
   const [isWorkout, setIsWorkout] = useState(false)
   const [textContent, setTextContent] = useState('')
+  const [file, setFile] = useState('')
 
   const changeText = (event) => {
     setTextContent(event.target.value)
@@ -45,17 +48,28 @@ const Newpost = (props) => {
       comments: []
     }
 
+    const data = new FormData()
+    data.append('content', textContent)
+    data.append('image', file)
+    data.append('user', props.currentUser.id)
+    data.append('likes', 0)
+    isWorkout ? data.append('type', 'workout') : data.append('type', 'post')
     isWorkout ? post.type = 'workout' : post.type = 'post'
-    console.log(`type ${post.type}`)
+    console.log(data)
+
+    const header = {
+      'content-type': 'multipart/form-data'
+    }
 
     post.type === 'workout' 
-    ? await communicationService.post('/workouts', post) : await communicationService.post('/posts', post)
+    ? await communicationService.post('/workouts', data, header) : await communicationService.post('/posts', data, header)
     
     props.addToFeed({ ...post, _id: Math.random()*10000, user: { username: props.currentUser.username } })
   }
 
   return ( <div style={elementStyle}>
       <Form onSubmit={post}>
+        <input type='file' onChange={({ target }) => setFile(target.files[0])} />
         <TextArea name='post' onChange={changeText} rows={8} placeholder='What have you done?! (tip: you can use hashtags!)' />
         { isWorkout ? <><Checkbox toggle name='workoutToggle' onChange={workoutToggleChange} /><strong>Did it!</strong></> : null }
         <Button style={buttonStyle}>Got picture?</Button>

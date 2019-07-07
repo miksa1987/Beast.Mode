@@ -3,6 +3,10 @@ const config = require('../util/config')
 const Post = require('../models/Post')
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
+const multer = require('multer')
+const { storage, cloudinary } = require('../util/imageupload')
+
+const imgparser = multer( {storage: storage })
 
 postRouter.get('/all', async (request, response) => {
   try {
@@ -48,7 +52,7 @@ postRouter.put('/:id', async (request, response) => {
   }
 })
 
-postRouter.post('/', async (request, response, next) => {
+postRouter.post('/', imgparser.single('image'), async (request, response, next) => {
   if(!request.token) {
     response.status(401).end()
   }
@@ -57,10 +61,13 @@ postRouter.post('/', async (request, response, next) => {
   }
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
+    console.log(request.file)
+    request.file.path ? await cloudinary.uploader.upload(request.file.path) : ''
 
     const post = new Post({
       content: request.body.content,
-      picture: request.body.picture || '',
+      picture: request.file ? request.file.secure_url : '',
+      pictureThumb: request.file ? request.file.secure_url : '', // TBD change this to real thumbnail
       type: request.body.type,
       user: decodedToken.id,
       likes: 0,
