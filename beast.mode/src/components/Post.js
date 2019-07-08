@@ -4,13 +4,14 @@ import { withRouter, Link } from 'react-router-dom'
 
 
 const elementStyle = {
-  minWidth: '45%',
-  maxWidth: '45%',
+  minWidth: '90%',
+  backgroundColor: '#aaaaaa',
+  maxWidth: '90%',
   paddingTop: '15px',
   paddingLeft: '15px',
   flexGrow: '1',
   flexShrink: '1',
-  flexBasis: '50%',
+  flexBasis: '100%',
   whiteSpace: 'pre-line'
 }
 

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import Newpost from './Newpost'
+import FeedPost from './FeedPost'
 import Post from './Post'
 import { connect } from 'react-redux'
 import { initFeed, addToFeed, removeFromFeed } from '../reducers/feedReducer'
@@ -21,7 +22,7 @@ const Feed = (props) => {
 
   return ( <div style={feedStyle}>
     <Newpost />
-    {props.feed.map(post => <Post key={post._id} post={post} />)}
+    {props.feed.map(post => <FeedPost key={post._id} post={post} />)}
   </div> )
 }
 

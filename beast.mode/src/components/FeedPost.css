@@ -1,0 +1,33 @@
+.title {
+  grid-area: title;
+}
+
+.picture {
+  grid-area: picture;
+}
+
+.content {
+  grid-area: content;
+}
+
+.comments {
+  grid-area: comments;
+}
+
+.bottom {
+  grid-area: bottom;
+}
+
+.grid-container {
+  width: 90%;
+  min-width: 90%;
+  max-width: 90;
+  margin: auto;
+  display: grid;
+  grid-template-areas:
+    'title title title title title title title'
+    'picture content content content comments comments comments'
+    'picture content content content comments comments comments'
+    'picture content content content comments comments comments';
+  grid-gap: 10px;
+}
