@@ -43,20 +43,22 @@ const Menubar = (props) => {
     props.logoutUser()
   }
 
+  const scrollToTop = () => window.scrollTo(0, 0)
+
   return ( <div style={menuStyle}>
     <div><Segment>
-    <Link to='/' style={itemStyle}>
+    <Link to='/' style={itemStyle} onClick={scrollToTop}>
       <img src='/img/ui/feed.png' alt='feed' />
     </Link>
-    <Link to='/workouts' style={itemStyle}>
+    <Link to='/workouts' style={itemStyle} onClick={scrollToTop}>
       <img src='/img/ui/wrkouts.png' alt='workouts' />
     </Link>
-    <Link to='/dash' style={itemStyle}>
+    <Link to='/dash' style={itemStyle} onClick={scrollToTop}>
       <img src='/img//ui/dashboard.png' alt='dashboard' />
     </Link>
     <Input style={searchStyle} size='small' action={{ icon: 'search' }} name='search' />
     <div style={itemStyle0}>
-    <Link to='/settings' style={itemStyle}>
+    <Link to='/settings' style={itemStyle} onClick={scrollToTop}>
       <img src='/img/ui/settings.png' alt='settings' />
     </Link>
     <Link to='/' onClick={logout} style={itemStyle}>

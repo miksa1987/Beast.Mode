@@ -36,9 +36,18 @@ userRouter.post('/new', async (request, response) => {
   const user = new User({
     username: request.body.username,
     passwordHash: pwHash,
+    picture: '',
+    pictures: [],
+    info: request.body.info || '',
+    age: request.body.age || NaN,
+    activity: [],
+    postCount: 0,
+    workoutCount: 0,
+    doneWorkoutCount: 0,
     friends: [],
     posts: [],
-    workouts: []
+    workouts: [],
+    doneWorkouts: []
   })
 
   const savedUser = await user.save()

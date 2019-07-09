@@ -1,17 +1,21 @@
 const mongoose = require('mongoose')
 
-const workoutSchema = mongoose.Schema({
+const doneWorkoutSchema = mongoose.Schema({
   content: String,
+  additional: String,
   picture: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   likes: Number,
-  type: String,
   comments: [ { 
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     content: String,
     date: Date
   } ],
-  date: Date
+  done: {
+    date: Date,
+    time: Number, // Time in seconds
+    done: Boolean
+  }
 })
 
-module.exports = mongoose.model('Workout', workoutSchema)
+module.exports = mongoose.model('DoneWorkout', doneWorkoutSchema)
