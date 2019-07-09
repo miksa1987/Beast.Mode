@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { Card, Image, Button } from 'semantic-ui-react'
 import { initUserPosts } from '../reducers/currentUserPosts'
 import Post from './Post'
 
@@ -19,27 +20,81 @@ const Dashboard  = (props) => {
     alignItems: 'flex-start'
   }
 
+  const tableStyle = {
+    tableLayout: 'fixed',
+    wordWrap: 'break-word'
+  }
+
+  const picStyle = {
+    width: '20%'
+  }
+  const picsStyle = {
+    width: '30%'
+  }
+  const infoStyle = {
+    width: '50%'
+  }
+
   return ( <div>
-    <table><tbody><tr>
-      <td><img src={props.user.picture} alt='user' /></td>
-      <td style={userTitleStyle}><strong style={userTitleStyle}>{props.user.username}</strong></td>
-    </tr></tbody></table>
-    <div style={divStyle}>
-      <table><tbody>
-      <tr><td><strong>{props.user.username}'s photos</strong></td></tr>
-      <tr>
-      <td><img src={props.user.picture} alt='user' /></td>
-      <td><img src={props.user.picture} alt='user' /></td>
-      <td><img src={props.user.picture} alt='user' /></td>
-        </tr>
-        <tr>
-        <td><img src={props.user.picture} alt='user' /></td>
-        <td><img src={props.user.picture} alt='user' /></td>
-        <td><img src={props.user.picture} alt='user' /></td>
-        </tr>
-      </tbody></table>
+    <Card fluid>
+      <Card.Header>
+        {props.user.username}
+      </Card.Header>
+      <Card.Description>
+        <table style={tableStyle}>
+          <tbody>
+            <tr>
+              <td style={picStyle}>
+                <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+              </td>
+              <td style={infoStyle}>
+                HERE COMES INFO ABOUT THIS USER
+              </td>
+              <td style={picsStyle}>
+                <table>
+                  <tbody>
+                  <tr>
+                      <td>                
+                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />  
+                      </td>
+                      <td>
+                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                      </td>
+                      <td>
+                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>                
+                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />  
+                      </td>
+                      <td>
+                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                      </td>
+                      <td>
+                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>                
+                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />  
+                      </td>
+                      <td>
+                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                      </td>
+                      <td>
+                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </Card.Description>
+    </Card>
       {props.currentUserPosts.map(post => <Post key={post._id} post={post} /> )}
-    </div>
   </div> )
 }
 

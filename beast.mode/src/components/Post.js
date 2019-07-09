@@ -1,18 +1,42 @@
 import React from 'react'
-import { Button } from 'semantic-ui-react'
+import { Button, Card, Image } from 'semantic-ui-react'
 import { withRouter, Link } from 'react-router-dom'
 
 
 const elementStyle = {
-  minWidth: '90%',
-  backgroundColor: '#aaaaaa',
-  maxWidth: '90%',
+  minWidth: '95%',
+  align: 'top',
+  maxWidth: '95%',
   paddingTop: '15px',
   paddingLeft: '15px',
   flexGrow: '1',
   flexShrink: '1',
-  flexBasis: '100%',
-  whiteSpace: 'pre-line'
+  flexBasis: '95%',
+  whiteSpace: 'pre-line',
+  textAlign: 'top'
+}
+
+const tableStyle = {
+  tableLayout: 'fixed',
+  wordWrap: 'break-word'
+}
+
+const picStyle = {
+  margin: '8px',
+  width: '20%'
+}
+
+const contentStyle = {
+  verticalAlign: 'text-top',
+  margin: '8px',
+  width: '50%'
+}
+
+
+const commentStyle = {
+  verticalAlign: 'text-top',
+  margin: '8px',
+  width: '30%'
 }
 
 const Post = (props) => {
@@ -20,23 +44,32 @@ const Post = (props) => {
     return null
   }
   return ( <div style={elementStyle}>
-    <table><tbody><tr>
-      <td><img width='32px' height='32px' 
-        src={props.post.user.picture && props.post.user.picture !== '' 
-        ? props.post.user.picture : '/img/ui/dashboard.png'} alt='pic' /></td>
-      <td><Link to={`/profile/${props.post.user.username}`}><strong>{props.post.user.username}</strong></Link></td>
-      { props.post.type === 'workout' ? <td><strong>WORKOUT</strong></td> : null}
-    </tr></tbody></table>
-    <table><tbody><tr>
-      {props.post.picture && props.post.picture !== '' 
-        ? <td><img src={props.post.picture} alt='pic' /></td> : null} 
-      <td><p>{props.post.content}</p></td>
-    </tr></tbody></table>
-    <Button>Like</Button>
-    <Button>Comments</Button>
-    {props.post.type === 'workout' ? 
-      <Button color='red' onClick={() => props.history.push(`/doworkout/${props.post._id}`)}>Do this workout</Button>
-      : null}
+    <Card fluid>
+      <Card.Content>
+        <Image floated='right' 
+          src={props.post.user.picture && props.post.user.picture !== '' 
+          ? props.post.user.picture : '/img/ui/dashboard.png'} />
+        <Card.Header>{props.post.user.username}</Card.Header>
+        <Card.Description>
+          <table style={tableStyle}><tbody><tr>
+          <td style={picStyle}> 
+            <Image size='small' src={props.post.picture && props.post.picture !== '' 
+              ? props.post.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
+          </td> 
+          <td style={contentStyle}><p>{props.post.content}</p></td>
+          <td style={commentStyle}>
+            COMMENTS HERE HOHOHOH  
+          </td></tr></tbody></table>
+        </Card.Description>
+      </Card.Content>
+      <Card.Content extra>
+        <Button>Like</Button>
+        <Button>Comment</Button>
+        {props.post.type === 'workout' ? 
+          <Button color='red' onClick={() => props.history.push(`/doworkout/${props.post._id}`)}>Do this workout</Button>
+          : null}
+      </Card.Content>
+    </Card>
   </div> )
 }
 

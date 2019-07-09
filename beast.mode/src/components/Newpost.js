@@ -8,13 +8,13 @@ import { addToFeed } from '../reducers/feedReducer'
 const elementStyle = {
   align: 'center',
   margin: 'auto',
-  minWidth: '90%',
-  maxWidth: '90%',
+  minWidth: '95%',
+  maxWidth: '95%',
   paddingTop: '5px',
   paddingLeft: '5px',
   flexGrow: '1',
   flexShrink: '1',
-  flexBasis: '90%'
+  flexBasis: '95%'
 }
 
 const buttonStyle = {
