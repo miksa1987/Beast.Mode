@@ -11,6 +11,7 @@ import Workouts from './components/Workouts'
 import Dashboard from './components/Dashboard'
 import Settings from './components/Settings'
 import LoginForm from './components/LoginForm'
+import NewUser from './components/NewUser'
 import DoWorkout from './components/DoWorkout'
 
 const App = (props) => {
@@ -23,20 +24,20 @@ const App = (props) => {
   }, [])
 
   if(props.currentUser === null) {
-    return ( <div>
-      <LoginForm />
-    </div> )
+    window.history.pushState('login', 'Login', '/login') // Maybe better to use this than fool around with withRouter and Router?
   }
 
   return ( <div>
     <Router>
+    <Route exact path='/login' render={() => <LoginForm />} />
+    <Route exact path='/newuser' render={() => <NewUser />} />
     <Route exact path='/' render={() => <Feed />} />
     <Route exact path='/workouts' render={() => <Workouts />} />
     <Route exact path='/dash' render={() => <Dashboard user={props.currentUser}/>} />
     <Route exact path='/settings' render={() => <Settings />} />
     <Route exact path='/profile/:id' render={() => <Dashboard user={props.currentUser} />} />
     <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />
-    <Menubar />
+    {props.currentUser ? <Menubar /> : null }
     </Router> 
   </div> )
 }
