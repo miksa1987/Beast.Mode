@@ -21,12 +21,13 @@ const App = (props) => {
   }, [])
 
   if(props.currentUser === null) {
-    window.history.pushState('login', 'Login', '/login') // Maybe better to use this than fool around with withRouter and Router?
+    return ( <div>
+      <LoginForm />
+    </div>)
   }
 
   return ( <div>
     <Router>
-    <Route exact path='/login' render={() => <LoginForm />} />
     <Route exact path='/newuser' render={() => <NewUser />} />
     <Route exact path='/' render={() => <Feed />} />
     <Route exact path='/workouts' render={() => <Workouts />} />

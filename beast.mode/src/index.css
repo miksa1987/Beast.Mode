@@ -3,10 +3,4 @@ body {
   min-width: 95%;
   margin: auto;
   margin-top: 80px;
-  margin-bottom: 80px;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
 }

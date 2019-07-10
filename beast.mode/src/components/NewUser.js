@@ -1,9 +1,12 @@
 import React from 'react'
 import communicationService from '../service/communication'
 import { Input, TextArea, Button, Form } from 'semantic-ui-react'
-import { withRouter } from 'react-router-dom'
 
 const NewUser = (props) => {
+  const style = {
+    height: '20em'
+  }
+
   const create = async (event) => {
     event.preventDefault()
     const user = {
@@ -18,8 +21,8 @@ const NewUser = (props) => {
     props.history.push('/login')
   }
 
-  return ( <div>
-    <h1>Create new user</h1>
+  return ( <div style={style}>
+    <h2>Create new user</h2>
     <Form onSubmit={create}>
       <table>
         <tbody>
@@ -54,4 +57,4 @@ const NewUser = (props) => {
   </div> )
 }
 
-export default withRouter(NewUser)
+export default NewUser
