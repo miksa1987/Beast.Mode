@@ -3,10 +3,7 @@ const config = require('../util/config')
 const Post = require('../models/Post')
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
-const multer = require('multer')
-const { storage, cloudinary } = require('../util/imageupload')
-
-const imgparser = multer( {storage: storage })
+const { imgparser, cloudinary } = require('../util/imageupload')
 
 postRouter.get('/all', async (request, response) => {
   try {

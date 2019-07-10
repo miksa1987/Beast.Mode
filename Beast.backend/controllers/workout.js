@@ -3,10 +3,7 @@ const jwt = require('jsonwebtoken')
 const config = require('../util/config')
 const Workout = require('../models/Workout')
 const User = require('../models/User')
-const multer = require('multer')
-const { storage, cloudinary } = require('../util/imageupload')
-
-const imgparser = multer( {storage: storage })
+const { imgparser, cloudinary } = require('../util/imageupload')
 
 workoutRouter.get('/all', async (request, response) => {
   try {

@@ -5,6 +5,7 @@ const Post = require('../models/Post')
 const Workout = require('../models/Workout')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { cloudinary, imgparser } = require('../util/imageupload')
 
 userRouter.get('/all', async (request, response) => {
   const users = await User.find({}).populate('friends')
@@ -56,7 +57,7 @@ userRouter.post('/new', async (request, response) => {
 
 userRouter.post('/addfriend', async (request, response, next) => {
   try {
-    const decodedToken = jwt.verify(request.token, config.SECRET)
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
@@ -74,7 +75,44 @@ userRouter.post('/addfriend', async (request, response, next) => {
   } catch(e) {
     response.status(400).json({ error: e.message })
   }
+})
 
+userRouter.put('/me', imgparser.single('image'), async (request, response) => {
+  try {
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
+    if (!token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const user = User.findById(decodedToken.id)
+    request.file.path && await cloudinary.uploader.upload(request.file.path) // Have to change other uploads to this syntax too
+
+    const newPwHash = request.body.password ? 
+      await bcrypt.hash(request.body.password, 10) : null
+
+    const userToUpdate = {
+      username: user.username,
+      passwordHash: request.body.password ? newPwHash : user.passwordHash,
+      picture: request.file.secure_url ? request.file.secure_url : user.picture,
+      pictures: user.pictures,
+      info: request.body.info ? request.body.info : user.info,
+      age: request.body.age ? request.body.age : user.age,
+      activity: user.activity,
+      postCount: user.postCount,
+      workoutCount: user.workoutCount,
+      doneWorkoutCount: user.doneWorkoutCount,
+      friends: user.friends,
+      posts: user.posts,
+      workouts: user.workouts,
+      doneWorkouts: user.doneWorkouts
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(decodedToken.id, userToUpdate)
+
+    response.json(updatedUser)
+  } catch(error) {
+    response.status(400).json({ error: e.message })
+  }
 })
 
 module.exports = userRouter
