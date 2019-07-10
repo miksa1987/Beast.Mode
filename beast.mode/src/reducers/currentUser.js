@@ -39,4 +39,14 @@ export const logoutUser = () => {
   }
 }
 
+export const updateUser = (data) => {
+  return async dispatch => {
+    for (let pair of data.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
+  }
+    const updatedUser = communicationService.update('/users/me', data)
+    dispatch({ type: 'SET_USER', data: updatedUser})
+  }
+}
+
 export default currentUserReducer
