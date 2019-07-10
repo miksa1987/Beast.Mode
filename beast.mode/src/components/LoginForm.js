@@ -14,6 +14,7 @@ const LoginForm = (props) => {
   const login = (event) => {
     event.preventDefault()
     props.loginUser({ username: event.target.username.value, password: event.target.password.value })
+    window.history.pushState('', 'feed', '/')
   }
 
   return ( <div style={loginStyle}>

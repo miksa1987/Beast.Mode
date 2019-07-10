@@ -39,7 +39,7 @@ userRouter.post('/new', async (request, response) => {
     picture: '',
     pictures: [],
     info: request.body.info || '',
-    age: request.body.age || NaN,
+    age: request.body.age || 0,
     activity: [],
     postCount: 0,
     workoutCount: 0,

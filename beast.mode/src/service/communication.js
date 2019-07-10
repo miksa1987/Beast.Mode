@@ -12,7 +12,7 @@ const get = async (uri) => {
 }
 
 const post = async (uri, data, headers) => {
-  const config = { headers: { ...headers, Authorization: token }}
+  const config = headers ? { headers: { ...headers, Authorization: token }} : null
   const result = await axios.post(uri, data, config)
   return result.data
 }

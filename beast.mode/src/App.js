@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import './App.css'
 
 import { setUser } from './reducers/currentUser'
+import userHelper from './util/userHelper'
 
 import Menubar from './components/Menubar'
 import Feed from './components/Feed'
@@ -16,11 +17,7 @@ import DoWorkout from './components/DoWorkout'
 
 const App = (props) => {
   useEffect(() => {
-    const rawUser = window.localStorage.getItem('currentUser')
-    const savedUser = JSON.parse(rawUser)
-    if(savedUser) {
-      props.setUser(savedUser)
-    }
+    userHelper.checkAndSetUser(props.setUser)
   }, [])
 
   if(props.currentUser === null) {
