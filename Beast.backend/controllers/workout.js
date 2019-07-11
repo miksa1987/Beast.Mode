@@ -74,7 +74,6 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
       date: new Date()
     })
     await workout.save()
-    response.io.emit('newworkout', workout)
     response.status(201).end()
   } catch(e) {
     response.status(400).send({ error: e.message })

@@ -10,7 +10,7 @@ const tokenExtractor = (request, response, next) => {
 }
 
 const errorHandler = (request, response, next) => {
-  if (error.name === 'CastError' && error.kind === 'ObjectId') {
+  if (error.name === 'CastError') {
     return response.status(400).json({ error: 'Malformatted id' })
   }
   if (error.name === 'ValidationError') {

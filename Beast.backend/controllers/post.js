@@ -8,7 +8,7 @@ const { imgparser, cloudinary } = require('../util/imageupload')
 postRouter.get('/all', async (request, response) => {
   try {
     const posts = await Post.find({}).populate('user')
-    response.json(posts)
+    response.status(200).json(posts)
   } catch(error) {
     response.status(404).end()
   }
@@ -17,7 +17,7 @@ postRouter.get('/all', async (request, response) => {
 postRouter.get('/:id', async (request, response) => {
   try {
     const post = await Post.findById(request.params.id).populate('user')
-    response.json(post)
+    response.status(200).json(post)
   } catch(error) {
     response.status(404).send('Post not found')
   }
@@ -40,16 +40,20 @@ postRouter.put('/:id', async (request, response) => {
       response.status(400).end()
     }
 
+    console.log(post)
     const moddedPost = { ...post, content: request.body.content }
+    console.log(moddedPost)
     const result = await Post.findByIdAndUpdate(request.params.id, moddedPost, { new: true })
+    console.log('working!')
 
-    response.json(result)
+    response.status(200).json(result)
   } catch(e) {
-    response.status(400).send({ error: e.message })
+    console.log(e.message)
+    response.status(400).end()
   }
 })
 
-postRouter.post('/', imgparser.single('image'), async (request, response, next) => {
+postRouter.post('/new', imgparser.single('image'), async (request, response, next) => {
   if(!request.token) {
     response.status(401).end()
   }
@@ -59,7 +63,7 @@ postRouter.post('/', imgparser.single('image'), async (request, response, next) 
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     console.log(request.file)
-    request.file.path ? await cloudinary.uploader.upload(request.file.path) : ''
+    request.file ? await cloudinary.uploader.upload(request.file.path) : ''
 
     const post = new Post({
       content: request.body.content,
@@ -72,10 +76,10 @@ postRouter.post('/', imgparser.single('image'), async (request, response, next) 
       date: new Date()
     })
     await post.save()
-    response.io.emit('newpost', post)
 
-    response.json(post)
+    response.status(201).json(post)
   } catch(e) {
+    console.log(e.message)
     response.status(400).send({ error: e.message })
   }
   

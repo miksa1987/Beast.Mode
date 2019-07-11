@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const app = require('../app')
 const config = require('../util/config')
+const helper = require('../util/testhelper')
 const api = supertest(app)
 
 const User = require('../models/User')
@@ -12,27 +13,7 @@ let token = null
 
 describe('Initially there is one user in DB', () => {
   beforeAll(async () => {
-    await User.deleteMany({})
-    
-    const pwHash = await bcrypt.hash('secret', 10)
-    const user = new User({
-      username: 'Miksa',
-      passwordHash: pwHash,
-      picture: 'NOPICTURE',
-      pictures: [],
-      info: 'TERO TESTIKÄYTTÄJÄ',
-      age: 31,
-      activity: [],
-      postCount: 0,
-      workoutCount: 0,
-      doneWorkoutCount: 0,
-      friends: [],
-      posts: [],
-      workouts: [],
-      doneWorkouts: []
-    })
-
-    await user.save()
+    await helper.createOneUser()
   })
 
   test('One user will return', async () => {
