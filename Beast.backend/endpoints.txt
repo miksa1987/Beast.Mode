@@ -1,0 +1,28 @@
+GET  /users/all
+GET  /users/:id
+GET  /users/:id/posts
+GET  /users/:id/workouts
+GET  /users/:id/doneworkouts TBD
+POST /users/new
+POST /users/addfriend
+PUT  /users/me WIP
+
+POST /login
+
+GET  /workouts/all
+GET  /workouts/:id
+POST /workouts/new
+POST /workouts/:id/comments TBD
+PUT  /workouts/:id
+
+GET  /posts/all
+GET  /posts/:id
+POST /posts/new
+POST /posts/:id/comments TBD
+PUT  /posts/:id
+
+GET  /doneworkouts/all TBD
+GET  /doneworkouts/:id TBD
+POST /doneworkouts/new TBD
+POST /doneworkouts/:id/comments TBD
+PUT  /doneworkouts/:id TBD

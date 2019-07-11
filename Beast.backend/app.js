@@ -23,7 +23,6 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(middleware.tokenExtractor)
-//app.use(middleware.errorHandler) This might cause the whole shit to crash and burn....
 
 app.use('/users', userRouter)
 app.use('/posts', postRouter)
@@ -32,5 +31,6 @@ app.use('/doneworkouts', doneWorkoutRouter)
 app.use('/login', loginRouter)
 app.use('/resetonlyifyouarecompletelysureaboutthis', resetRouter) // This has to be changed to TEST env variable only and different collection
 
+//app.use(middleware.errorHandler) // This might cause the whole shit to crash and burn....
 
 module.exports = app

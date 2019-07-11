@@ -50,7 +50,7 @@ workoutRouter.put('/:id', async (request, response) => {
   }
 })
 
-workoutRouter.post('/', imgparser.single('image'), async (request, response, next) => {
+workoutRouter.post('/new', imgparser.single('image'), async (request, response, next) => {
   if(!request.token) {
     response.status(401).end()
   }

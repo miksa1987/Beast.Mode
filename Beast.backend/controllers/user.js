@@ -15,20 +15,28 @@ userRouter.get('/all', async (request, response) => {
 userRouter.get('/:id', async (request, response) => {
   try {
     const user = await User.findById(request.params.id)
-    response.json(user)
-  } catch(e) {
+    response.status(200).json(user)
+  } catch(error) {
     response.status(404).send('User not found!')
   }
 })
 
 userRouter.get('/:id/posts', async (request, response) => {
-  const posts = await Post.find({ user: request.params.id }).populate('user')
-  response.json(posts)
+  try {
+    const posts = await Post.find({ user: request.params.id }).populate('user')
+    response.status(200).json(posts)
+  } catch(error) {
+    response.status(404).end()
+  }
 })
 
 userRouter.get('/:id/workouts', async (request, response) => {
-  const workouts = await Workout.find({ user: request.params.id }).populate('user')
-  response.json(workouts)
+  try {
+    const workouts = await Workout.find({ user: request.params.id }).populate('user')
+    response.status(200).json(workouts)
+  } catch(error) {
+    response.status(404).end()
+  }
 })
 
 userRouter.post('/new', async (request, response) => {
@@ -58,7 +66,7 @@ userRouter.post('/new', async (request, response) => {
 userRouter.post('/addfriend', async (request, response, next) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-    if (!token || !decodedToken.id) {
+    if (!request.token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
 
@@ -81,12 +89,12 @@ userRouter.put('/me', imgparser.single('image'), async (request, response) => {
   try {
     console.log(request.body)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-    if (!token || !decodedToken.id) {
+    if (!request.token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
 
-    const user = User.findById(decodedToken.id)
-    request.file.path && await cloudinary.uploader.upload(request.file.path) // Have to change other uploads to this syntax too
+    const user = await User.findById(decodedToken.id)
+    request.file ? await cloudinary.uploader.upload(request.file.path) : null
 
     const newPwHash = request.body.password ? 
       await bcrypt.hash(request.body.password, 10) : null
@@ -94,7 +102,7 @@ userRouter.put('/me', imgparser.single('image'), async (request, response) => {
     const userToUpdate = {
       username: user.username,
       passwordHash: request.body.password ? newPwHash : user.passwordHash,
-      picture: request.file.secure_url ? request.file.secure_url : user.picture,
+      picture: request.file ? request.file.secure_url : user.picture,
       pictures: user.pictures,
       info: request.body.info ? request.body.info : user.info,
       age: request.body.age ? request.body.age : user.age,
@@ -108,11 +116,11 @@ userRouter.put('/me', imgparser.single('image'), async (request, response) => {
       doneWorkouts: user.doneWorkouts
     }
 
-    const updatedUser = await User.findByIdAndUpdate(decodedToken.id, userToUpdate)
-
-    response.json(updatedUser)
+    const updatedUser = await User.findByIdAndUpdate(decodedToken.id, userToUpdate, { new: true })
+    
+    response.status(200).json(updatedUser)
   } catch(error) {
-    response.status(400).json({ error: e.message })
+    response.status(400).json({ error: error.message })
   }
 })
 

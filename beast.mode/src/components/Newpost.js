@@ -62,7 +62,7 @@ const Newpost = (props) => {
     }
 
     post.type === 'workout' 
-    ? await communicationService.post('/workouts', data, header) : await communicationService.post('/posts', data, header)
+    ? await communicationService.post('/workouts/new', data, header) : await communicationService.post('/posts/new', data, header)
     
     props.addToFeed({ ...post, _id: Math.random()*10000, user: { username: props.currentUser.username } })
   }

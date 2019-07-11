@@ -1,7 +1,9 @@
 const supertest = require('supertest')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const app = require('../app')
+const config = require('../util/config')
 const api = supertest(app)
 
 const User = require('../models/User')
@@ -31,12 +33,6 @@ describe('Initially there is one user in DB', () => {
     })
 
     await user.save()
-
-    const response = await api
-      .post('/login')
-      .send({ username: 'Miksa', password: 'secret' })
-    
-    token = `Bearer ${response.body.token}` // We have to be logged in for some tests.
   })
 
   test('One user will return', async () => {
@@ -65,6 +61,19 @@ describe('Initially there is one user in DB', () => {
     expect(response.body[1].username).toEqual('Terppa')
   })
 
+  // This test also logs in the user at appropriate moment
+  test('User can log in and token is valid', async () => {
+    const users = await api.get('/users/all')
+    const response = await api
+      .post('/login')
+      .send({ username: 'Miksa', password: 'secret' })
+
+    token = `Bearer ${response.body.token}` // We have to be logged in for some tests.
+    const decodedToken = await jwt.verify(response.body.token, config.SECRET)
+
+    expect(decodedToken.id).toEqual(users.body[0].id)
+  })
+
   test('Single user can be returned', async () => {
     const allUsers = await api.get('/users/all')
 
@@ -81,6 +90,18 @@ describe('Initially there is one user in DB', () => {
       .expect(404)
   })
 
+  test('Request nonexisting users workouts fails', async () => {
+    await api
+      .get('/users/5d27680bt7f9f802870dbaf51/workouts')
+      .expect(404)
+  })
+
+  test('Request nonexisting users posts fails', async () => {
+    await api
+      .get('/users/5d27680b7f9f802870dbaf51t/posts')
+      .expect(404)
+  })
+
   test('User can add another user as friend', async () => {
     let users = await api.get('/users/all')
     const newFriendId = users.body[1].id
@@ -93,8 +114,20 @@ describe('Initially there is one user in DB', () => {
     
       users = await api.get('/users/all')
 
-      expect(users.body[0].friends[0]).toEqual(users.body[1].id)
-      expect(users.body[1].friends[0]).toEqual(users.body[0].id)
+      expect(users.body[0].friends[0].id).toEqual(users.body[1].id)
+      expect(users.body[1].friends[0].id).toEqual(users.body[0].id)
+  })
+
+  test('User can update his/her settings', async () => {
+    const newValues = { password: 'secccret', info: 'Pera Peruskäyttäjä' }
+
+    let response = await api
+      .put('/users/me')
+      .send(newValues)
+      .set({ Authorization: token })
+      .expect(200)
+    
+    expect(response.body.info).toEqual('Pera Peruskäyttäjä')
   })
 })
 
