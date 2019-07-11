@@ -9,7 +9,6 @@ const { cloudinary, imgparser } = require('../util/imageupload')
 
 userRouter.get('/all', async (request, response) => {
   const users = await User.find({}).populate('friends')
-  console.log(users)
   response.status(200).json(users)
 })
 
@@ -53,7 +52,7 @@ userRouter.post('/new', async (request, response) => {
   })
 
   const savedUser = await user.save()
-  response.json(savedUser)
+  response.status(201).json(savedUser)
 })
 
 userRouter.post('/addfriend', async (request, response, next) => {
@@ -80,6 +79,7 @@ userRouter.post('/addfriend', async (request, response, next) => {
 
 userRouter.put('/me', imgparser.single('image'), async (request, response) => {
   try {
+    console.log(request.body)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
