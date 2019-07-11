@@ -10,7 +10,7 @@ cloudinary.config({
 
 const storage = cloudinaryStorage({
   cloudinary: cloudinary,
-  folder: 'beastmode',
+  folder: process.env.BEASTMODE_ENV === 'test' ? 'beastmodetest' : 'beastmode',
   allowedFormats: [ 'png', 'jpg', 'gif' ]
 })
 

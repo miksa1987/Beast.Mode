@@ -9,7 +9,8 @@ const { cloudinary, imgparser } = require('../util/imageupload')
 
 userRouter.get('/all', async (request, response) => {
   const users = await User.find({}).populate('friends')
-  response.json(users)
+  console.log(users)
+  response.status(200).json(users)
 })
 
 userRouter.get('/:id', async (request, response) => {
