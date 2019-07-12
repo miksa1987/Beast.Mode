@@ -87,14 +87,15 @@ userRouter.post('/addfriend', async (request, response, next) => {
 
 userRouter.put('/me', imgparser.single('image'), async (request, response) => {
   try {
-    console.log(request.body)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!request.token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
 
     const user = await User.findById(decodedToken.id)
-    request.file ? await cloudinary.uploader.upload(request.file.path) : null
+    request.body.file ?
+      await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
+      : null
 
     const newPwHash = request.body.password ? 
       await bcrypt.hash(request.body.password, 10) : null
@@ -117,9 +118,9 @@ userRouter.put('/me', imgparser.single('image'), async (request, response) => {
     }
 
     const updatedUser = await User.findByIdAndUpdate(decodedToken.id, userToUpdate, { new: true })
-    
     response.status(200).json(updatedUser)
   } catch(error) {
+    console.log(error.message)
     response.status(400).json({ error: error.message })
   }
 })

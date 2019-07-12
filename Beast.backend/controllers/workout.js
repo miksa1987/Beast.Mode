@@ -70,7 +70,9 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
   try {
     const decodedToken = jwt.verify(request.token, config.SECRET)
     
-    request.file ? await cloudinary.uploader.upload(request.file.path) : ''
+    request.body.file ?
+      await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
+      : null
 
     const workout = new Workout({
       content: request.body.content,

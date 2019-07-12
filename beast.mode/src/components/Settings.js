@@ -36,13 +36,13 @@ const Settings = (props) => {
     info.value !== '' && newChanges.append('info', info.value)
     
     if (password.value !== '' && password.value === repeatedPassword.value) {
-      newChanges.append('password', event.target.password.value)
+      newChanges.append('password', password.value)
     } else {
       if (password.value !== repeatedPassword.value) {
         console.log('Not a match!')
       }
     }
-
+    
     props.updateUser(newChanges)
   }
 

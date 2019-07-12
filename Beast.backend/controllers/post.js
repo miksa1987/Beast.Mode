@@ -68,8 +68,10 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
   }
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-    request.file ? await cloudinary.uploader.upload(request.file.path) : ''
-
+    
+    request.body.file ?
+      await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
+      : null
     const post = new Post({
       content: request.body.content,
       picture: request.file ? request.file.secure_url : '',

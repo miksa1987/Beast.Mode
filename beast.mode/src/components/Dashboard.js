@@ -10,7 +10,7 @@ const Dashboard  = (props) => {
   }
 
   useEffect(() => {
-    console.log('Init user posts')
+    console.log(props.user)
     props.initUserPosts(props.currentUser.id)
   }, [])
 
@@ -45,7 +45,8 @@ const Dashboard  = (props) => {
           <tbody>
             <tr>
               <td style={picStyle}>
-                <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                <Image size='small' src={props.user.picture && props.user.picture !== '' ? 
+                props.user.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
               </td>
               <td style={infoStyle}>
                 HERE COMES INFO ABOUT THIS USER

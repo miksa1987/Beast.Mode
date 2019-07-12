@@ -22,6 +22,7 @@ loginRouter.post('/', async (request, response) => {
   const data = { 
     token: token, 
     username: user.username, 
+    picture: user.picture,
     id: user.id,
     friends: user.friends,
     posts: user.posts,

@@ -46,7 +46,7 @@ const Post = (props) => {
   return ( <div style={elementStyle}>
     <Card fluid>
       <Card.Content>
-        <Image floated='right' 
+        <Image floated='right' width='32px' height='32px'
           src={props.post.user.picture && props.post.user.picture !== '' 
           ? props.post.user.picture : '/img/ui/dashboard.png'} />
         <Card.Header>{props.post.user.username}</Card.Header>
