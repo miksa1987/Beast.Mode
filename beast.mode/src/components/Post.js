@@ -1,10 +1,18 @@
 import React from 'react'
 import { Button, Card, Image } from 'semantic-ui-react'
 import { withRouter, Link } from 'react-router-dom'
+import Comment from './Comment'
 
+const test = [
+  'COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT',
+  'COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT',
+  'COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT',
+  'COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT',
+]
 
 const elementStyle = {
   minWidth: '95%',
+  maxHeight: '30%',
   align: 'top',
   maxWidth: '95%',
   paddingTop: '15px',
@@ -22,21 +30,30 @@ const tableStyle = {
 }
 
 const picStyle = {
+  verticalAlign: 'top',
   margin: '8px',
-  width: '20%'
+  width: '30%'
 }
 
 const contentStyle = {
   verticalAlign: 'text-top',
   margin: '8px',
-  width: '50%'
+  width: '40%'
 }
 
 
 const commentStyle = {
-  verticalAlign: 'text-top',
+  display: 'flex',
   margin: '8px',
-  width: '30%'
+  width: '100%',
+  maxHeight: '150px',
+  overflowY: 'auto'
+}
+
+const comment = {
+  verticalAlign: 'top',
+  overflowY: 'auto',
+  width: '100%'
 }
 
 const Post = (props) => {
@@ -53,12 +70,14 @@ const Post = (props) => {
         <Card.Description>
           <table style={tableStyle}><tbody><tr>
           <td style={picStyle}> 
-            <Image size='small' src={props.post.picture && props.post.picture !== '' 
+            <Image size='medium' src={props.post.picture && props.post.picture !== '' 
               ? props.post.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
           </td> 
           <td style={contentStyle}><p>{props.post.content}</p></td>
           <td style={commentStyle}>
-            COMMENTS HERE HOHOHOH  
+            <div style={comment}>
+              {test.map((t, i) => <Comment key={i} comment={t} user='USER' />)} 
+            </div>
           </td></tr></tbody></table>
         </Card.Description>
       </Card.Content>

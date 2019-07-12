@@ -26,6 +26,10 @@ const Newpost = (props) => {
   const [textContent, setTextContent] = useState('')
   const [file, setFile] = useState('')
 
+  const style = {
+    resize: 'none'
+  }
+
   const changeText = (event) => {
     setTextContent(event.target.value)
     console.log(textContent)
@@ -70,7 +74,7 @@ const Newpost = (props) => {
   return ( <div style={elementStyle}>
       <Form onSubmit={post}>
         <input type='file' onChange={({ target }) => setFile(target.files[0])} />
-        <TextArea name='post' onChange={changeText} rows={8} placeholder='What have you done?! (tip: you can use hashtags!)' />
+        <TextArea style={style} name='post' onChange={changeText} rows={8} placeholder='What have you done?! (tip: you can use hashtags!)' />
         { isWorkout ? <><Checkbox toggle name='workoutToggle' onChange={workoutToggleChange} /><strong>Did it!</strong></> : null }
         <Button style={buttonStyle}>Got picture?</Button>
         <Button type='submit' style={buttonStyle}>Post!</Button>
