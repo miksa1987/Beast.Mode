@@ -27,26 +27,35 @@ workoutRouter.put('/:id', async (request, response) => {
   if(!request.token) {
     response.status(401).end()
   }
-  if(!(request.body.description || request.body.exercises)) {
-    response.status(400).send('Modified description or exercises missing')
+  if(!request.body.content) {
+    response.status(400).send('New content missing')
   }
 
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-    const workout = Workout.findById(request.params.id)
-    const user = User.findById(decodedToken.id)
-
-    // Not populated now!
-    if(user.id !== workout.user) {
-      response.status(400).end()
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+    const workout = await Workout.findById(request.params.id)
+    
+    const moddedWorkout = { 
+      __v: workout.__v,
+      _id: workout._id,
+      type: workout.type,
+      picture: workout.picture,
+      pictureThumb: workout.pictureThumb, 
+      user: workout.user, 
+      likes: workout.likes, 
+      comments: workout.comments, 
+      date: workout.date, 
+      content: request.body.content 
     }
 
-    const moddedWorkout = { ...workout, description: request.body.description, exercises: request.body.exercises }
-    const result = await Workout.findByIdAndUpdate(workout.id, moddedWorkout, { new: true })
-
-    response.json(result)
-  } catch(e) {
-    response.status(400).send({ error: e.message })
+    const result = await Workout.findByIdAndUpdate(request.params.id, moddedWorkout, { new: true })
+    
+    response.status(200).json(result)
+  } catch(error) {
+    response.status(400).json({ error: error.message })
   }
 })
 
@@ -61,7 +70,7 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
   try {
     const decodedToken = jwt.verify(request.token, config.SECRET)
     
-    request.file.path ? await cloudinary.uploader.upload(request.file.path) : ''
+    request.file ? await cloudinary.uploader.upload(request.file.path) : ''
 
     const workout = new Workout({
       content: request.body.content,
@@ -76,6 +85,7 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
     await workout.save()
     response.status(201).end()
   } catch(e) {
+    console.log(e.message)
     response.status(400).send({ error: e.message })
   }
 })

@@ -33,23 +33,29 @@ postRouter.put('/:id', async (request, response) => {
 
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
     const post = await Post.findById(request.params.id)
-    const user = await User.findById(decodedToken.id)
-
-    if(!user || post.user !== user.id) {
-      response.status(400).end()
+    
+    const moddedPost = { 
+      __v: post.__v,
+      _id: post._id,
+      type: post.type,
+      picture: post.picture,
+      pictureThumb: post.pictureThumb, 
+      user: post.user, 
+      likes: post.likes, 
+      comments: post.comments, 
+      date: post.date, 
+      content: request.body.content 
     }
 
-    console.log(post)
-    const moddedPost = { ...post, content: request.body.content }
-    console.log(moddedPost)
     const result = await Post.findByIdAndUpdate(request.params.id, moddedPost, { new: true })
-    console.log('working!')
-
+    
     response.status(200).json(result)
-  } catch(e) {
-    console.log(e.message)
-    response.status(400).end()
+  } catch(error) {
+    response.status(400).json({ error: error.message })
   }
 })
 
@@ -62,7 +68,6 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
   }
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-    console.log(request.file)
     request.file ? await cloudinary.uploader.upload(request.file.path) : ''
 
     const post = new Post({
