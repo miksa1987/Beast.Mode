@@ -80,7 +80,7 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
       pictureThumb: request.file ? request.file.secure_url : '', // TBD change this to real thumbnail
       type: request.body.type,
       user: decodedToken.id,
-      likes: 0,
+      likes: [],
       comments: [],
       date: new Date()
     })
@@ -128,4 +128,41 @@ workoutRouter.post('/:id/comment', async (request, response) => {
   }
 })
 
+workoutRouter.post('/:id/like', async (request, response) => {
+  console.log(request.params.id)
+  console.log(request.token)
+  try {
+    const workout = await Workout.findById(request.params.id)
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
+    
+    if(!decodedToken) {
+      response.status(401).end()
+    }
+    if(!workout) {
+      response.status(400).end()
+    }
+    let newLikes = workout.likes.filter(like => like !== decodedToken.id)
+    if (newLikes.length === 0) {
+      newLikes = workout.likes.concat(decodedToken.id)
+    }
+    
+    const workoutToUpdate = {
+      content: workout.content,
+      picture: workout.picture,
+      pictureThumb: workout.pictureThumb,
+      type: workout.type,
+      user: workout.user,
+      likes: newLikes,
+      date: workout.date, 
+      comments: workout.comments
+    }
+    console.log(workoutToUpdate)
+    const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true }).populate('user')
+    console.log(updatedWorkout)
+    response.json(updatedWorkout)
+  } catch(e) {
+    console.log(e.message)
+    response.status(400).send({ error: e.message })
+  }
+})
 module.exports = workoutRouter

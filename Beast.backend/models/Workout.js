@@ -4,7 +4,7 @@ const workoutSchema = mongoose.Schema({
   content: String,
   picture: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  likes: Number,
+  likes: [ { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ],
   type: String,
   comments: [ { 
     user: String,

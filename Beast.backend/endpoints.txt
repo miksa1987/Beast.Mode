@@ -13,13 +13,15 @@ POST /login
 GET  /workouts/all
 GET  /workouts/:id
 POST /workouts/new
-POST /workouts/:id/comments TBD
+POST /workouts/:id/comments 
+POST /workouts/:id/like 
 PUT  /workouts/:id
 
 GET  /posts/all
 GET  /posts/:id
 POST /posts/new
-POST /posts/:id/comments TBD
+POST /posts/:id/comments 
+POST /posts/:id/like 
 PUT  /posts/:id
 
 GET  /doneworkouts/all TBD

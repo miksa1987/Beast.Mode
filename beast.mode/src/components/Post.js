@@ -1,7 +1,8 @@
 import React from 'react'
 import { Button, Input, Card, Image, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { addComment } from '../reducers/feedReducer'
+import { withRouter } from 'react-router-dom'
+import { addComment, like } from '../reducers/feedReducer'
 import useField from '../hooks/useField'
 
 import Comment from './Comment'
@@ -85,6 +86,7 @@ const Post = (props) => {
           <td style={picStyle}> 
             <Image size='medium' src={props.post.picture && props.post.picture !== '' 
               ? props.post.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
+            <p>{props.post.likes.length} likes</p>
           </td> 
           <td style={contentStyle}><p>{props.post.content}</p></td>
           <td style={commentsStyle}>
@@ -98,11 +100,11 @@ const Post = (props) => {
         <table><tbody>
           <tr>
             {props.post.type === 'workout' ? 
-              <td width='23%'><Button color='red' onClick={() => window.history.pushState('Doworkout', 'doworkout', `/doworkout/${props.post._id}`)}>
+              <td width='23%'><Button color='red' onClick={() => props.history.push(`/doworkout/${props.post._id}`)}>
                 Do this workout</Button></td>
               : null}
             <td>        
-              <Button>Like</Button>
+              <Button onClick={() => props.like(props.post.type, props.post._id)}>Like</Button>
             </td>
             <td width='100%'>
               <form onSubmit={sendComment}><Input fluid size='small' action='Comment' {...comment} /></form>
@@ -114,4 +116,4 @@ const Post = (props) => {
   </div> )
 }
 
-export default connect(null, { addComment })(Post)
+export default connect(null, { addComment, like })(withRouter(Post))

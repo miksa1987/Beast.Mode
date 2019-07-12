@@ -78,7 +78,7 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
       pictureThumb: request.file ? request.file.secure_url : '', // TBD change this to real thumbnail
       type: request.body.type,
       user: decodedToken.id,
-      likes: 0,
+      likes: [],
       comments: [],
       date: new Date()
     })
@@ -118,6 +118,43 @@ postRouter.post('/:id/comment', async (request, response) => {
     }
     console.log(postToUpdate)
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true })
+    console.log(updatedPost)
+    response.json(updatedPost)
+  } catch(e) {
+    console.log(e.message)
+    response.status(400).send({ error: e.message })
+  }
+})
+
+postRouter.post('/:id/like', async (request, response) => {
+  try {
+    const post = await Post.findById(request.params.id)
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
+
+    if(!decodedToken) {
+      response.status(401).end()
+    }
+    if(!post) {
+      response.status(400).end()
+    }
+
+    let newLikes = post.likes.filter(like => like !== decodedToken.id)
+    if (newLikes.length === 0) {
+      newLikes = post.likes.concat(decodedToken.id)
+    }
+
+    const postToUpdate = {
+      content: post.content,
+      picture: post.picture,
+      pictureThumb: post.pictureThumb,
+      type: post.type,
+      user: post.user,
+      likes: newLikes,
+      date: post.date, 
+      comments: post.comments
+    }
+    console.log(postToUpdate)
+    const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true }).populate('user')
     console.log(updatedPost)
     response.json(updatedPost)
   } catch(e) {

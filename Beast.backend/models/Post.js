@@ -5,7 +5,7 @@ const postSchema = mongoose.Schema({
   picture: String,
   pictureThumb: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  likes: Number,
+  likes: [ { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ],
   type: String,
   comments: [ {
     user: String, 
