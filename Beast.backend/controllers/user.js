@@ -21,6 +21,16 @@ userRouter.get('/:id', async (request, response) => {
   }
 })
 
+userRouter.get('/:id/name', async (request, response) => {
+  try {
+    const user = await User.findById(request.params.id)
+    const username = user.username
+    response.status(200).json(username)
+  } catch(error) {
+    response.status(404).send('User not found!')
+  }
+})
+
 userRouter.get('/:id/posts', async (request, response) => {
   try {
     const posts = await Post.find({ user: request.params.id }).populate('user')

@@ -92,23 +92,38 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
   }
 })
 
+
 workoutRouter.post('/:id/comment', async (request, response) => {
+  console.log(request.params.id)
   try {
     const workout = await Workout.findById(request.params.id)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-
+    
     if(!decodedToken) {
       response.status(401).end()
     }
     if(!workout) {
       response.status(400).end()
     }
-
-    workout.comments = workout.comments.concat({ content: request.body.comment, user: decodedToken.id })
-    await workout.save()
-
-    response.json(workout)
+    await console.log(workout)
+    const newComments = workout.comments.concat({ content: request.body.comment, user: decodedToken.username })
+    console.log(newComments)
+    const workoutToUpdate = {
+      content: post.content,
+      picture: post.picture,
+      pictureThumb: post.pictureThumb,
+      type: post.type,
+      user: post.user,
+      likes: post.likes,
+      date: post.date, 
+      comments: newComments
+    }
+    console.log(workoutToUpdate)
+    const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, postToUpdate, { new: true })
+    console.log(updatedWorkout)
+    response.json(updatedWorkout)
   } catch(e) {
+    console.log(e.message)
     response.status(400).send({ error: e.message })
   }
 })

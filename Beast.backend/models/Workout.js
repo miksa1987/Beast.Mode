@@ -7,7 +7,7 @@ const workoutSchema = mongoose.Schema({
   likes: Number,
   type: String,
   comments: [ { 
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    user: String,
     content: String,
     date: Date
   } ],

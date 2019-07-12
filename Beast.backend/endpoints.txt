@@ -3,6 +3,7 @@ GET  /users/:id
 GET  /users/:id/posts
 GET  /users/:id/workouts
 GET  /users/:id/doneworkouts TBD
+GET  /users/:id/name
 POST /users/new
 POST /users/addfriend
 PUT  /users/me WIP

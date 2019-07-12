@@ -32,6 +32,8 @@ export const initFeed = (friends, myID, feedLength) => {
       feedPosts = feedPosts.concat(friendsWorkouts)
     }
     feedPosts.sort(sorterService.comparePostDates)
+
+    console.log(feedPosts)
     dispatch({ type: 'INIT_FEED', data: feedPosts })
   }
 }
@@ -50,6 +52,12 @@ export const removeFromFeed = (post) => {
     }
 
     dispatch({ type: 'REMOVE_FROMFEED', data: { id: post._id } })
+  }
+}
+
+export const addComment = (id, comment) => {
+  return async (dispatch, getState) => {
+    await communicationService.post(`/posts/${id}/comment`, { comment })
   }
 }
 

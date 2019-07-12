@@ -1,6 +1,9 @@
 import React from 'react'
-import { Button, Card, Image } from 'semantic-ui-react'
-import { withRouter, Link } from 'react-router-dom'
+import { Button, Input, Card, Image, Form } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { addComment } from '../reducers/feedReducer'
+import useField from '../hooks/useField'
+
 import Comment from './Comment'
 
 const test = [
@@ -42,24 +45,34 @@ const contentStyle = {
 }
 
 
-const commentStyle = {
+const commentsStyle = {
   display: 'flex',
+  align: 'right',
   margin: '8px',
   width: '100%',
   maxHeight: '150px',
   overflowY: 'auto'
 }
 
-const comment = {
+const commentStyle = {
   verticalAlign: 'top',
   overflowY: 'auto',
   width: '100%'
 }
+// NOTE TO SELF: Think better style names.
 
 const Post = (props) => {
+  const [comment, resetComment] = useField('text')
   if(props.post === undefined) {
     return null
   }
+  
+  const sendComment = (event) => {
+    event.preventDefault()
+    props.addComment(props.post._id, comment.value)
+    resetComment()
+  }
+
   return ( <div style={elementStyle}>
     <Card fluid>
       <Card.Content>
@@ -74,22 +87,31 @@ const Post = (props) => {
               ? props.post.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
           </td> 
           <td style={contentStyle}><p>{props.post.content}</p></td>
-          <td style={commentStyle}>
-            <div style={comment}>
-              {test.map((t, i) => <Comment key={i} comment={t} user='USER' />)} 
+          <td style={commentsStyle}>
+            <div style={commentStyle}>
+              {props.post.comments.map((c, i) => <Comment key={c._id} comment={c.content} user={c.user} />)} 
             </div>
           </td></tr></tbody></table>
         </Card.Description>
       </Card.Content>
       <Card.Content extra>
-        <Button>Like</Button>
-        <Button>Comment</Button>
-        {props.post.type === 'workout' ? 
-          <Button color='red' onClick={() => props.history.push(`/doworkout/${props.post._id}`)}>Do this workout</Button>
-          : null}
+        <table><tbody>
+          <tr>
+            {props.post.type === 'workout' ? 
+              <td width='23%'><Button color='red' onClick={() => window.history.pushState('Doworkout', 'doworkout', `/doworkout/${props.post._id}`)}>
+                Do this workout</Button></td>
+              : null}
+            <td>        
+              <Button>Like</Button>
+            </td>
+            <td width='100%'>
+              <form onSubmit={sendComment}><Input fluid size='small' action='Comment' {...comment} /></form>
+            </td>
+          </tr>
+          </tbody></table>          
       </Card.Content>
     </Card>
   </div> )
 }
 
-export default withRouter(Post)
+export default connect(null, { addComment })(Post)

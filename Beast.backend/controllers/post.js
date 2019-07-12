@@ -100,15 +100,28 @@ postRouter.post('/:id/comment', async (request, response) => {
     if(!decodedToken) {
       response.status(401).end()
     }
-    if(!workout) {
+    if(!post) {
       response.status(400).end()
     }
 
-    post.comments = post.comments.concat({ content: request.body.comment, user: decodedToken.id })
-    await post.save()
-
+    const newComments = post.comments.concat({ content: request.body.comment, user: decodedToken.username })
+    console.log(newComments)
+    const postToUpdate = {
+      content: post.content,
+      picture: post.picture,
+      pictureThumb: post.pictureThumb,
+      type: post.type,
+      user: post.user,
+      likes: post.likes,
+      date: post.date, 
+      comments: newComments
+    }
+    console.log(postToUpdate)
+    const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true })
+    console.log(updatedPost)
     response.json(post)
   } catch(e) {
+    console.log(e.message)
     response.status(400).send({ error: e.message })
   }
 })
