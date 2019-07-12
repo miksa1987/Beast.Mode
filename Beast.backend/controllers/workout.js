@@ -109,17 +109,17 @@ workoutRouter.post('/:id/comment', async (request, response) => {
     const newComments = workout.comments.concat({ content: request.body.comment, user: decodedToken.username })
     console.log(newComments)
     const workoutToUpdate = {
-      content: post.content,
-      picture: post.picture,
-      pictureThumb: post.pictureThumb,
-      type: post.type,
-      user: post.user,
-      likes: post.likes,
-      date: post.date, 
+      content: workout.content,
+      picture: workout.picture,
+      pictureThumb: workout.pictureThumb,
+      type: workout.type,
+      user: workout.user,
+      likes: workout.likes,
+      date: workout.date, 
       comments: newComments
     }
     console.log(workoutToUpdate)
-    const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, postToUpdate, { new: true })
+    const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true })
     console.log(updatedWorkout)
     response.json(updatedWorkout)
   } catch(e) {

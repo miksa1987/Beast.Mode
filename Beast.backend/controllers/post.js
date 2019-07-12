@@ -119,7 +119,7 @@ postRouter.post('/:id/comment', async (request, response) => {
     console.log(postToUpdate)
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true })
     console.log(updatedPost)
-    response.json(post)
+    response.json(updatedPost)
   } catch(e) {
     console.log(e.message)
     response.status(400).send({ error: e.message })

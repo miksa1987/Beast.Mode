@@ -69,7 +69,7 @@ const Post = (props) => {
   
   const sendComment = (event) => {
     event.preventDefault()
-    props.addComment(props.post._id, comment.value)
+    props.addComment(props.post.type, props.post._id, comment.value)
     resetComment()
   }
 

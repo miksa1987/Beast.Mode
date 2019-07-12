@@ -8,10 +8,9 @@ const feedReducer = (state = [], action) => {
     case 'ADD_TOFEED':
       return [ ...state, action.data ]
     case 'REMOVE_FROMFEED':
-      return state.filter(p => p.id !== action.data.id)
-    case 'EDIT_POST_ONFEED':
-      // TBD
-      return state
+      return state.filter(p => p._id !== action.data._id)
+    case 'EDIT_POST_ON_FEED':
+      return state.map(post => post._id === action.data._id ? action.data : post)
     default:
       return state
   }
@@ -55,9 +54,12 @@ export const removeFromFeed = (post) => {
   }
 }
 
-export const addComment = (id, comment) => {
+export const addComment = (type, id, comment) => {
   return async (dispatch, getState) => {
-    await communicationService.post(`/posts/${id}/comment`, { comment })
+    const updatedPost = type === 'post' ? await communicationService.post(`/posts/${id}/comment`, { comment })
+      : type === 'workout' && await communicationService.post(`/workouts/${id}/comment`, { comment })
+    console.log(updatedPost)
+    dispatch({ type: 'EDIT_POST_ON_FEED', data: updatedPost })
   }
 }
 
