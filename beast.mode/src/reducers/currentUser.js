@@ -44,7 +44,9 @@ export const updateUser = (data) => {
     for (let pair of data.entries()) {
       console.log(pair[0]+ ', ' + pair[1]); 
   }
-    const updatedUser = communicationService.update('/users/me', data)
+    const updatedUser = await communicationService.update('/users/me', data)
+    console.log(updatedUser)
+    window.localStorage.setItem('currentUser', JSON.stringify(updatedUser))
     dispatch({ type: 'SET_USER', data: updatedUser})
   }
 }

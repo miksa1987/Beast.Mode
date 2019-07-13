@@ -1,18 +1,11 @@
 import React from 'react'
 import { Button, Input, Card, Image, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { addComment, like } from '../reducers/feedReducer'
 import useField from '../hooks/useField'
 
 import Comment from './Comment'
-
-const test = [
-  'COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT',
-  'COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT',
-  'COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT',
-  'COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT','COMMENT',
-]
 
 const elementStyle = {
   minWidth: '95%',
@@ -80,7 +73,9 @@ const Post = (props) => {
         <Image floated='right' width='32px' height='32px'
           src={props.post.user.picture && props.post.user.picture !== '' 
           ? props.post.user.picture : '/img/ui/dashboard.png'} />
-        <Card.Header>{props.post.user.username}</Card.Header>
+        <Card.Header>
+          <Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link>
+        </Card.Header>
         <Card.Description>
           <table style={tableStyle}><tbody><tr>
           <td style={picStyle}> 

@@ -57,7 +57,8 @@ const Settings = (props) => {
       <tbody>
         <tr>
           <td>
-            <Image floated='right' size='medium' src={'https://react.semantic-ui.com/images/wireframe/image.png'} />
+            <Image floated='right' size='medium' src={props.currentUser.picture !== '' ?
+              props.currentUser.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
           </td>
         </tr>
         <tr>

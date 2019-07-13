@@ -5,6 +5,7 @@ import './App.css'
 
 import { setUser } from './reducers/currentUser'
 import userHelper from './util/userHelper'
+import communicationService from './service/communication'
 
 import Menubar from './components/Menubar'
 import Feed from './components/Feed'
@@ -33,7 +34,7 @@ const App = (props) => {
     <Route exact path='/workouts' render={() => <Workouts />} />
     <Route exact path='/dash' render={() => <Dashboard user={props.currentUser}/>} />
     <Route exact path='/settings' render={() => <Settings />} />
-    <Route exact path='/profile/:id' render={() => <Dashboard user={props.currentUser} />} />
+    <Route exact path='/profile/:id' render={({ match }) => <Dashboard user={match.params.id} />} />
     <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />
     {props.currentUser ? <Menubar /> : null }
     </Router> 

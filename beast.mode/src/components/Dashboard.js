@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Card, Image, Button } from 'semantic-ui-react'
 import { initUserPosts } from '../reducers/currentUserPosts'
+import { initCurrentProfile } from '../reducers/currentProfile'
+
 import Post from './Post'
 
 const Dashboard  = (props) => {
@@ -10,15 +12,11 @@ const Dashboard  = (props) => {
   }
 
   useEffect(() => {
-    console.log(props.user)
-    props.initUserPosts(props.currentUser.id)
+    if (props.user.id && props.user.id !== props.currentUser.id) {
+      props.initCurrentProfile(props.user)
+    }
+    props.initUserPosts(props.user.id)
   }, [])
-
-  const divStyle = {
-    display: 'flex',
-    flexWrap: 'wrap',
-    alignItems: 'flex-start'
-  }
 
   const tableStyle = {
     tableLayout: 'fixed',
@@ -32,6 +30,7 @@ const Dashboard  = (props) => {
     width: '30%'
   }
   const infoStyle = {
+    verticalAlign: 'top',
     width: '50%'
   }
 
@@ -49,7 +48,7 @@ const Dashboard  = (props) => {
                 props.user.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
               </td>
               <td style={infoStyle}>
-                HERE COMES INFO ABOUT THIS USER
+                <p>{props.user.info}</p>
               </td>
               <td style={picsStyle}>
                 <table>
@@ -106,4 +105,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { initUserPosts })(Dashboard)
+export default connect(mapStateToProps, { initUserPosts, initCurrentProfile })(Dashboard)
