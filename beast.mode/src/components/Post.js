@@ -102,7 +102,7 @@ const Post = (props) => {
               <Button onClick={() => props.like(props.post.type, props.post._id)}>Like</Button>
             </td>
             <td width='100%'>
-              <form onSubmit={sendComment}><Input fluid size='small' action='Comment' {...comment} /></form>
+              <form onSubmit={sendComment}><Input fluid size='mini' action='Comment' {...comment} /></form>
             </td>
           </tr>
           </tbody></table>          

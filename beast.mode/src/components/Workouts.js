@@ -14,7 +14,7 @@ const Workouts = (props) => {
   const [searchterm, setSearchterm] = useState('')
 
   useEffect(() => {
-    props.initWorkouts(props.workouts.length)
+    if (props.workouts.length === 0) props.initWorkouts()
   }, [])
 
   const search = (event) => {

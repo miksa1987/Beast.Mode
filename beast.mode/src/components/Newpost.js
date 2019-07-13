@@ -38,6 +38,7 @@ const Newpost = (props) => {
     } else {
       setIsWorkout(false)
     }
+    console.log(isWorkout)
   }
 
   const workoutToggleChange = (event, data) => setIsWorkout(data.checked)

@@ -10,11 +10,15 @@ const currentProfileReducer = (state = {}, action) => {
 }
 
 export const initCurrentProfile = (id) => {
-  return async dispatch => {
-    const profile = await communicationService.get(`/users/${id}`)
-    console.log(profile)
+  return async (dispatch, getState) => {
+    if (getState().currentProfile !== {} && id !== getState().currentProfile.id) {
+      const profile = await communicationService.get(`/users/${id}`)
+      console.log(profile)
 
-    return dispatch({ type: 'INIT_CURRENT_PROFILE', data: profile })
+      return dispatch({ type: 'INIT_CURRENT_PROFILE', data: profile })
+    }
+
+    return
   }
 }
 

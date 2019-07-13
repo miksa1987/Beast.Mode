@@ -13,10 +13,8 @@ const workoutsReducer = (state = [], action) => {
   }
 }
 
-export const initWorkouts = (workoutsLength) => {
+export const initWorkouts = () => {
   return async dispatch => {
-    if(workoutsLength > 0) return
-    
     const workouts = await communicationService.get('/workouts/all')
     return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
   }

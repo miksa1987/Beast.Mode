@@ -12,7 +12,9 @@ const feedStyle = {
 
 const Feed = (props) => {
   useEffect(() => {
-    props.initFeed(props.currentUser.friends, props.currentUser.id, props.feed.length)
+    if(props.feed.length === 0) {
+      props.initFeed(props.currentUser.friends, props.currentUser.id)
+    }
   }, [])
 
   if(props.feed === undefined) {

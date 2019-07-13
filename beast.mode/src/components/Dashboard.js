@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { Card, Image, Button } from 'semantic-ui-react'
 import { initUserPosts } from '../reducers/currentUserPosts'
 import { initCurrentProfile } from '../reducers/currentProfile'
@@ -7,15 +8,12 @@ import { initCurrentProfile } from '../reducers/currentProfile'
 import Post from './Post'
 
 const Dashboard  = (props) => {
-  const userTitleStyle = {
-    verticalAlign: 'top'
-  }
-
   useEffect(() => {
-    if (props.user.id && props.user.id !== props.currentUser.id) {
       props.initCurrentProfile(props.user)
-    }
-    props.initUserPosts(props.user.id)
+      
+      if (props.currentProfile.id && props.currentProfile.id !== props.user || props.currentUserPosts.length === 0) {
+        props.initUserPosts(props.user)
+      }
   }, [])
 
   const tableStyle = {
@@ -34,56 +32,36 @@ const Dashboard  = (props) => {
     width: '50%'
   }
 
+  if (!props.currentProfile.id && !props.currentUserPosts.length === 0) {
+    return ( <div>Loading...</div> )
+  }
+
   return ( <div>
     <Card fluid>
       <Card.Header>
-        {props.user.username}
+        {props.currentProfile.username}
       </Card.Header>
       <Card.Description>
         <table style={tableStyle}>
           <tbody>
             <tr>
               <td style={picStyle}>
-                <Image size='small' src={props.user.picture && props.user.picture !== '' ? 
-                props.user.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
+                <Image size='small' src={props.currentProfile.picture && props.currentProfile.picture !== '' ? 
+                props.currentProfile.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
               </td>
               <td style={infoStyle}>
-                <p>{props.user.info}</p>
+                <p>{props.currentProfile.info}</p>
               </td>
               <td style={picsStyle}>
                 <table>
                   <tbody>
-                  <tr>
-                      <td>                
-                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />  
-                      </td>
-                      <td>
-                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
-                      </td>
-                      <td>
-                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
-                      </td>
-                    </tr>
                     <tr>
                       <td>                
-                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />  
-                      </td>
-                      <td>
-                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
-                      </td>
-                      <td>
-                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>                
-                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />  
-                      </td>
-                      <td>
-                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
-                      </td>
-                      <td>
-                        <Image size='small' src='https://react.semantic-ui.com/images/wireframe/image.png' />
+                        <Button>{props.currentProfile.username}'s activity</Button>
+                        <Button onClick={() => props.history.push(`/profile/${props.currentProfile.id}/friends`)}>
+                          {props.currentProfile.username}'s friends</Button>
+                        <Button>{props.currentProfile.username}'s photos</Button>
+                        <Button>{props.currentProfile.username}'s workouts</Button>  
                       </td>
                     </tr>
                   </tbody>
@@ -101,8 +79,8 @@ const Dashboard  = (props) => {
 const mapStateToProps = (state) => {
   return { 
     currentUserPosts: state.currentUserPosts,
-    currentUser: state.currentUser
+    currentProfile: state.currentProfile
   }
 }
 
-export default connect(mapStateToProps, { initUserPosts, initCurrentProfile })(Dashboard)
+export default connect(mapStateToProps, { initUserPosts, initCurrentProfile })(withRouter(Dashboard))

@@ -5,7 +5,6 @@ import './App.css'
 
 import { setUser } from './reducers/currentUser'
 import userHelper from './util/userHelper'
-import communicationService from './service/communication'
 
 import Menubar from './components/Menubar'
 import Feed from './components/Feed'
@@ -15,6 +14,7 @@ import Settings from './components/Settings'
 import LoginForm from './components/LoginForm'
 import NewUser from './components/NewUser'
 import DoWorkout from './components/DoWorkout'
+import Friends from './components/Friends'
 
 const App = (props) => {
   useEffect(() => {
@@ -32,9 +32,10 @@ const App = (props) => {
     <Route exact path='/newuser' render={() => <NewUser />} />
     <Route exact path='/' render={() => <Feed />} />
     <Route exact path='/workouts' render={() => <Workouts />} />
-    <Route exact path='/dash' render={() => <Dashboard user={props.currentUser}/>} />
+    <Route exact path='/dash' render={() => <Dashboard user={props.currentUser.id}/>} />
     <Route exact path='/settings' render={() => <Settings />} />
     <Route exact path='/profile/:id' render={({ match }) => <Dashboard user={match.params.id} />} />
+    <Route exact path='/profile/:id/friends' render={() => <Friends />} />
     <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />
     {props.currentUser ? <Menubar /> : null }
     </Router> 
