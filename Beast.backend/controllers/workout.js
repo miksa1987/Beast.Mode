@@ -85,6 +85,9 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
       date: new Date()
     })
     await workout.save()
+
+    
+    activityHelper.setActivity(decodedToken.id, 'workout', workout._id)
     response.status(201).end()
   } catch(e) {
     console.log(e.message)

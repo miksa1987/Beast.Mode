@@ -3,6 +3,7 @@ const config = require('../util/config')
 const Post = require('../models/Post')
 const User = require('../models/User')
 const jwt = require('jsonwebtoken')
+const activityHelper = require('../util/activity')
 const { imgparser, cloudinary } = require('../util/imageupload')
 
 postRouter.get('/all', async (request, response) => {
@@ -84,6 +85,7 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
     })
     await post.save()
 
+    activityHelper.setActivity(decodedToken.id, 'post', post._id)
     response.status(201).json(post)
   } catch(e) {
     console.log(e.message)

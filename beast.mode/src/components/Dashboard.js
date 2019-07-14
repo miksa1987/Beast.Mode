@@ -57,7 +57,8 @@ const Dashboard  = (props) => {
                   <tbody>
                     <tr>
                       <td>                
-                        <Button>{props.currentProfile.username}'s activity</Button>
+                        <Button onClick={() => props.history.push(`/profile/${props.currentProfile.id}/activity`)}>
+                          {props.currentProfile.username}'s activity</Button>
                         <Button onClick={() => props.history.push(`/profile/${props.currentProfile.id}/friends`)}>
                           {props.currentProfile.username}'s friends</Button>
                         <Button>{props.currentProfile.username}'s photos</Button>

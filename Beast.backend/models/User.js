@@ -7,7 +7,7 @@ const userSchema = mongoose.Schema({
   age: Number,
   picture: String,
   pictures: [ String ],
-  activity: [ String ],
+  activity: [ { text: String, uri: String } ],
   postCount: Number,
   workoutCount: Number,
   doneWorkoutCount: Number,

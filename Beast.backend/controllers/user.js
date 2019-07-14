@@ -14,7 +14,7 @@ userRouter.get('/all', async (request, response) => {
 
 userRouter.get('/:id', async (request, response) => {
   try {
-    const user = await User.findById(request.params.id)
+    const user = await User.findById(request.params.id).populate('friends')
     response.status(200).json(user)
   } catch(error) {
     response.status(404).send('User not found!')
