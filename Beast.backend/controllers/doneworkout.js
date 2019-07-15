@@ -7,11 +7,11 @@ const config = require('../util/config')
 
 const imgparser = multer({ storage })
 
-doneWorkoutRouter.post('/', imgparser.single('image'), async (request, response) => {
+doneWorkoutRouter.post('/new', imgparser.single('image'), async (request, response) => {
   if(!request.token) response.status(401).end()
 
   try {
-    const user = jwt.verify(request.token, config.SECRET)
+    const user = jwt.verify(request.token, config.SECRET) // WTF?!
     if(!user.id) response.status(401).end()
 
     await cloudinary.uploader.upload(request.file.path)
@@ -30,9 +30,31 @@ doneWorkoutRouter.post('/', imgparser.single('image'), async (request, response)
     })
 
     const savedDoneWorkout = await doneWorkout.save()
-    response.json(savedDoneWorkout)
-  } catch(error) {
+    response.status(201).json(savedDoneWorkout)
+  } catch (error) {
     response.status(400).send({ error })
+  }
+})
+
+doneWorkoutRouter.post('/:id/comment', async (request, response) => {
+  if (!request.token) response.status(401).end()
+  
+  try {
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
+    if (!decodedToken.id) response.status(401).end()
+
+    const user = await user.findById(decodedToken.id)
+    const doneWorkout = await DoneWorkout.findById(request.params.id)
+
+    const newComments = doneWorkout.comments.concat(request.body.comment)
+    const doneWorkoutToUpdate = { ...doneWorkout.toObject(), comments: newComments }
+
+    const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true })
+
+    response.status(200).json(updatedDoneWorkout)
+
+  } catch (error) {
+
   }
 })
 

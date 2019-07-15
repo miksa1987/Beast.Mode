@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Card, Image, Button } from 'semantic-ui-react'
-import { initUserPosts } from '../reducers/currentUserPosts'
-import { initCurrentProfile } from '../reducers/currentProfile'
+import { initUserPosts } from '../../reducers/currentUserPosts'
+import { initCurrentProfile } from '../../reducers/currentProfile'
 
-import Post from './Post'
+import Post from '../Post'
 
 const Dashboard  = (props) => {
   useEffect(() => {

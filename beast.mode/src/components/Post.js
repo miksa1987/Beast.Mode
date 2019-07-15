@@ -38,7 +38,6 @@ const contentStyle = {
   width: '40%'
 }
 
-
 const commentsStyle = {
   display: 'flex',
   align: 'right',
