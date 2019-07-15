@@ -16,28 +16,39 @@ const setActivity = async (userid, type, id) => {
       break
     case 'workout':
       activity = {
-        text: `${user.username} posted a post`,
-        uri: `/posts/${id}`
+        text: `${user.username} created a workout`,
+        uri: `/workouts/${id}`
       }
       break  
     case 'doneworkout':
       activity = {
-        text: `${user.username} posted a post`,
-        uri: `/posts/${id}`
+        text: `${user.username} did a workout`,
+        uri: `/doneworkouts/${id}`
       }
       break  
     case 'comment':
       activity = {
-        text: `${user.username} posted a post`,
+        text: `${user.username} commented on a post`,
         uri: `/posts/${id}`
       }
       break  
     case 'like':
       activity = {
-        text: `${user.username} posted a post`,
+        text: `${user.username} liked a post`,
         uri: `/posts/${id}`
       }
-      break 
+      break  
+    case 'commentworkout':
+      activity = {
+        text: `${user.username} commented on a workout`,
+        uri: `/workouts/${id}`
+      }
+      break  
+    case 'likeworkout':
+      activity = {
+        text: `${user.username} liked a workout`,
+        uri: `/workouts/${id}`
+      } 
     default:
       return {}
   }

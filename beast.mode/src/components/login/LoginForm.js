@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { loginUser } from '../reducers/currentUser'
+import { loginUser } from '../../reducers/currentUser'
 import NewUser from './NewUser'
 import Loginbar from './Loginbar'
 

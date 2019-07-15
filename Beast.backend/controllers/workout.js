@@ -2,7 +2,8 @@ const workoutRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const config = require('../util/config')
 const Workout = require('../models/Workout')
-const User = require('../models/User')
+const userUpdater = require('../util/userUpdater')
+const activityHelper = require('../util/activity')
 const { imgparser, cloudinary } = require('../util/imageupload')
 
 workoutRouter.get('/all', async (request, response) => {
@@ -70,9 +71,10 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
   try {
     const decodedToken = jwt.verify(request.token, config.SECRET)
     
-    request.body.file ?
+    if (request.file) {
       await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
-      : null
+      userUpdater.addToPictures(decodedToken.id, request.file.secure_url)
+    }
 
     const workout = new Workout({
       content: request.body.content,
@@ -86,8 +88,8 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
     })
     await workout.save()
 
-    
     activityHelper.setActivity(decodedToken.id, 'workout', workout._id)
+    userUpdater.addToWorkouts(decodedToken.id, workout._id)
     response.status(201).end()
   } catch(e) {
     console.log(e.message)
@@ -121,10 +123,10 @@ workoutRouter.post('/:id/comment', async (request, response) => {
       date: workout.date, 
       comments: newComments
     }
-    console.log(workoutToUpdate)
     const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true })
-    console.log(updatedWorkout)
-    response.json(updatedWorkout)
+    
+    activityHelper.setActivity(decodedToken.id, 'comment', workout._id)
+    response.status(200).json(updatedWorkout)
   } catch(e) {
     console.log(e.message)
     response.status(400).send({ error: e.message })
@@ -159,10 +161,10 @@ workoutRouter.post('/:id/like', async (request, response) => {
       date: workout.date, 
       comments: workout.comments
     }
-    console.log(workoutToUpdate)
     const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true }).populate('user')
-    console.log(updatedWorkout)
-    response.json(updatedWorkout)
+    
+    activityHelper.setActivity(decodedToken.id, 'like', workout._id)
+    response.status(200).json(updatedWorkout)
   } catch(e) {
     console.log(e.message)
     response.status(400).send({ error: e.message })

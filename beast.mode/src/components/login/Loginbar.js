@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Form, Input, Button } from 'semantic-ui-react'
-import { loginUser } from '../reducers/currentUser'
+import { loginUser } from '../../reducers/currentUser'
 
 const Loginbar = (props) => {
   const loginStyle = {

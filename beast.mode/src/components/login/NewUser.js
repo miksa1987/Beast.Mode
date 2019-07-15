@@ -1,5 +1,5 @@
 import React from 'react'
-import communicationService from '../service/communication'
+import communicationService from '../../service/communication'
 import { Input, TextArea, Button, Form } from 'semantic-ui-react'
 
 const NewUser = (props) => {

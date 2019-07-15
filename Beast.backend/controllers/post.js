@@ -1,7 +1,7 @@
 const postRouter = require('express').Router()
 const config = require('../util/config')
 const Post = require('../models/Post')
-const User = require('../models/User')
+const userUpdater = require('../util/userUpdater')
 const jwt = require('jsonwebtoken')
 const activityHelper = require('../util/activity')
 const { imgparser, cloudinary } = require('../util/imageupload')
@@ -70,9 +70,11 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     
-    request.body.file ?
+    if (request.file) {
       await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
-      : null
+      userUpdater.addToPictures(decodedToken.id, request.file.secure_url)
+    }
+
     const post = new Post({
       content: request.body.content,
       picture: request.file ? request.file.secure_url : '',
@@ -86,6 +88,7 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
     await post.save()
 
     activityHelper.setActivity(decodedToken.id, 'post', post._id)
+    userUpdater.addToPosts(decodedToken.id, post._id)
     response.status(201).json(post)
   } catch(e) {
     console.log(e.message)
@@ -118,10 +121,10 @@ postRouter.post('/:id/comment', async (request, response) => {
       date: post.date, 
       comments: newComments
     }
-    console.log(postToUpdate)
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true })
-    console.log(updatedPost)
-    response.json(updatedPost)
+    
+    activityHelper.setActivity(decodedToken.id, 'comment', post._id)
+    response.status(200).json(updatedPost)
   } catch(e) {
     console.log(e.message)
     response.status(400).send({ error: e.message })
@@ -155,10 +158,10 @@ postRouter.post('/:id/like', async (request, response) => {
       date: post.date, 
       comments: post.comments
     }
-    console.log(postToUpdate)
+    
+    activityHelper.setActivity(decodedToken.id, 'like', post._id)
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true }).populate('user')
-    console.log(updatedPost)
-    response.json(updatedPost)
+    response.status(200).json(updatedPost)
   } catch(e) {
     console.log(e.message)
     response.status(400).send({ error: e.message })
