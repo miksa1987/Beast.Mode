@@ -11,7 +11,6 @@ const isWorkout = (post) => {
 
 const match0 = (text) => {
   if (regex0.exec(text)) return true
-  console.log('no match 0')
   return false
 }
 
@@ -100,7 +99,8 @@ const doWorkout = (text) => {
     time: {
       time: 0,
       visible: false
-    }
+    },
+    textcontent: text
   }
 
   if(match0(text)) workout.type = '0'

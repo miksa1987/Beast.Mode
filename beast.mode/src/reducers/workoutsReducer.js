@@ -6,16 +6,21 @@ const workoutsReducer = (state = [], action) => {
       return action.data
     case 'ADD_WORKOUT':
       return [ ...state, action.data ]
-    case 'REMOVE_WORKOUT':
-      // TBD
     default:
       return state
   }
 }
 
-export const initWorkouts = () => {
+export const initAllWorkouts = () => {
   return async dispatch => {
     const workouts = await communicationService.get('/workouts/all')
+    return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
+  }
+}
+
+export const initWorkouts = (id) => {
+  return async dispatch => {
+    const workouts = await communicationService.get(`/users/${id}/workouts`)
     return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
   }
 }

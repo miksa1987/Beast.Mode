@@ -24,7 +24,8 @@ const DoWorkout = (props) => {
   // Workout type 0 default
   return ( <div>
     <Button color='red' onClick={() => timer.start()}>Start this workout</Button>
-    <Button color='green'>Mark this workout done</Button>
+    <Button color='green' onClick={() => props.setCurrentWorkoutDone()}>
+      Mark this workout done</Button>
     <Button color='blue'>Edit this workout</Button>
     {props.currentWorkout.type === '0' && <DoWorkoutOfSets timer={timer}
       currentWorkout={props.currentWorkout} 

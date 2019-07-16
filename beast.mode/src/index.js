@@ -9,6 +9,7 @@ import App from './App'
 import currentUserReducer from './reducers/currentUser'
 import feedReducer from './reducers/feedReducer'
 import workoutsReducer from './reducers/workoutsReducer'
+import doneWorkoutsReducer from './reducers/doneWorkoutsReducer'
 import currentUserPostsReducer from './reducers/currentUserPosts'
 import currentWorkoutReducer from './reducers/currentWorkout'
 import currentProfileReducer from './reducers/currentProfile'
@@ -21,7 +22,8 @@ const reducer = combineReducers({
   currentProfile: currentProfileReducer,
   currentPost: currentPostReducer,
   feed: feedReducer,
-  workouts: workoutsReducer
+  workouts: workoutsReducer,
+  doneWorkouts: doneWorkoutsReducer
 })
 
 const store = createStore(reducer, applyMiddleware(thunk))

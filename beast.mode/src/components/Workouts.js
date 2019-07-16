@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { initWorkouts } from '../reducers/workoutsReducer'
+import { initAllWorkouts } from '../reducers/workoutsReducer'
 import { Input } from 'semantic-ui-react'
 import Post from './Post'
 
@@ -14,7 +14,7 @@ const Workouts = (props) => {
   const [searchterm, setSearchterm] = useState('')
 
   useEffect(() => {
-    if (props.workouts.length === 0) props.initWorkouts()
+    props.initAllWorkouts() // Add some kind of checking to avoid loading already loaded workouts
   }, [])
 
   const search = (event) => {
@@ -40,4 +40,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { initWorkouts })(Workouts)
+export default connect(mapStateToProps, { initAllWorkouts })(Workouts)

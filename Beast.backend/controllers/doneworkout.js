@@ -29,27 +29,34 @@ doneWorkoutRouter.post('/new', imgparser.single('image'), async (request, respon
   if (!request.token) response.status(401).end()
 
   try {
-    const user = jwt.verify(request.token, config.SECRET) // WTF?!
-    if(!user.id) response.status(401).end()
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
+    if (!decodedToken.id) response.status(401).end()
+    
+    if (request.file) {
+      await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
+      userUpdater.addToPictures(decodedToken.id, request.file.secure_url)
+    }
 
-    await cloudinary.uploader.upload(request.file.path)
     const doneWorkout = new DoneWorkout({
       content: request.body.content,
       additional: request.body.additional,
-      picture: '',
-      user: user.id,
-      likes: 0,
+      picture: request.file ? request.file.secure_url : '',
+      user: decodedToken.id,
+      likes: [],
       comments: [],
       done: {
-        date: request.body.done.date,
-        time: request.body.done.time,
+        date: new Date(),
+        time: request.body.time,
         done: true
       }
     })
+    console.log(doneWorkout)
 
     const savedDoneWorkout = await doneWorkout.save()
+    console.log(savedDoneWorkout)
     response.status(201).json(savedDoneWorkout)
   } catch (error) {
+    console.log(error.message)
     response.status(400).send({ error: error.message })
   }
 })

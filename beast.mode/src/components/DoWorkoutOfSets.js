@@ -33,6 +33,7 @@ const DoWorkoutOfSets = (props) => {
   }
 
   if (props.currentWorkout.done) {
+    if (!props.currentWorkout.posted) props.setCurrentWorkoutDone()
     return ( <div>
       <WorkoutOfSetsDone currentWorkout={props.currentWorkout} />
     </div> )

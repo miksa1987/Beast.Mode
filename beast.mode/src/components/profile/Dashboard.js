@@ -63,7 +63,10 @@ const Dashboard  = (props) => {
                           {props.currentProfile.username}'s friends</Button>
                         <Button onClick={() => props.history.push(`/profile/${props.currentProfile.id}/photos`)}>
                           {props.currentProfile.username}'s photos</Button>
-                        <Button>{props.currentProfile.username}'s workouts</Button>  
+                        <Button onClick={() => props.history.push(`/profile/${props.currentProfile.id}/workouts`)}>
+                          {props.currentProfile.username}'s workouts</Button>  
+                        <Button onClick={() => props.history.push(`/profile/${props.currentProfile.id}/doneworkouts`)}>
+                        {props.currentProfile.username}'s done workouts</Button>
                       </td>
                     </tr>
                   </tbody>

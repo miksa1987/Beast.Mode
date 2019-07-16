@@ -74,6 +74,7 @@ const Post = (props) => {
           ? props.post.user.picture : '/img/ui/dashboard.png'} />
         <Card.Header>
           <Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link>
+          {props.post.type === 'doneworkout' ? ' did a workout' : ''}
         </Card.Header>
         <Card.Description>
           <table style={tableStyle}><tbody><tr>

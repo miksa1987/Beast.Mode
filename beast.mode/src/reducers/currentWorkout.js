@@ -20,7 +20,7 @@ const currentWorkoutReducer = (state = emptyWorkout, action) => {
     case 'SET_CURRENT_WORKOUT_TIME':
       return { ...state, time: { time: action.data.time, visible: action.data.visible }}
     case 'SET_CURRENT_WORKOUT_DONE':
-      return { ...state, done: true }
+      return { ...state, done: true, posted: true }
     default:
       return state
   }
@@ -70,8 +70,18 @@ export const setCurrentWorkoutTime = (time, visible) => {
   return dispatch => dispatch({ type: 'SET_CURRENT_WORKOUT_TIME', data: { time, visible } })
 }
 
-export const setCurrentWorkoutDone = () => {
-  return dispatch => dispatch({ type: 'SET_CURRENT_WORKOUT_DONE' })
+export const setCurrentWorkoutDone = (time) => {
+  return async (dispatch, getState) => {
+    console.log(getState().currentWorkout)
+    const doneWorkout = {
+      content: getState().currentWorkout.textcontent,
+      additional: '',
+      picture: '',
+      time
+    }
+    await communicationService.post('/doneworkouts/new', doneWorkout)
+    dispatch({ type: 'SET_CURRENT_WORKOUT_DONE' })
+  }
 }
 
 export default currentWorkoutReducer

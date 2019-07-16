@@ -17,6 +17,8 @@ import DoWorkout from './components/DoWorkout'
 import Friends from './components/profile/Friends'
 import Activity from './components/profile/Activity'
 import Photos from './components/profile/Photos'
+import UsersWorkouts from './components/profile/UsersWorkouts'
+import UsersDoneWorkouts from './components/profile/UsersDoneWorkouts'
 import Viewpost from './components/Viewpost'
 
 const App = (props) => {
@@ -41,6 +43,8 @@ const App = (props) => {
     <Route exact path='/profile/:id/friends' render={() => <Friends />} />
     <Route exact path='/profile/:id/activity' render={() => <Activity />} />
     <Route exact path='/profile/:id/photos' render={() => <Photos />} />
+    <Route exact path='/profile/:id/workouts' render={() => <UsersWorkouts />} />
+    <Route exact path='/profile/:id/doneworkouts' render={() => <UsersDoneWorkouts />} />
     <Route exact path='/post/:id/' render={ ({ match }) => <Viewpost type='post' id={match.params.id} />} />
     <Route exact path='/workout/:id/' render={ ({ match }) => <Viewpost type='workout' id={match.params.id} />} />
     <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />

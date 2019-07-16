@@ -3,6 +3,7 @@ const userRouter = require('express').Router()
 const User = require('../models/User')
 const Post = require('../models/Post')
 const Workout = require('../models/Workout')
+const DoneWorkout = require('../models/DoneWorkout')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { cloudinary, imgparser } = require('../util/imageupload')
@@ -44,6 +45,15 @@ userRouter.get('/:id/workouts', async (request, response) => {
   try {
     const workouts = await Workout.find({ user: request.params.id }).populate('user')
     response.status(200).json(workouts)
+  } catch(error) {
+    response.status(404).end()
+  }
+})
+
+userRouter.get('/:id/doneworkouts', async (request, response) => {
+  try {
+    const doneworkouts = await DoneWorkout.find({ user: request.params.id }).populate('user')
+    response.status(200).json(doneworkouts)
   } catch(error) {
     response.status(404).end()
   }
