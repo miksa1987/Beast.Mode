@@ -7,20 +7,8 @@ const addToPictures = async (id, uri) => {
   const newPictures = user.pictures.concat(uri)
 
   const userToUpdate = {
-    username: user.username,
-    passwordHash: user.passwordHash,
-    picture: user.picture,
-    pictures: newPictures,
-    info: user.info,
-    age: user.age,
-    activity: user.activity,
-    postCount: user.postCount,
-    workoutCount: user.workoutCount,
-    doneWorkoutCount: user.doneWorkoutCount,
-    friends: user.friends,
-    posts: user.posts,
-    workouts: user.workouts,
-    doneWorkouts: user.doneWorkouts
+    ...user.toObject(),
+    pictures: newPictures
   }
 
   const updatedUser = await User.findByIdAndUpdate(id, userToUpdate, { new: true })
@@ -35,21 +23,9 @@ const addToPosts = async (id, postid) => {
   const newPosts = user.posts.concat(postid)
 
   const userToUpdate = {
-    username: user.username,
-    passwordHash: user.passwordHash,
-    picture: user.picture,
-    pictures: user.pictures,
-    info: user.info,
-    age: user.age,
-    activity: user.activity,
-    postCount: user.postCount + 1,
-    workoutCount: user.workoutCount,
-    doneWorkoutCount: user.doneWorkoutCount,
-    friends: user.friends,
-    posts: newPosts,
-    workouts: user.workouts,
-    doneWorkouts: user.doneWorkouts
-  }
+    ...user.toObject(),    
+    posts: newPosts
+}
 
   const updatedUser = await User.findByIdAndUpdate(id, userToUpdate, { new: true })
 
@@ -63,20 +39,8 @@ const addToWorkouts = async (id, workoutid) => {
   const newWorkouts = user.workouts.concat(workoutid)
 
   const userToUpdate = {
-    username: user.username,
-    passwordHash: user.passwordHash,
-    picture: user.picture,
-    pictures: user.pictures,
-    info: user.info,
-    age: user.age,
-    activity: user.activity,
-    postCount: user.postCount,
-    workoutCount: user.workoutCount + 1,
-    doneWorkoutCount: user.doneWorkoutCount,
-    friends: user.friends,
-    posts: user.posts,
-    workouts: newWorkouts,
-    doneWorkouts: user.doneWorkouts
+    ...user.toObject(),
+    workouts: newWorkouts
   }
 
   const updatedUser = await User.findByIdAndUpdate(id, userToUpdate, { new: true })

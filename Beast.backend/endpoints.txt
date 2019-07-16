@@ -6,7 +6,7 @@ GET  /users/:id/doneworkouts TBD
 GET  /users/:id/name
 POST /users/new
 POST /users/addfriend
-PUT  /users/me WIP
+PUT  /users/me 
 
 POST /login
 
@@ -24,9 +24,9 @@ POST /posts/:id/comment
 POST /posts/:id/like 
 PUT  /posts/:id
 
-GET  /doneworkouts/all TBD
-GET  /doneworkouts/:id TBD
+GET  /doneworkouts/all 
+GET  /doneworkouts/:id 
 POST /doneworkouts/new
-POST /doneworkouts/:id/comment TBD
-POST /doneworkouts/:id/like TBD
-PUT  /doneworkouts/:id TBD
+POST /doneworkouts/:id/comment
+POST /doneworkouts/:id/like 
+PUT  /doneworkouts/:id

@@ -40,15 +40,7 @@ postRouter.put('/:id', async (request, response) => {
     const post = await Post.findById(request.params.id)
     
     const moddedPost = { 
-      __v: post.__v,
-      _id: post._id,
-      type: post.type,
-      picture: post.picture,
-      pictureThumb: post.pictureThumb, 
-      user: post.user, 
-      likes: post.likes, 
-      comments: post.comments, 
-      date: post.date, 
+      ...post.toObject(),
       content: request.body.content 
     }
 
@@ -110,15 +102,9 @@ postRouter.post('/:id/comment', async (request, response) => {
     }
 
     const newComments = post.comments.concat({ content: request.body.comment, user: decodedToken.username })
-    console.log(newComments)
+
     const postToUpdate = {
-      content: post.content,
-      picture: post.picture,
-      pictureThumb: post.pictureThumb,
-      type: post.type,
-      user: post.user,
-      likes: post.likes,
-      date: post.date, 
+      ...post.toObject(),
       comments: newComments
     }
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true })
@@ -149,13 +135,7 @@ postRouter.post('/:id/like', async (request, response) => {
     }
 
     const postToUpdate = {
-      content: post.content,
-      picture: post.picture,
-      pictureThumb: post.pictureThumb,
-      type: post.type,
-      user: post.user,
-      likes: newLikes,
-      date: post.date, 
+      ...post.toObject(),
       comments: post.comments
     }
     

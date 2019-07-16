@@ -40,15 +40,7 @@ workoutRouter.put('/:id', async (request, response) => {
     const workout = await Workout.findById(request.params.id)
     
     const moddedWorkout = { 
-      __v: workout.__v,
-      _id: workout._id,
-      type: workout.type,
-      picture: workout.picture,
-      pictureThumb: workout.pictureThumb, 
-      user: workout.user, 
-      likes: workout.likes, 
-      comments: workout.comments, 
-      date: workout.date, 
+      ...workout.toObject(),
       content: request.body.content 
     }
 
@@ -110,17 +102,10 @@ workoutRouter.post('/:id/comment', async (request, response) => {
     if(!workout) {
       response.status(400).end()
     }
-    await console.log(workout)
+    
     const newComments = workout.comments.concat({ content: request.body.comment, user: decodedToken.username })
-    console.log(newComments)
     const workoutToUpdate = {
-      content: workout.content,
-      picture: workout.picture,
-      pictureThumb: workout.pictureThumb,
-      type: workout.type,
-      user: workout.user,
-      likes: workout.likes,
-      date: workout.date, 
+      ...workout.toObject(),
       comments: newComments
     }
     const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true })
@@ -152,14 +137,8 @@ workoutRouter.post('/:id/like', async (request, response) => {
     }
     
     const workoutToUpdate = {
-      content: workout.content,
-      picture: workout.picture,
-      pictureThumb: workout.pictureThumb,
-      type: workout.type,
-      user: workout.user,
-      likes: newLikes,
-      date: workout.date, 
-      comments: workout.comments
+      ...workout.toObject(),
+      likes: newLikes
     }
     const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true }).populate('user')
     
