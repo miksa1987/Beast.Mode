@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const doneWorkoutSchema = mongoose.Schema({
-  content: String,
+  content: { type: String, required: true },
   additional: String,
   picture: String,
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

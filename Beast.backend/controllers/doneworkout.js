@@ -44,6 +44,7 @@ doneWorkoutRouter.post('/new', imgparser.single('image'), async (request, respon
       user: decodedToken.id,
       likes: [],
       comments: [],
+      type: 'doneworkout',
       done: {
         date: new Date(),
         time: request.body.time,

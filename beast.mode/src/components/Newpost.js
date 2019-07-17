@@ -65,11 +65,13 @@ const Newpost = (props) => {
     const header = {
       'content-type': 'multipart/form-data'
     }
+    let newPost = {}
 
-    post.type === 'workout' 
-    ? await communicationService.post('/workouts/new', data, header) : await communicationService.post('/posts/new', data, header)
-    
-    props.addToFeed({ ...post, _id: Math.random()*10000, user: { username: props.currentUser.username } })
+    if(post.type === 'post') newPost =  await communicationService.post('/posts/new', data, header)
+    if(post.type === 'workout') newPost = await communicationService.post('/workouts/new', data, header)
+    if(post.type === 'doneworkout') newPost = await communicationService.post('/doneworkouts/new', data, header)
+
+    props.addToFeed(newPost)
   }
 
   return ( <div style={elementStyle}>

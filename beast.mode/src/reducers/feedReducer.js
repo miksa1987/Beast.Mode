@@ -19,10 +19,13 @@ const feedReducer = (state = [], action) => {
 export const initFeed = (friends, myID) => {
   return async dispatch => {
     let feedPosts = await communicationService.get(`/users/${myID}/posts`)
+    const myDoneWorkouts = await communicationService.get(`/users/${myID}/doneworkouts`)
+    feedPosts = feedPosts.concat(myDoneWorkouts)
 
     for(let friend of friends) {
       const friendsPosts = await communicationService.get(`/users/${friend}/posts`)
-      feedPosts = feedPosts.concat(friendsPosts)
+      const friendsDoneWorkouts = await communicationService.get(`/users/${friend}/doneworkouts`)
+      feedPosts = feedPosts.concat(friendsPosts).concat(friendsDoneWorkouts)
     }
     feedPosts.sort(sorterService.comparePostDates)
 
@@ -38,10 +41,10 @@ export const addToFeed = (post) => {
 export const removeFromFeed = (post) => {
   return async dispatch => {
     if(post.type === 'post') {
-      communicationService.delete(`/posts/${post._id}`)
+      communicationService.destroy(`/posts/${post._id}`)
     }
-    if(post.type === 'workout') {
-      communicationService.delete(`/workouts/${post._id}`)
+    if(post.type === 'doneworkout') {
+      communicationService.destroy(`/doneworkouts/${post._id}`)
     }
 
     dispatch({ type: 'REMOVE_FROMFEED', data: { id: post._id } })
@@ -51,7 +54,7 @@ export const removeFromFeed = (post) => {
 export const addComment = (type, id, comment) => {
   return async dispatch => {
     const updatedPost = type === 'post' ? await communicationService.post(`/posts/${id}/comment`, { comment })
-      : type === 'workout' && await communicationService.post(`/workouts/${id}/comment`, { comment })
+      : type === 'doneworkout' && await communicationService.post(`/doneworkouts/${id}/comment`, { comment })
     console.log(updatedPost)
     dispatch({ type: 'EDIT_POST_ON_FEED', data: updatedPost })
   }
@@ -60,7 +63,7 @@ export const addComment = (type, id, comment) => {
 export const like = (type, id) => {
   return async dispatch => {
     const updatedPost = type === 'post' ? await communicationService.post(`/posts/${id}/like`, { wee: 'wee' })
-      : type === 'workout' && await communicationService.post(`/workouts/${id}/like`, { wee: 'wee' })
+      : type === 'doneworkout' && await communicationService.post(`/doneworkouts/${id}/like`, { wee: 'wee' })
     console.log(updatedPost)
     dispatch({ type: 'EDIT_POST_ON_FEED', data: updatedPost })
   }

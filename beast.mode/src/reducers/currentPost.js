@@ -15,6 +15,7 @@ export const initCurrentPost = (type, id) => {
 
     if (type === 'post') post = await communicationService.get(`/posts/${id}`)
     if (type === 'workout') post = await communicationService.get(`/workouts/${id}`)
+    if (type === 'doneworkout') post = await communicationService.get(`/doneworkouts/${id}`)
 
     dispatch({ type: 'INIT_CURRENT_POST', data: post })
   }
