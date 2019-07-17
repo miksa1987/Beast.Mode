@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, Card, Image, Form } from 'semantic-ui-react'
+import { Button, Input, Divider, Image } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { addComment, like } from '../reducers/feedReducer'
@@ -26,16 +26,11 @@ const tableStyle = {
   wordWrap: 'break-word'
 }
 
-const picStyle = {
-  verticalAlign: 'top',
-  margin: '8px',
-  width: '30%'
-}
-
 const contentStyle = {
   verticalAlign: 'text-top',
   margin: '8px',
-  width: '40%'
+  width: '100%',
+  height: '100%'  
 }
 
 const commentsStyle = {
@@ -67,47 +62,62 @@ const Post = (props) => {
   }
 
   return ( <div style={elementStyle}>
-    <Card fluid>
-      <Card.Content>
-        <Image floated='right' width='32px' height='32px'
-          src={props.post.user.picture && props.post.user.picture !== '' 
-          ? props.post.user.picture : '/img/ui/dashboard.png'} />
-        <Card.Header>
-          <Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link>
-          {props.post.type === 'doneworkout' ? ' did a workout' : ''}
-        </Card.Header>
-        <Card.Description>
-          <table style={tableStyle}><tbody><tr>
-          <td style={picStyle}> 
-            <Image size='medium' src={props.post.picture && props.post.picture !== '' 
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <Image circular width='32px' height='32px'
+              src={props.post.user.picture && props.post.user.picture !== '' 
+              ? props.post.user.picture : '/img/ui/dashboard.png'} />
+          </td>
+          <td>
+            <strong><Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link></strong>
+              {props.post.type === 'doneworkout' ? ' did a workout' : ''}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <tbody>
+        <tr>
+          <td style={{width: '60%'}}>
+            <Image size='big' src={props.post.picture && props.post.picture !== '' 
               ? props.post.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
-            <p>{props.post.likes.length} likes</p>
-          </td> 
-          <td style={contentStyle}><p>{props.post.content}</p></td>
-          <td style={commentsStyle}>
-            <div style={commentStyle}>
-              {props.post.comments.map((c, i) => <Comment key={c._id} comment={c.content} user={c.user} />)} 
-            </div>
-          </td></tr></tbody></table>
-        </Card.Description>
-      </Card.Content>
-      <Card.Content extra>
-        <table><tbody>
-          <tr>
-            {props.post.type === 'workout' ? 
-              <td width='23%'><Button color='red' onClick={() => props.history.push(`/doworkout/${props.post._id}`)}>
-                Do this workout</Button></td>
-              : null}
-            <td>        
-              <Button onClick={() => props.like(props.post.type, props.post._id)}>Like</Button>
-            </td>
-            <td width='100%'>
-              <form onSubmit={sendComment}><Input fluid size='mini' action='Comment' {...comment} /></form>
-            </td>
-          </tr>
-          </tbody></table>          
-      </Card.Content>
-    </Card>
+          </td>
+          <td style={contentStyle}>
+            <table>
+              <tbody>
+                <tr>          
+                  <td style={contentStyle}><p>{props.post.content}</p></td>
+                </tr>
+                <tr>
+                  <td style={commentsStyle}>
+                    <div style={commentStyle}>
+                      {props.post.comments.map((c, i) => <Comment key={c._id} comment={c.content} user={c.user} />)} 
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table><tbody>
+      <tr>
+        {props.post.type === 'workout' ? 
+          <td width='23%'><Button color='red' onClick={() => props.history.push(`/doworkout/${props.post._id}`)}>
+          Do this workout</Button></td>
+        : null}
+        <td>        
+          <Button onClick={() => props.like(props.post.type, props.post._id)}>Like</Button>
+        </td>
+        <td width='100%'>
+          <form onSubmit={sendComment}><Input fluid size='mini' action='Comment' {...comment} /></form>
+        </td>
+      </tr>
+    </tbody></table>
+    <Divider />
   </div> )
 }
 

@@ -16,12 +16,10 @@ const Photos = (props) => {
 
   if (props.currentProfile.pictures.length === 0) {
     return ( <div>
-      <Link to={`/profile/${props.currentProfile.id}`}>Back to profile</Link>
     </div> )
   }
 
   return ( <div>
-    <Link to={`/profile/${props.currentProfile.id}`}>Back to profile</Link>
     <div style={picContainer}>
       {props.currentProfile.pictures.map(pic => 
         <Image key={pic} style={picStyle} size='small' src={pic} />)}

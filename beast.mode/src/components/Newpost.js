@@ -18,7 +18,12 @@ const elementStyle = {
 }
 
 const buttonStyle = {
-  margin: '5px 5px 5px 5px'
+  margin: '5px 5px 5px 5px',
+  width: '100%'
+}
+
+const inputStyle = {
+  width: '90%'
 }
 
 const Newpost = (props) => {
@@ -76,11 +81,20 @@ const Newpost = (props) => {
 
   return ( <div style={elementStyle}>
       <Form onSubmit={post}>
-        <input type='file' onChange={({ target }) => setFile(target.files[0])} />
+        <table>
+          <tbody>
+            <tr>
+              <td style={inputStyle}>
+                <input type='file' onChange={({ target }) => setFile(target.files[0])} />
+              </td>
+              <td>
+              <Button type='submit' style={buttonStyle}>Post!</Button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <TextArea style={style} name='post' onChange={changeText} rows={8} placeholder='What have you done?! (tip: you can use hashtags!)' />
         { isWorkout ? <><Checkbox toggle name='workoutToggle' onChange={workoutToggleChange} /><strong>Did it!</strong></> : null }
-        <Button style={buttonStyle}>Got picture?</Button>
-        <Button type='submit' style={buttonStyle}>Post!</Button>
       </Form>
   </div> )
 }

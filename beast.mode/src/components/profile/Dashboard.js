@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Image, Menu } from 'semantic-ui-react'
+import { Image, Menu, Icon, Button } from 'semantic-ui-react'
 import { initUserPosts } from '../../reducers/currentUserPosts'
 import { initCurrentProfile } from '../../reducers/currentProfile'
 
@@ -29,11 +29,21 @@ const Dashboard  = (props) => {
     width: '50%'
   }
 
+  const addFriendButtonStyle = {
+    position: 'absolute',
+    right: '75px',
+    top: '100px'
+  }
+
   if (!props.currentProfile.id && !props.currentUserPosts.length === 0) {
     return ( <div>Loading...</div> )
   }
 
   return ( <div>
+    <Button style={addFriendButtonStyle} color='green'>
+      <Icon name='plus' />
+      Add as friend
+    </Button>
     <table>
       <tbody>
         <tr>
@@ -50,21 +60,27 @@ const Dashboard  = (props) => {
     </table>
     <Menu pointing secondary stackable>
       <Menu.Item onClick={() => setView('posts')} active={view === 'posts'}>
+        <Icon name='sticky note' />
         Posts
       </Menu.Item>
       <Menu.Item onClick={() => setView('workouts')} active={view === 'workouts'}>
+        <Icon name='hand rock' />
         Workouts
       </Menu.Item>
       <Menu.Item onClick={() => setView('doneworkouts')} active={view === 'doneworkouts'}>
+        <Icon name='trophy' />
         Done workouts
       </Menu.Item>
       <Menu.Item onClick={() => setView('photos')} active={view === 'photos'}>
+        <Icon name='images' />
         Photos
       </Menu.Item>
       <Menu.Item onClick={() => setView('friends')} active={view === 'friends'}>
+        <Icon name='users' />
         Friends
       </Menu.Item>
       <Menu.Item onClick={() => setView('activity')} active={view === 'active'}>
+        <Icon name='bars' />
         Activity
       </Menu.Item>
     </Menu>

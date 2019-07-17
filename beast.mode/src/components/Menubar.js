@@ -1,12 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Segment, Input, Menu, Icon } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'
-
-import './Menubar.css'
+import useWindowSize from '../hooks/useWindowSize'
 
 const Menubar = (props) => {
+  const windowSize = useWindowSize()
+
   const menuStyle = {
     width: '100%',
     minWidth: '100%',
@@ -14,21 +15,11 @@ const Menubar = (props) => {
     position: 'fixed',
     top: '0px',
     left: '0px',
-    backgroundColor: '#ffffff'
+    backgroundColor: '#dd0000'
   }
 
-  const searchStyle = {
-    position: 'fixed',
-    top: '15px',
-    align: 'top',
-    width: '50%',
-    minWidth: '40%',
-    maxWidth: 'auto',
-  }
-
-  const itemStyle = {
-    padding: '5px 10px 10px',
-    backgroundColor: 'white'
+  const barStyle = {
+    width: (windowSize.width - 6*55 - 40)
   }
 
   const itemStyle0 = {
@@ -40,53 +31,37 @@ const Menubar = (props) => {
   }
 
   const logout = () => {
+    props.history.push('/')
     props.logoutUser()
   }
 
   const scrollToTop = () => window.scrollTo(0, 0)
 
   return ( <div style={menuStyle}>
-    <div><Segment>
-    <Link to='/' style={itemStyle} onClick={scrollToTop}>
-      <img src='/img/ui/feed.png' alt='feed' />
-    </Link>
-    <Link to='/workouts' style={itemStyle} onClick={scrollToTop}>
-      <img src='/img/ui/wrkouts.png' alt='workouts' />
-    </Link>
-    <Link to='/dash' style={itemStyle} onClick={scrollToTop}>
-      <img src='/img//ui/dashboard.png' alt='dashboard' />
-    </Link>
-    <Input style={searchStyle} size='small' action={{ icon: 'search' }} name='search' />
-    <div style={itemStyle0}>
-    <Link to='/settings' style={itemStyle} onClick={scrollToTop}>
-      <img src='/img/ui/settings.png' alt='settings' />
-    </Link>
-    <Link to='/' onClick={logout} style={itemStyle}>
-      <img src='/img/ui/logout.png' alt='logout' />
-    </Link>
-    </div>
-    <Menu inverted>
-      <Menu.Item>
+    <Menu inverted color='red'>
+      <Menu.Item onClick={() => props.history.push('/')}>
         <Icon name='home' />
       </Menu.Item>
-      <Menu.Item>
-        <Icon name='home' />
+      <Menu.Item onClick={() => props.history.push('/workouts')}>
+        <Icon name='hand rock' />
       </Menu.Item>
-      <Menu.Item>
-        <Icon name='home' />
+      <Menu.Item onClick={() => props.history.push('/users')}>
+        <Icon name='user circle' />
       </Menu.Item>
-      <Menu.Item width='600px'>
-        <Input width='600px'/>
+      <Menu.Item onClick={() => props.history.push('/dash')}>
+        <Icon name='id card' />
       </Menu.Item>
-      <Menu.Item>
-        <Icon name='home' />
+      <Menu.Item >
+        <Input style={barStyle} />
       </Menu.Item>
-      <Menu.Item>
-        <Icon name='home' />
+      <Menu.Item onClick={() => props.history.push('/settings')}>
+        <Icon name='settings' />
+      </Menu.Item>
+      <Menu.Item onClick={logout}>
+        <Icon name='log out' />
       </Menu.Item>
     </Menu>
-    </Segment></div>
   </div>)
 }
 
-export default connect(null, { logoutUser })(Menubar)
+export default connect(null, { logoutUser })(withRouter(Menubar))

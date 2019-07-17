@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react'
+import { Divider } from 'semantic-ui-react'
 import Newpost from './Newpost'
 import Post from './Post'
 import { connect } from 'react-redux'
@@ -23,6 +24,7 @@ const Feed = (props) => {
 
   return ( <div style={feedStyle}>
     <Newpost />
+    <Divider horizontal>LATEST</Divider>
     {props.feed.map(post => <Post key={post._id} post={post} />)}
   </div> )
 }
