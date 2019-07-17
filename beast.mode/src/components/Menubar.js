@@ -1,5 +1,5 @@
 import React from 'react'
-import { Segment, Input } from 'semantic-ui-react'
+import { Segment, Input, Menu, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'
@@ -65,6 +65,26 @@ const Menubar = (props) => {
       <img src='/img/ui/logout.png' alt='logout' />
     </Link>
     </div>
+    <Menu inverted>
+      <Menu.Item>
+        <Icon name='home' />
+      </Menu.Item>
+      <Menu.Item>
+        <Icon name='home' />
+      </Menu.Item>
+      <Menu.Item>
+        <Icon name='home' />
+      </Menu.Item>
+      <Menu.Item width='600px'>
+        <Input width='600px'/>
+      </Menu.Item>
+      <Menu.Item>
+        <Icon name='home' />
+      </Menu.Item>
+      <Menu.Item>
+        <Icon name='home' />
+      </Menu.Item>
+    </Menu>
     </Segment></div>
   </div>)
 }
