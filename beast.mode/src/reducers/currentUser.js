@@ -39,6 +39,15 @@ export const logoutUser = () => {
   }
 }
 
+export const addFriend = (friendId) => {
+  return async (dispatch, getState) => {
+    if (friendId !== getState().currentUser.id) {
+      const updatedUser = await communicationService.post('/users/addfriend', { newfriend: friendId })
+      dispatch({ type: 'SET_USER', data: updatedUser })
+    }
+  }
+}
+
 export const updateUser = (data) => {
   return async dispatch => {
     for (let pair of data.entries()) {

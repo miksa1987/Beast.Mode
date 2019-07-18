@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { Image, Menu, Icon, Button } from 'semantic-ui-react'
 import { initUserPosts } from '../../reducers/currentUserPosts'
 import { initCurrentProfile } from '../../reducers/currentProfile'
+import { addFriend } from '../../reducers/currentUser'
 
 import Activity from './Activity'
 import Friends from './Friends'
@@ -40,7 +41,8 @@ const Dashboard  = (props) => {
   }
 
   return ( <div>
-    <Button style={addFriendButtonStyle} color='green'>
+    <Button style={addFriendButtonStyle} color='green'
+      onClick={() => props.addFriend(props.currentProfile.id)}>
       <Icon name='plus' />
       Add as friend
     </Button>
@@ -79,7 +81,7 @@ const Dashboard  = (props) => {
         <Icon name='users' />
         Friends
       </Menu.Item>
-      <Menu.Item onClick={() => setView('activity')} active={view === 'active'}>
+      <Menu.Item onClick={() => setView('activity')} active={view === 'activity'}>
         <Icon name='bars' />
         Activity
       </Menu.Item>
@@ -100,4 +102,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { initUserPosts, initCurrentProfile })(withRouter(Dashboard))
+export default connect(mapStateToProps, { initUserPosts, initCurrentProfile, addFriend })(withRouter(Dashboard))

@@ -30,31 +30,55 @@ const Menubar = (props) => {
     backgroundColor: 'white'
   }
 
+  const home = () => {
+    window.scrollTo(0, 0)
+    props.history.push('/')
+  }
+
+  const workouts = () => {
+    window.scrollTo(0, 0)
+    props.history.push('/workouts')
+  }
+
+  const users = () => {
+    window.scrollTo(0, 0)
+    props.history.push('/users')
+  }
+
+  const dash = () => {
+    window.scrollTo(0, 0)
+    props.history.push('/dash')
+  }
+
+  const settings = () => {
+    window.scrollTo(0, 0)
+    props.history.push('/settings')
+  }
+
   const logout = () => {
+    window.scrollTo(0, 0)
     props.history.push('/')
     props.logoutUser()
   }
 
-  const scrollToTop = () => window.scrollTo(0, 0)
-
   return ( <div style={menuStyle}>
     <Menu inverted color='red'>
-      <Menu.Item onClick={() => props.history.push('/')}>
+      <Menu.Item onClick={home}>
         <Icon name='home' />
       </Menu.Item>
-      <Menu.Item onClick={() => props.history.push('/workouts')}>
+      <Menu.Item onClick={workouts}>
         <Icon name='hand rock' />
       </Menu.Item>
-      <Menu.Item onClick={() => props.history.push('/users')}>
+      <Menu.Item onClick={users}>
         <Icon name='user circle' />
       </Menu.Item>
-      <Menu.Item onClick={() => props.history.push('/dash')}>
+      <Menu.Item onClick={dash}>
         <Icon name='id card' />
       </Menu.Item>
       <Menu.Item >
         <Input style={barStyle} />
       </Menu.Item>
-      <Menu.Item onClick={() => props.history.push('/settings')}>
+      <Menu.Item onClick={settings}>
         <Icon name='settings' />
       </Menu.Item>
       <Menu.Item onClick={logout}>

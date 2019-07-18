@@ -93,13 +93,15 @@ userRouter.post('/addfriend', async (request, response, next) => {
     const user = await User.findById(decodedToken.id)
     const newFriend = await User.findById(request.body.newfriend)
 
-    user.friends = user.friends.concat(newFriend.id)
-    newFriend.friends = newFriend.friends.concat(user.id)
-
-    await user.save()
+    if (user.friends.indexOf(newFriend.id) < 0) {
+      user.friends = user.friends.concat(newFriend.id)
+      newFriend.friends = newFriend.friends.concat(user.id)
+    }
+    
+    const updatedUser = await user.save()
     await newFriend.save()
 
-    response.status(200).end()
+    response.status(200).json(updatedUser)
   } catch(e) {
     response.status(400).json({ error: e.message })
   }

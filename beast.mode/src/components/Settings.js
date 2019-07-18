@@ -51,7 +51,7 @@ const Settings = (props) => {
   }
 
   return ( <div>
-    <h2>{props.currentUser.username}</h2>
+    <h3>Settings</h3>
     <Form onSubmit={saveChanges}>
     <table style={picStyle}>
       <tbody>
