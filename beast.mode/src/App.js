@@ -9,10 +9,10 @@ import userHelper from './util/userHelper'
 import Menubar from './components/Menubar'
 import Feed from './components/Feed'
 import Workouts from './components/Workouts'
+import Users from './components/Users'
 import Dashboard from './components/profile/Dashboard'
 import Settings from './components/Settings'
 import LoginForm from './components/login/LoginForm'
-import NewUser from './components/login/NewUser'
 import DoWorkout from './components/DoWorkout'
 import Friends from './components/profile/Friends'
 import Activity from './components/profile/Activity'
@@ -34,9 +34,9 @@ const App = (props) => {
 
   return ( <div>
     <Router>
-    <Route exact path='/newuser' render={() => <NewUser />} />
     <Route exact path='/' render={() => <Feed />} />
     <Route exact path='/workouts' render={() => <Workouts />} />
+    <Route exact path='/users' render={() => <Users />} />
     <Route exact path='/dash' render={() => <Dashboard user={props.currentUser.id}/>} />
     <Route exact path='/settings' render={() => <Settings />} />
     <Route exact path='/profile/:id' render={ ({ match }) => <Dashboard user={match.params.id} />} />

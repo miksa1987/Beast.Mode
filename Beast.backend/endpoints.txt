@@ -1,4 +1,5 @@
 GET  /users/all
+GET  /users/randoms
 GET  /users/:id
 GET  /users/:id/posts
 GET  /users/:id/workouts
