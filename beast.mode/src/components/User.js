@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Image } from 'semantic-ui-react'
-import userHelper from '../util/userHelper';
 
 const User = (props) => {
   const userStyle = {
@@ -12,7 +11,7 @@ const User = (props) => {
     width: '100%'
   }
 
-  if (!userHelper.username) {
+  if (!props.user.username) {
     return ( <div></div> )
   }
 
@@ -27,7 +26,7 @@ const User = (props) => {
         </tr>
         <tr>
           <td>
-            <Link to={`/users/${props.user.id}`}><strong>{props.user.username}</strong></Link>
+            <Link to={`/profile/${props.user.id}`}><strong>{props.user.username}</strong></Link>
           </td>
         </tr>
       </tbody>

@@ -9,8 +9,33 @@ const jwt = require('jsonwebtoken')
 const { cloudinary, imgparser } = require('../util/imageupload')
 
 userRouter.get('/all', async (request, response) => {
-  const users = await User.find({}).populate('friends')
-  response.status(200).json(users)
+  try {
+    const users = await User.find({}).populate('friends')
+    response.status(200).json(users)
+  } catch (error) {
+    response.status(400).json({ error: error.message })
+  }
+})
+
+userRouter.get('/randoms', async (request, response) => {
+  try {
+    const users = await User.find({}).populate('friends')
+    console.log(users)
+    if (users.length < 25) response.status(200).json(users)
+
+    let randomUsers = []
+    for (let i = 0; i < 25; i++) {
+      let random = Math.floor(Math.random() * users.length)
+      const userids = randomUsers.map(user => user.id) 
+      while (userids.indexOf(users[random].id) < 0) random = Math.floor(Math.random() * users.length)
+
+      randomUsers = randomUsers.concat(users[random])
+    }
+
+    response.status(200).json(randomUsers)
+  } catch (error) {
+    response.status(400).json({ error: error.message })
+  }
 })
 
 userRouter.get('/:id', async (request, response) => {
@@ -118,6 +143,9 @@ userRouter.put('/me', imgparser.single('image'), async (request, response) => {
     request.body.file ?
       await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
       : null
+    const splittedUri = request.file ? request.file.secure_url.split('upload') : ''
+    const imageUri = request.file ? 
+      splittedUri[0].concat('upload/w_1280').concat(splittedUri[1]) : ''
 
     const newPwHash = request.body.password ? 
       await bcrypt.hash(request.body.password, 10) : null
@@ -125,7 +153,7 @@ userRouter.put('/me', imgparser.single('image'), async (request, response) => {
     const userToUpdate = {
       username: user.username,
       passwordHash: request.body.password ? newPwHash : user.passwordHash,
-      picture: request.file ? request.file.secure_url : user.picture,
+      picture: request.file ? imageUri : user.picture,
       pictures: user.pictures,
       info: request.body.info ? request.body.info : user.info,
       age: request.body.age ? request.body.age : user.age,

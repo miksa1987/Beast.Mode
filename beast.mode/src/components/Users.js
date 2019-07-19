@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { initUsers } from '../reducers/users'
 import User from './User'
@@ -8,6 +8,12 @@ const Users = (props) => {
     display: 'flex',
     flexWrap: 'wrap'
   }
+
+  console.log(props.users)
+
+  useEffect(() => {
+    props.initUsers()
+  }, [])
 
   if(props.users.length === 0) {
     return ( <div></div> )

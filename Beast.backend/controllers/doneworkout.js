@@ -37,10 +37,14 @@ doneWorkoutRouter.post('/new', imgparser.single('image'), async (request, respon
       userUpdater.addToPictures(decodedToken.id, request.file.secure_url)
     }
 
+    const splittedUri = request.file ? request.file.secure_url.split('upload') : ''
+    const imageUri = request.file ? 
+      splittedUri[0].concat('upload/w_1280').concat(splittedUri[1]) : ''
+
     const doneWorkout = new DoneWorkout({
       content: request.body.content,
       additional: request.body.additional,
-      picture: request.file ? request.file.secure_url : '',
+      picture: request.file ? imageUri : '',
       user: decodedToken.id,
       likes: [],
       comments: [],
