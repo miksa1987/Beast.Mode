@@ -72,11 +72,11 @@ const Menubar = (props) => {
       <Menu.Item onClick={users}>
         <Icon name='user circle' />
       </Menu.Item>
+      <Menu.Item >
+        <Input size='small' style={barStyle} />
+      </Menu.Item>
       <Menu.Item onClick={dash}>
         <Icon name='id card' />
-      </Menu.Item>
-      <Menu.Item >
-        <Input style={barStyle} />
       </Menu.Item>
       <Menu.Item onClick={settings}>
         <Icon name='settings' />

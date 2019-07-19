@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { initAllWorkouts } from '../reducers/workoutsReducer'
 import { Input } from 'semantic-ui-react'
-import Post from './Post'
+
+import Workout from './Workout'
 
 const feedStyle = {
   display: 'flex',
@@ -29,7 +30,7 @@ const Workouts = (props) => {
     </form>
     <h3>Featured workouts</h3>
     <div style={feedStyle}>
-      { props.workouts !== [] ? props.workouts.map(workout => <Post key={workout._id} post={workout} /> ) : null}
+      { props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} workout={workout} /> ) : null}
     </div>
   </div> )
 }
