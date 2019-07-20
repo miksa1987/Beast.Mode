@@ -1,7 +1,4 @@
 const User = require('../models/User')
-const Workout = require('../models/Workout')
-const Post = require('../models/Post')
-const DoneWorkout = require('../models/DoneWorkout')
 
 const setActivity = async (userid, type, id) => {
   const user = await User.findById(userid)
@@ -48,7 +45,14 @@ const setActivity = async (userid, type, id) => {
       activity = {
         text: `${user.username} liked a workout`,
         uri: `/workout/${id}`
-      } 
+      }
+      break
+    case 'addfriend':
+        activity = {
+          text: `${user.username} added a friend`,
+          uri: `/profilex/${id}`
+        } 
+      break
     default:
       return {}
   }

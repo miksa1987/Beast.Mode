@@ -7,6 +7,7 @@ const DoneWorkout = require('../models/DoneWorkout')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { cloudinary, imgparser } = require('../util/imageupload')
+const activityHelper = require('../util/activity')
 
 userRouter.get('/all', async (request, response) => {
   try {
@@ -20,7 +21,7 @@ userRouter.get('/all', async (request, response) => {
 userRouter.get('/randoms', async (request, response) => {
   try {
     const users = await User.find({}).populate('friends')
-    console.log(users)
+    
     if (users.length < 25) return response.status(200).json(users)
 
     let randomUsers = []
@@ -33,8 +34,6 @@ userRouter.get('/randoms', async (request, response) => {
         randomUsers = randomUsers.concat(users[random])
       }
     }
-    console.log('------')
-    console.log(randomUsers)
 
     return response.status(200).json(randomUsers)
   } catch (error) {
@@ -65,7 +64,7 @@ userRouter.get('/:id/name', async (request, response) => {
 userRouter.get('/:id/posts', async (request, response) => {
   try {
     const posts = await Post.find({ user: request.params.id }).populate('user')
-    return  response.status(200).json(posts)
+    return response.status(200).json(posts)
   } catch(error) {
     return response.status(404).end()
   }
@@ -83,9 +82,9 @@ userRouter.get('/:id/workouts', async (request, response) => {
 userRouter.get('/:id/doneworkouts', async (request, response) => {
   try {
     const doneworkouts = await DoneWorkout.find({ user: request.params.id }).populate('user')
-    response.status(200).json(doneworkouts)
+    return response.status(200).json(doneworkouts)
   } catch(error) {
-    response.status(404).end()
+    return response.status(404).end()
   }
 })
 
@@ -131,9 +130,10 @@ userRouter.post('/addfriend', async (request, response, next) => {
     const updatedUser = await user.save()
     await newFriend.save()
 
+    activityHelper.setActivity(decodedToken.id, 'addfriend', newFriend.id)
     return response.status(200).json(updatedUser)
-  } catch(e) {
-    return response.status(400).json({ error: e.message })
+  } catch(error) {
+    return response.status(400).json({ error: error.message })
   }
 })
 

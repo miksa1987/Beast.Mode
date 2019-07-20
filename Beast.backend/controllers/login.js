@@ -13,7 +13,7 @@ loginRouter.post('/', async (request, response) => {
 
     console.log('password check')
     if(!user || !passwordCorrect) {
-      response.status(400).json({ error:'Invalid username or password' })
+      return response.status(400).json({ error:'Invalid username or password' })
     }
     
     const userForToken = {
@@ -32,10 +32,9 @@ loginRouter.post('/', async (request, response) => {
       workouts: user.workouts
     }
 
-    response.status(200).json(data)
+    return response.status(200).json(data)
   } catch (error) {
-    console.log(error.message)
-    response.status(400).json({ error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 })
 

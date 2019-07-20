@@ -10,27 +10,27 @@ const imgparser = multer({ storage })
 doneWorkoutRouter.get('/all', async (request, response) => {
   try {
     const doneWorkouts = await DoneWorkout.find({})
-    response.status(200).json(doneWorkouts)
+    return response.status(200).json(doneWorkouts)
   } catch (error) {
-    response.status(400).json({ error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 })
 
 doneWorkoutRouter.get('/:id', async (request, response) => {
   try {
     const doneWorkout = await DoneWorkout.findById(request.params.id)
-    response.status(200).json(doneWorkout)
+    return response.status(200).json(doneWorkout)
   } catch (error) {
-    response.status(400).json({ error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 })
 
 doneWorkoutRouter.post('/new', imgparser.single('image'), async (request, response) => {
-  if (!request.token) response.status(401).end()
+  if (!request.token) return response.status(401)
 
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-    if (!decodedToken.id) response.status(401).end()
+    if (!decodedToken.id) return response.status(401)
     
     if (request.file) {
       await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
@@ -55,23 +55,20 @@ doneWorkoutRouter.post('/new', imgparser.single('image'), async (request, respon
         done: true
       }
     })
-    console.log(doneWorkout)
 
     const savedDoneWorkout = await doneWorkout.save()
-    console.log(savedDoneWorkout)
-    response.status(201).json(savedDoneWorkout)
+    return response.status(201).json(savedDoneWorkout)
   } catch (error) {
-    console.log(error.message)
-    response.status(400).send({ error: error.message })
+    return response.status(400).send({ error: error.message })
   }
 })
 
 doneWorkoutRouter.post('/:id/comment', async (request, response) => {
-  if (!request.token) response.status(401).end()
+  if (!request.token) return response.status(401).end()
   
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-    if (!decodedToken.id) response.status(401).end()
+    if (!decodedToken.id) return response.status(401).end()
 
     const user = await user.findById(decodedToken.id)
     const doneWorkout = await DoneWorkout.findById(request.params.id)
@@ -81,10 +78,10 @@ doneWorkoutRouter.post('/:id/comment', async (request, response) => {
 
     const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true })
 
-    response.status(200).json(updatedDoneWorkout)
+    return response.status(200).json(updatedDoneWorkout)
 
   } catch (error) {
-    response.status(400).json({ error: error.message})
+    return response.status(400).json({ error: error.message})
   }
 })
 
@@ -94,10 +91,10 @@ doneWorkoutRouter.post('/:id/like', async (request, response) => {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
 
     if(!decodedToken) {
-      response.status(401).end()
+      return response.status(401).end()
     }
     if(!doneWorkout) {
-      response.status(400).end()
+      return response.status(400).end()
     }
 
     let newLikes = doneWorkout.likes.filter(like => like !== decodedToken.id)
@@ -112,19 +109,18 @@ doneWorkoutRouter.post('/:id/like', async (request, response) => {
     
     activityHelper.setActivity(decodedToken.id, 'like', doneWorkout._id)
     const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true }).populate('user')
-    response.status(200).json(updatedDoneWorkout)
-  } catch(e) {
-    console.log(e.message)
-    response.status(400).send({ error: e.message })
+    return response.status(200).json(updatedDoneWorkout)
+  } catch(error) {
+    return response.status(400).send({ error: error.message })
   }
 })
 
 doneWorkoutRouter.put('/:id', async (request, response) => {
   if(!request.token) {
-    response.status(401).end()
+    return response.status(401).end()
   }
   if(!request.body.content) {
-    response.status(400).send('New content missing')
+    return response.status(400).send('New content missing')
   }
 
   try {
@@ -141,9 +137,9 @@ doneWorkoutRouter.put('/:id', async (request, response) => {
 
     const savedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true })
     
-    response.status(200).json(savedDoneWorkout)
+    return response.status(200).json(savedDoneWorkout)
   } catch(error) {
-    response.status(400).json({ error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 })
 

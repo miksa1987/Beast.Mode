@@ -9,28 +9,27 @@ const { imgparser, cloudinary } = require('../util/imageupload')
 workoutRouter.get('/all', async (request, response) => {
   try {
     const workouts = await Workout.find({}).populate('user')
-    console.log(workouts)
-    response.status(200).json(workouts)
+    return response.status(200).json(workouts)
   } catch(error) {
-    response.status(404).end()
+    return response.status(404).end()
   }
 })
 
 workoutRouter.get('/:id', async (request, response) => {
   try {
     const workout = await Workout.findById(request.params.id).populate('user')
-    response.json(workout)
+    return response.status(200).json(workout)
   } catch(error) {
-    response.status(404).send('Workout not found!')
+    return response.status(404).send('Workout not found!')
   }
 })
 
 workoutRouter.put('/:id', async (request, response) => {
   if(!request.token) {
-    response.status(401).end()
+    return response.status(401).end()
   }
   if(!request.body.content) {
-    response.status(400).send('New content missing')
+    return response.status(400).send('New content missing')
   }
 
   try {
@@ -47,18 +46,18 @@ workoutRouter.put('/:id', async (request, response) => {
 
     const result = await Workout.findByIdAndUpdate(request.params.id, moddedWorkout, { new: true })
     
-    response.status(200).json(result)
+    return response.status(200).json(result)
   } catch(error) {
-    response.status(400).json({ error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 })
 
 workoutRouter.post('/new', imgparser.single('image'), async (request, response, next) => {
   if(!request.token) {
-    response.status(401).end()
+    return response.status(401).end()
   }
   if(!request.body.content) {
-    response.status(400).send('Description or exercises missing')
+    return response.status(400).send('Description or exercises missing')
   }
   
   try {
@@ -87,25 +86,23 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
     activityHelper.setActivity(decodedToken.id, 'workout', workout._id)
     userUpdater.addToWorkouts(decodedToken.id, workout._id)
     
-    response.status(201).json(savedWorkout)
-  } catch(e) {
-    console.log(e.message)
-    response.status(400).send({ error: e.message })
+    return response.status(201).json(savedWorkout)
+  } catch(error) {
+    return response.status(400).send({ error: error.message })
   }
 })
 
 
 workoutRouter.post('/:id/comment', async (request, response) => {
-  console.log(request.params.id)
   try {
     const workout = await Workout.findById(request.params.id)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     
     if(!decodedToken) {
-      response.status(401).end()
+      return response.status(401).end()
     }
     if(!workout) {
-      response.status(400).end()
+      return response.status(400).end()
     }
     
     const newComments = workout.comments.concat({ content: request.body.comment, user: decodedToken.username })
@@ -116,10 +113,9 @@ workoutRouter.post('/:id/comment', async (request, response) => {
     const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true })
     
     activityHelper.setActivity(decodedToken.id, 'comment', workout._id)
-    response.status(200).json(updatedWorkout)
-  } catch(e) {
-    console.log(e.message)
-    response.status(400).send({ error: e.message })
+    return response.status(200).json(updatedWorkout)
+  } catch(error) {
+    return response.status(400).send({ error: error.message })
   }
 })
 
@@ -131,10 +127,10 @@ workoutRouter.post('/:id/like', async (request, response) => {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     
     if(!decodedToken) {
-      response.status(401).end()
+      return response.status(401).end()
     }
     if(!workout) {
-      response.status(400).end()
+      return response.status(400).end()
     }
     let newLikes = workout.likes.filter(like => like !== decodedToken.id)
     if (newLikes.length === 0) {
@@ -148,10 +144,9 @@ workoutRouter.post('/:id/like', async (request, response) => {
     const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true }).populate('user')
     
     activityHelper.setActivity(decodedToken.id, 'like', workout._id)
-    response.status(200).json(updatedWorkout)
-  } catch(e) {
-    console.log(e.message)
-    response.status(400).send({ error: e.message })
+    return response.status(200).json(updatedWorkout)
+  } catch(error) {
+    return response.status(400).send({ error: error.message })
   }
 })
 module.exports = workoutRouter

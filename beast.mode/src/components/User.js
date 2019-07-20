@@ -1,10 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Image } from 'semantic-ui-react'
+import useWindowSize from '../hooks/useWindowSize'
 
 const User = (props) => {
+  const windowSize = useWindowSize()
+
   const userStyle = {
-    width: '30%'
+    width: (0.3105 * windowSize.width),
+    maxHeight: (0.3333 * windowSize.width),
+    padding: '3% 3% 3% 3%'
   }
 
   const tableStyle = {
@@ -21,7 +26,8 @@ const User = (props) => {
         <tr>
           <td>
             <Image src={props.user.picture && props.user.picture !== '' ? 
-              props.user.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
+              props.user.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} 
+              width={(0.3105 * windowSize.width)} height={(0.25 * windowSize.width)}/>
           </td>
         </tr>
         <tr>

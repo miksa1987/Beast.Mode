@@ -9,27 +9,27 @@ const { imgparser, cloudinary } = require('../util/imageupload')
 postRouter.get('/all', async (request, response) => {
   try {
     const posts = await Post.find({}).populate('user')
-    response.status(200).json(posts)
+    return response.status(200).json(posts)
   } catch(error) {
-    response.status(404).end()
+    return response.status(404).end()
   }
 })
 
 postRouter.get('/:id', async (request, response) => {
   try {
     const post = await Post.findById(request.params.id).populate('user')
-    response.status(200).json(post)
+    return response.status(200).json(post)
   } catch(error) {
-    response.status(404).send('Post not found')
+    return response.status(404).send('Post not found')
   }
 })
 
 postRouter.put('/:id', async (request, response) => {
   if(!request.token) {
-    response.status(401).end()
+    return response.status(401).end()
   }
   if(!request.body.content) {
-    response.status(400).send('New content missing')
+    return response.status(400).send('New content missing')
   }
 
   try {
@@ -46,18 +46,18 @@ postRouter.put('/:id', async (request, response) => {
 
     const result = await Post.findByIdAndUpdate(request.params.id, moddedPost, { new: true })
     
-    response.status(200).json(result)
+    return response.status(200).json(result)
   } catch(error) {
-    response.status(400).json({ error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 })
 
 postRouter.post('/new', imgparser.single('image'), async (request, response, next) => {
   if(!request.token) {
-    response.status(401).end()
+    return response.status(401).end()
   }
   if(!(request.body.content)) {
-    response.status(400).send('Content missing')
+    return response.status(400).send('Content missing')
   }
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
@@ -84,10 +84,9 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
 
     activityHelper.setActivity(decodedToken.id, 'post', post._id)
     userUpdater.addToPosts(decodedToken.id, post._id)
-    response.status(201).json(savedPost)
+    return response.status(201).json(savedPost)
   } catch(e) {
-    console.log(e.message)
-    response.status(400).send({ error: e.message })
+    return response.status(400).send({ error: e.message })
   }
   
 })
@@ -98,10 +97,10 @@ postRouter.post('/:id/comment', async (request, response) => {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
 
     if(!decodedToken) {
-      response.status(401).end()
+      return response.status(401).end()
     }
     if(!post) {
-      response.status(400).end()
+      return response.status(400).end()
     }
 
     const newComments = post.comments.concat({ content: request.body.comment, user: decodedToken.username })
@@ -113,10 +112,9 @@ postRouter.post('/:id/comment', async (request, response) => {
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true })
     
     activityHelper.setActivity(decodedToken.id, 'comment', post._id)
-    response.status(200).json(updatedPost)
+    return response.status(200).json(updatedPost)
   } catch(e) {
-    console.log(e.message)
-    response.status(400).send({ error: e.message })
+    return response.status(400).send({ error: e.message })
   }
 })
 
@@ -126,10 +124,10 @@ postRouter.post('/:id/like', async (request, response) => {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
 
     if(!decodedToken) {
-      response.status(401).end()
+      return response.status(401).end()
     }
     if(!post) {
-      response.status(400).end()
+      return response.status(400).end()
     }
 
     let newLikes = post.likes.filter(like => like !== decodedToken.id)
@@ -144,10 +142,9 @@ postRouter.post('/:id/like', async (request, response) => {
     
     activityHelper.setActivity(decodedToken.id, 'like', post._id)
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true }).populate('user')
-    response.status(200).json(updatedPost)
+    return response.status(200).json(updatedPost)
   } catch(e) {
-    console.log(e.message)
-    response.status(400).send({ error: e.message })
+    return response.status(400).send({ error: e.message })
   }
 })
 

@@ -8,7 +8,7 @@ resetRouter.get('/', async (request, response) => {
   await Post.deleteMany({})
   await Workout.deleteMany({})
 
-  response.status(204).end()
+  return response.status(204).end()
 })
 
 module.exports = resetRouter
