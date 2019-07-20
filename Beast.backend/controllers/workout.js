@@ -9,7 +9,8 @@ const { imgparser, cloudinary } = require('../util/imageupload')
 workoutRouter.get('/all', async (request, response) => {
   try {
     const workouts = await Workout.find({}).populate('user')
-    response.json(workouts)
+    console.log(workouts)
+    response.status(200).json(workouts)
   } catch(error) {
     response.status(404).end()
   }
@@ -81,11 +82,12 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
       comments: [],
       date: new Date()
     })
-    await workout.save()
+    const savedWorkout = await workout.save()
 
     activityHelper.setActivity(decodedToken.id, 'workout', workout._id)
     userUpdater.addToWorkouts(decodedToken.id, workout._id)
-    response.status(201).end()
+    
+    response.status(201).json(savedWorkout)
   } catch(e) {
     console.log(e.message)
     response.status(400).send({ error: e.message })

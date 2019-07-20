@@ -11,9 +11,9 @@ const { cloudinary, imgparser } = require('../util/imageupload')
 userRouter.get('/all', async (request, response) => {
   try {
     const users = await User.find({}).populate('friends')
-    response.status(200).json(users)
+    return response.status(200).json(users)
   } catch (error) {
-    response.status(400).json({ error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 })
 
@@ -21,29 +21,34 @@ userRouter.get('/randoms', async (request, response) => {
   try {
     const users = await User.find({}).populate('friends')
     console.log(users)
-    if (users.length < 25) response.status(200).json(users)
+    if (users.length < 25) return response.status(200).json(users)
 
     let randomUsers = []
-    for (let i = 0; i < 25; i++) {
-      let random = Math.floor(Math.random() * users.length)
-      const userids = randomUsers.map(user => user.id) 
-      while (userids.indexOf(users[random].id) < 0) random = Math.floor(Math.random() * users.length)
+    if(users.length > 35) {
+      for (let i = 0; i < 25; i++) {
+        let random = Math.floor(Math.random() * users.length)
+        const userids = randomUsers.map(user => user.id) 
+        while (userids.indexOf(users[random].id) < 0) random = Math.floor(Math.random() * users.length)
 
-      randomUsers = randomUsers.concat(users[random])
+        randomUsers = randomUsers.concat(users[random])
+      }
     }
+    console.log('------')
+    console.log(randomUsers)
 
-    response.status(200).json(randomUsers)
+    return response.status(200).json(randomUsers)
   } catch (error) {
-    response.status(400).json({ error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 })
 
 userRouter.get('/:id', async (request, response) => {
   try {
     const user = await User.findById(request.params.id).populate('friends')
-    response.status(200).json(user)
+    console.log(user)
+    return response.status(200).json(user).end()
   } catch(error) {
-    response.status(404).send('User not found!')
+    return response.status(404).send('User not found!')
   }
 })
 
@@ -51,27 +56,27 @@ userRouter.get('/:id/name', async (request, response) => {
   try {
     const user = await User.findById(request.params.id)
     const username = user.username
-    response.status(200).json(username)
+    return response.status(200).json(username)
   } catch(error) {
-    response.status(404).send('User not found!')
+    return response.status(404).send('User not found!')
   }
 })
 
 userRouter.get('/:id/posts', async (request, response) => {
   try {
     const posts = await Post.find({ user: request.params.id }).populate('user')
-    response.status(200).json(posts)
+    return  response.status(200).json(posts)
   } catch(error) {
-    response.status(404).end()
+    return response.status(404).end()
   }
 })
 
 userRouter.get('/:id/workouts', async (request, response) => {
   try {
     const workouts = await Workout.find({ user: request.params.id }).populate('user')
-    response.status(200).json(workouts)
+    return response.status(200).json(workouts)
   } catch(error) {
-    response.status(404).end()
+    return response.status(404).end()
   }
 })
 
@@ -105,7 +110,7 @@ userRouter.post('/new', async (request, response) => {
   })
 
   const savedUser = await user.save()
-  response.status(201).json(savedUser)
+  return response.status(201).json(savedUser)
 })
 
 userRouter.post('/addfriend', async (request, response, next) => {
@@ -126,9 +131,9 @@ userRouter.post('/addfriend', async (request, response, next) => {
     const updatedUser = await user.save()
     await newFriend.save()
 
-    response.status(200).json(updatedUser)
+    return response.status(200).json(updatedUser)
   } catch(e) {
-    response.status(400).json({ error: e.message })
+    return response.status(400).json({ error: e.message })
   }
 })
 
@@ -168,10 +173,10 @@ userRouter.put('/me', imgparser.single('image'), async (request, response) => {
     }
 
     const updatedUser = await User.findByIdAndUpdate(decodedToken.id, userToUpdate, { new: true })
-    response.status(200).json(updatedUser)
+    return response.status(200).json(updatedUser)
   } catch(error) {
     console.log(error.message)
-    response.status(400).json({ error: error.message })
+    return response.status(400).json({ error: error.message })
   }
 })
 

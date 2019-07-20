@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const Activity = (props) => {
-  if(props.currentProfile.activity.length === 0) {
+  if(!props.currentProfile.activity && props.currentProfile.activity.length === 0) {
     return ( <div>
     </div> )
   }

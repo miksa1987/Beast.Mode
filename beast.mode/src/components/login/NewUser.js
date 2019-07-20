@@ -15,10 +15,9 @@ const NewUser = (props) => {
       email: event.target.email.value,
       info: event.target.info.value
     }
-    console.log(user)
+ 
     const response = await communicationService.post('/users/new', user)
-
-    props.history.push('/login')
+    console.log(response)
   }
 
   return ( <div style={style}>

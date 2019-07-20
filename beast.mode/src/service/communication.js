@@ -11,8 +11,8 @@ const get = async (uri) => {
   return result.data
 }
 
-const post = async (uri, data) => {
-  const config = { headers: { Authorization: token }}
+const post = async (uri, data, headers) => {
+  const config = { headers: { ...headers, Authorization: token }}
   const result = await axios.post(uri, data, config)
   return result.data
 }

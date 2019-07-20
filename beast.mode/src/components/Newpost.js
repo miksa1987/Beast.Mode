@@ -76,6 +76,7 @@ const Newpost = (props) => {
     if(post.type === 'workout') newPost = await communicationService.post('/workouts/new', data, header)
     if(post.type === 'doneworkout') newPost = await communicationService.post('/doneworkouts/new', data, header)
 
+    console.log(newPost)
     props.addToFeed(newPost)
   }
 

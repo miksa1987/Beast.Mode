@@ -80,11 +80,11 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
       comments: [],
       date: new Date()
     })
-    await post.save()
+    const savedPost = await post.save()
 
     activityHelper.setActivity(decodedToken.id, 'post', post._id)
     userUpdater.addToPosts(decodedToken.id, post._id)
-    response.status(201).json(post)
+    response.status(201).json(savedPost)
   } catch(e) {
     console.log(e.message)
     response.status(400).send({ error: e.message })
