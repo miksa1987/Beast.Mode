@@ -45,10 +45,13 @@ app.use('/resetonlyifyouarecompletelysureaboutthis', resetRouter) // This has to
 
 app.use(middleware.errorHandler) // This might cause the whole shit to crash and burn....
 
+// for testing
+let socketsList = []
+
 io.on('connection', (socket) => {
   socket.on('connect_user', (userid) => {
-    const user = { id: userid, socket: socket.conn.id }
-    sockets.connectUser(user)
+    const newSocket = { ...socket, userid: userid }
+    sockets.connectUser(newSocket)
   })
 
   socket.on('disconnect_user', (userid) => {
