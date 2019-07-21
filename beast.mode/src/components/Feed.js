@@ -24,7 +24,7 @@ const Feed = (props) => {
 
   return ( <div style={feedStyle}>
     <Newpost />
-    <Divider horizontal>LATEST</Divider>
+    <Divider />
     {props.feed.map(post => <Post key={post._id} post={post} />)}
   </div> )
 }

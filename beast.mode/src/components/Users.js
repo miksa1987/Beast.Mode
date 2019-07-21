@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { initUsers } from '../reducers/users'
+import { initUsers } from '../reducers/usersReducer'
 import User from './User'
 
 const Users = (props) => {

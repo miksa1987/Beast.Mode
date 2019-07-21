@@ -9,12 +9,13 @@ import App from './App'
 import currentUserReducer from './reducers/currentUser'
 import feedReducer from './reducers/feedReducer'
 import workoutsReducer from './reducers/workoutsReducer'
-import usersReducer from './reducers/users'
+import usersReducer from './reducers/usersReducer'
 import doneWorkoutsReducer from './reducers/doneWorkoutsReducer'
 import currentUserPostsReducer from './reducers/currentUserPosts'
 import currentWorkoutReducer from './reducers/currentWorkout'
 import currentProfileReducer from './reducers/currentProfile'
 import currentPostReducer from './reducers/currentPost'
+import notificationReducer from './reducers/notificationReducer'
 
 const reducer = combineReducers({
   currentUser: currentUserReducer,
@@ -25,7 +26,8 @@ const reducer = combineReducers({
   users: usersReducer,
   feed: feedReducer,
   workouts: workoutsReducer,
-  doneWorkouts: doneWorkoutsReducer
+  doneWorkouts: doneWorkoutsReducer,
+  notification: notificationReducer
 })
 
 const store = createStore(reducer, applyMiddleware(thunk))

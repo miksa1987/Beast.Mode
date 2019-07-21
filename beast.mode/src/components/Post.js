@@ -93,6 +93,8 @@ const Post = (props) => {
                 <tr>
                   <td style={commentsStyle}>
                     <div style={commentStyle}>
+                      {props.post.comments.length === 0 ? null
+                        : <strong>Comments:</strong>}
                       {props.post.comments.map((c, i) => <Comment key={c._id} comment={c.content} user={c.user} />)} 
                     </div>
                   </td>
