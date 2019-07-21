@@ -24,8 +24,8 @@
     "supertest": "^4.0.2"
   },
   "scripts": {
-    "start": "cross-env BEASTMODE_ENV=production node index.js",
-    "watch": "cross-env BEASTMODE_ENV=dev nodemon index.js",
+    "start": "cross-env BEASTMODE_ENV=production node app.js",
+    "watch": "cross-env BEASTMODE_ENV=dev nodemon app.js",
     "test": "cross-env BEASTMODE_ENV=test jest --verbose --runInBand"
   },
   "author": "",

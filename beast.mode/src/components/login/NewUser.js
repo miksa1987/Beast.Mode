@@ -17,7 +17,6 @@ const NewUser = (props) => {
     }
  
     const response = await communicationService.post('/users/new', user)
-    console.log(response)
   }
 
   return ( <div style={style}>

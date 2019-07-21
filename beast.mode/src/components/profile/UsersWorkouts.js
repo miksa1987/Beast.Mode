@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { initWorkouts } from '../../reducers/workoutsReducer'
 import Post from '../Post'
+import Workout from '../Workout'
 
 const UsersWorkouts = (props) => {
   useEffect(() => {

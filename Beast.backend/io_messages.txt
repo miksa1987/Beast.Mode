@@ -1,0 +1,17 @@
+connect_user
+disconnect_user
+
+user_add_friend
+user_add_photo
+user_add_post
+user_add_workout
+user_add_doneworkout
+
+doneworkout_comment
+doneworkout_like
+
+post_comment
+post_like
+
+workout_comment
+workout_like

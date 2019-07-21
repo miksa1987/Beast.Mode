@@ -9,5 +9,6 @@ ja fiidi jossa viimeisimmät päivitykset/tehdyt treenit.
 Backendin tulen tekemään Expressillä, johon on yhdistetty MongoDB. Kuvien tallennus Cloudinaryyn.
 Frontend tehdään React + Redux-yhdistelmällä.
 
-Käyttöliittymän kuvakkeet ovat Stefan Taubertin käsialaa, ja ne on julkaistu Creative Commons 3.0-lisenssillä. Koko setti löytyy
-osoitteesta https://www.iconfinder.com/iconsets/basic-user-interface-elements. Käyttöliittymässä on käytetty Semantic UI React-komponentteja ja tyyliä, jotka on julkaistu MIT-lisenssillä.
+Käyttöliittymässä on käytetty Semantic UI React-komponentteja, kuvakkeita ja tyyliä, jotka on julkaistu MIT-lisenssillä.
+
+Sovellus löytyy internetin syövereistä osoitteesta https://protected-anchorage-88354.herokuapp.com/ .

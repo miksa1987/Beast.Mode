@@ -1,3 +1,0 @@
-connectedclients = [ 1, 2, 3, 4, 5 ... ]
-
-user tekee jotain => check et onko sen kavereita connectedclientsissa => niille kavereille jotka on lähetetään socketilla ilmoitus

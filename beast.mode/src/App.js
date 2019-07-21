@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
+
 import './App.css'
 
 import { setUser } from './reducers/currentUser'
 import userHelper from './util/userHelper'
+import socket from './service/socket'
 
 import Menubar from './components/Menubar'
 import Feed from './components/Feed'
@@ -26,10 +28,15 @@ const App = (props) => {
     userHelper.checkAndSetUser(props.setUser)
   }, [])
 
-  if(props.currentUser === null) {
+  if (props.currentUser === null) {
     return ( <div>
       <LoginForm />
     </div>)
+  }
+
+  if (props.currentUser.id) {
+    socket.setUser(props.currentUser.id)
+    socket.emitUser()
   }
 
   return ( <div>
