@@ -34,11 +34,6 @@ const App = (props) => {
     </div>)
   }
 
-  if (props.currentUser.id) {
-    socket.setUser(props.currentUser.id)
-    socket.emitUser()
-  }
-
   return ( <div>
     <Router>
     <Route exact path='/' render={() => <Feed />} />

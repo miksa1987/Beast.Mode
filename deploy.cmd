@@ -16,7 +16,7 @@ cd .\Beast.mode
 call npm run build
 cd ..
 
-mkdir ".\Beast.MODE production\build"
+mkdir "..\Beast.MODE production\build"
 xcopy .\Beast.mode\build "..\Beast.MODE production\build" /Y
 
 cd "..\Beast.MODE production"

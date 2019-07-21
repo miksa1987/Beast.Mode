@@ -130,6 +130,7 @@ userRouter.post('/addfriend', async (request, response, next) => {
     const updatedUser = await user.save()
     await newFriend.save()
 
+    request.io.emit('user_add_friend', newFriend)
     activityHelper.setActivity(decodedToken.id, 'addfriend', newFriend.id)
     return response.status(200).json(updatedUser)
   } catch(error) {

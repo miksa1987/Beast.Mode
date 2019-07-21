@@ -1,17 +1,16 @@
 connect_user
 disconnect_user
 
-user_add_friend
-user_add_photo
-user_add_post
-user_add_workout
-user_add_doneworkout
+user_add_friend DONE
+user_add_post DONE
+user_add_workout DONE
+user_add_doneworkout DONE
 
-doneworkout_comment
-doneworkout_like
+doneworkout_comment DONE
+doneworkout_like DONE
 
-post_comment
-post_like
+post_comment DONE
+post_like DONE
 
-workout_comment
-workout_like
+workout_comment DONE
+workout_like DONE

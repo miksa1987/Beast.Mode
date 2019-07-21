@@ -83,8 +83,9 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
     })
     const savedWorkout = await workout.save()
 
-    activityHelper.setActivity(decodedToken.id, 'workout', workout._id)
-    userUpdater.addToWorkouts(decodedToken.id, workout._id)
+    request.io.emit('user_add_workout', savedWorkout)
+    activityHelper.setActivity(decodedToken.id, 'workout', savedWorkout._id)
+    userUpdater.addToWorkouts(decodedToken.id, savedWorkout._id)
     
     return response.status(201).json(savedWorkout)
   } catch(error) {
@@ -112,6 +113,7 @@ workoutRouter.post('/:id/comment', async (request, response) => {
     }
     const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true })
     
+    request.io.emit('workout_comment', updatedWorkout)
     activityHelper.setActivity(decodedToken.id, 'comment', workout._id)
     return response.status(200).json(updatedWorkout)
   } catch(error) {
@@ -143,6 +145,7 @@ workoutRouter.post('/:id/like', async (request, response) => {
     }
     const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true }).populate('user')
     
+    request.io.emit('workout_like', updatedWorkout)
     activityHelper.setActivity(decodedToken.id, 'like', workout._id)
     return response.status(200).json(updatedWorkout)
   } catch(error) {

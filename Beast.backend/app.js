@@ -45,21 +45,6 @@ app.use('/resetonlyifyouarecompletelysureaboutthis', resetRouter) // This has to
 
 app.use(middleware.errorHandler) // This might cause the whole shit to crash and burn....
 
-// for testing
-let socketsList = []
-
-io.on('connection', (socket) => {
-  socket.on('connect_user', (userid) => {
-    const newSocket = { ...socket, userid: userid }
-    sockets.connectUser(newSocket)
-  })
-
-  socket.on('disconnect_user', (userid) => {
-    sockets.disconnectUser(userid)
-    console.log(`disconnected user ${userid}`)
-  })
-})
-
 http.listen(config.PORT, () => {
   console.log(`Server running on port ${config.PORT}`)
 })

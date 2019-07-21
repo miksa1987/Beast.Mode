@@ -78,6 +78,7 @@ const Newpost = (props) => {
 
     console.log(newPost)
     props.addToFeed(newPost)
+    setTextContent('')
   }
 
   return ( <div style={elementStyle}>

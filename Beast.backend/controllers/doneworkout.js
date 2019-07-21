@@ -57,6 +57,10 @@ doneWorkoutRouter.post('/new', imgparser.single('image'), async (request, respon
     })
 
     const savedDoneWorkout = await doneWorkout.save()
+
+    activityHelper.setActivity(decodedToken.id, 'post', savedDoneWorkout._id)
+    userUpdater.addToPosts(decodedToken.id, savedDoneWorkout._id)
+    request.io.emit('user_add_doneworkout', savedDoneWorkout)
     return response.status(201).json(savedDoneWorkout)
   } catch (error) {
     return response.status(400).send({ error: error.message })
@@ -78,6 +82,8 @@ doneWorkoutRouter.post('/:id/comment', async (request, response) => {
 
     const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true })
 
+    request.io.emit('doneworkout_comment', updatedPost)
+    activityHelper.setActivity(decodedToken.id, 'comment', updatedDoneWorkout._id)
     return response.status(200).json(updatedDoneWorkout)
 
   } catch (error) {
@@ -107,8 +113,10 @@ doneWorkoutRouter.post('/:id/like', async (request, response) => {
       comments: post.comments
     }
     
-    activityHelper.setActivity(decodedToken.id, 'like', doneWorkout._id)
     const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true }).populate('user')
+    
+    request.io.emit('doneworkout_like', updatedDoneWorkout)
+    activityHelper.setActivity(decodedToken.id, 'like', updatedDoneWorkout._id)
     return response.status(200).json(updatedDoneWorkout)
   } catch(error) {
     return response.status(400).send({ error: error.message })

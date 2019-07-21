@@ -1,22 +1,35 @@
 import React from 'react'
 import communicationService from '../../service/communication'
 import { Input, TextArea, Button, Form } from 'semantic-ui-react'
+import useField from '../../hooks/useField'
 
 const NewUser = (props) => {
   const style = {
     height: '20em'
   }
 
+  const [username, resetUsername] = useField('text')
+  const [email, resetEmail] = useField('text')
+  const [info, resetInfo] = useField('text')
+  const [password, resetPassword] = useField('password')
+  const [rPassword, resetRPassword] = useField('password')
+
   const create = async (event) => {
     event.preventDefault()
     const user = {
-      username: event.target.username.value,
-      password: event.target.password.value,
-      email: event.target.email.value,
-      info: event.target.info.value
+      username: username.value,
+      password: password.value,
+      email: email.value,
+      info: info.value
     }
  
     const response = await communicationService.post('/users/new', user)
+
+    resetUsername()
+    resetEmail()
+    resetInfo()
+    resetPassword()
+    resetRPassword()
   }
 
   return ( <div style={style}>
@@ -26,8 +39,8 @@ const NewUser = (props) => {
         <tbody>
           <tr>
             <td>
-              <Input placeholder='Desired username' name='username' size='small' />
-              <Input placeholder='Your email' name='email' size='small' />
+              <Input placeholder='Desired username' {...username} size='small' />
+              <Input placeholder='Your email' {...email} size='small' />
             </td>
           </tr>
           <tr>
@@ -39,13 +52,13 @@ const NewUser = (props) => {
           </tr>
           <tr>
             <td>
-              <TextArea placeholder='Write some information about yourself' name='info' />
+              <TextArea placeholder='Write some information about yourself' {...info} />
             </td>
           </tr>
           <tr>
             <td>
-              <Input placeholder='Create a password' type='password' name='password' size='small' />
-              <Input placeholder='Repeat password' type='password' name='passconfirm' size='small' />
+              <Input placeholder='Create a password' {...password} size='small' />
+              <Input placeholder='Repeat password' {...rPassword} size='small' />
             </td>
           </tr>
         </tbody>
