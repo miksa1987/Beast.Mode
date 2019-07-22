@@ -2,6 +2,6 @@ POST http://localhost:3001/search
 Content-type: application/json
 
 {
-  "search": "Miksa",
-  "password": "Gener4lE"
+  "search": "miks",
+  "type": "user"
 }
