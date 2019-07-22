@@ -5,6 +5,7 @@ import { Image, Menu, Icon, Button } from 'semantic-ui-react'
 import { initUserPosts } from '../../reducers/currentUserPosts'
 import { initCurrentProfile } from '../../reducers/currentProfile'
 import { addFriend } from '../../reducers/currentUser'
+import useOrientation from '../../hooks/useOrientation'
 
 import Activity from './Activity'
 import Friends from './Friends'
@@ -16,6 +17,7 @@ import Post from '../Post'
 
 const Dashboard  = (props) => {
   const [view, setView] = useState('posts')
+  const orientation = useOrientation()
 
   useEffect(() => {
       props.initCurrentProfile(props.user)
@@ -41,11 +43,6 @@ const Dashboard  = (props) => {
   }
 
   return ( <div>
-    <Button style={addFriendButtonStyle} color='green'
-      onClick={() => props.addFriend(props.currentProfile.id)}>
-      <Icon name='plus' />
-      Add as friend
-    </Button>
     <table>
       <tbody>
         <tr>
@@ -60,6 +57,17 @@ const Dashboard  = (props) => {
         </tr>
       </tbody>
     </table>
+    {orientation === 'portrait' ? 
+      <Button color='green'
+        onClick={() => props.addFriend(props.currentProfile.id)}>
+        <Icon name='plus' />
+        Add as friend
+      </Button>
+      : <Button style={addFriendButtonStyle} color='green'
+        onClick={() => props.addFriend(props.currentProfile.id)}>
+        <Icon name='plus' />
+        Add as friend
+      </Button> }
     <Menu pointing secondary stackable>
       <Menu.Item onClick={() => setView('posts')} active={view === 'posts'}>
         <Icon name='sticky note' />

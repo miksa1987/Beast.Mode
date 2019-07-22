@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { addComment, like } from '../reducers/feedReducer'
 import useField from '../hooks/useField'
-
+import useOrientation from '../hooks/useOrientation'
 import Comment from './Comment'
 
 const elementStyle = {
@@ -51,6 +51,8 @@ const commentStyle = {
 
 const Post = (props) => {
   const [comment, resetComment] = useField('text')
+  const orientation = useOrientation()
+
   if(props.post === undefined) {
     return null
   }
@@ -59,6 +61,39 @@ const Post = (props) => {
     event.preventDefault()
     props.addComment(props.post.type, props.post._id, comment.value)
     resetComment()
+  }
+
+  if (orientation === 'portrait') {
+    return ( <div style={elementStyle}>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <Image circular width='32px' height='32px'
+                src={props.post.user.picture && props.post.user.picture !== '' 
+                ? props.post.user.picture : '/img/ui/dashboard.png'} />
+            </td>
+            <td>
+              <strong><Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link></strong>
+                {props.post.type === 'doneworkout' ? ' did a workout' : ''}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      {props.post.picture && props.post.picture !== '' ? <Image size='big' src={props.post.picture} /> : null }
+      <p>{props.post.content}</p>
+      <table><tbody>
+        <tr>
+          <td>        
+            <Button onClick={() => props.like(props.post.type, props.post._id)}>Like</Button>
+          </td>
+          <td width='100%'>
+            <form onSubmit={sendComment}><Input fluid size='mini' action='Comment' {...comment} /></form>
+          </td>
+        </tr>
+      </tbody></table>
+      <Divider />
+    </div> )
   }
 
   return ( <div style={elementStyle}>

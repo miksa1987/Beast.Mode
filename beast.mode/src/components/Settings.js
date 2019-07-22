@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Input, Form, Button, Image, TextArea } from 'semantic-ui-react'
 import { updateUser } from '../reducers/currentUser'
 import useField from '../hooks/useField'
+import useOrientation from '../hooks/useOrientation'
 
 const Settings = (props) => {
   const [file, setFile]                           = useState('')
@@ -12,6 +13,8 @@ const Settings = (props) => {
   const [password, resetPassword]                 = useField('password')
   const [repeatedPassword, resetRepeatedPassword] = useField('password')
   
+  const orientation = useOrientation()
+
   const picStyle = {
     position: 'absolute',
     top: '0px',
@@ -44,10 +47,36 @@ const Settings = (props) => {
     }
     
     props.updateUser(newChanges)
+    resetEmail()
+    resetBirthdate()
+    resetInfo()
+    resetPassword()
+    resetRepeatedPassword()
   }
 
-  if(props.currentUser === undefined) {
+  if (props.currentUser === undefined) {
     return ( <div>Loading...</div> )
+  }
+
+  if (orientation === 'portrait') {  
+    return ( <div>
+      <h3>Settings</h3>
+      <Form onSubmit={saveChanges}>
+        <Image size='small' src={props.currentUser.picture !== '' ?
+          props.currentUser.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
+        Update your profile picture:<br/>
+        <input type='file' onChange={({target}) => setFile(target.files[0])} />
+        <Input fluid size='small' width='8' placeholder={props.currentUser.email ? 
+          props.currentUser.email : 'No email set!'} {...email} />
+        <Input fluid size='small' width='8' placeholder={props.currentUser.birthdate ? 
+          props.currentUser.birthdate : 'No birthdate set!'} {...birthdate} />
+        <TextArea rows='6' style={textAreaStyle} value={props.currentUser.info ? 
+          props.currentUser.info : ''} placeholder='Enter information about yourself' {...info} />
+        <Input fluid size='small' placeholder='Change password?' {...password} />
+        <Input fluid size='small' placeholder='Repeat new password' {...repeatedPassword} />
+        <Button fluid color='green' type='submit'>Save changes</Button>
+      </Form>
+    </div> )
   }
 
   return ( <div>

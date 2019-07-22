@@ -5,9 +5,11 @@ import { connect } from 'react-redux'
 import './App.css'
 
 import { setUser } from './reducers/currentUser'
+import { setNotification } from './reducers/notificationReducer'
 import userHelper from './util/userHelper'
 
 import Menubar from './components/Menubar'
+import Notification from './components/Notification'
 import Feed from './components/Feed'
 import Workouts from './components/Workouts'
 import Users from './components/Users'
@@ -23,9 +25,18 @@ import UsersWorkouts from './components/profile/UsersWorkouts'
 import UsersDoneWorkouts from './components/profile/UsersDoneWorkouts'
 import Viewpost from './components/Viewpost'
 
+import useOrientation from './hooks/useOrientation'
+
 const App = (props) => {
+  const orientation = useOrientation()
+
+  const style = {
+    position: orientation === 'portrait' ? 'absolute' : null,
+    top: orientation === 'portrait' ? '140px' : '80px'
+  }
+
   useEffect(() => {
-    userHelper.checkAndSetUser(props.setUser)
+    userHelper.checkAndSetUser(props.setUser, props.setNotification)
   }, [])
 
   if (props.currentUser === null) {
@@ -52,6 +63,7 @@ const App = (props) => {
     <Route exact path='/workout/:id/' render={ ({ match }) => <Viewpost type='workout' id={match.params.id} />} />
     <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />
     {props.currentUser ? <Menubar /> : null }
+    <Notification />
     </Router> 
   </div> )
 }
@@ -60,4 +72,4 @@ const mapStateToProps = (state) => {
   return { currentUser: state.currentUser }
 }
 
-export default connect(mapStateToProps, { setUser })(App)
+export default connect(mapStateToProps, { setUser, setNotification })(App)

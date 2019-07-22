@@ -5,36 +5,39 @@ import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'
 import { setSearchItems } from '../reducers/searchResultsReducer'
 import useWindowSize from '../hooks/useWindowSize'
+import useOrientation from '../hooks/useOrientation'
 import useField from '../hooks/useField'
 import SearchPopup from './search/SearchPopup'
 
 const Menubar = (props) => {
   const windowSize = useWindowSize()
+  const orientation = useOrientation()
   const [search, resetSearch] = useField('text')
   const [searchType, setSearchType] = useState('')
 
-  const searchOptions = [
-    { key: 'all', text: 'All', value: 'all' },
-    { key: 'user', text: 'Users', value: 'user' },
-    { key: 'post', text: 'Posts', value: 'post' },
-    { key: 'workout', text: 'Workouts', value: 'workout' },
-    { key: 'doneworkout', text: 'Done workouts', value: 'doneworkout' }
-  ]
   const menuStyle = {
     width: '100%',
+    height: '55px',
     minWidth: '100%',
     maxWidth: '100%',
+    padding: '0px 0px 0px 0px',
     position: 'fixed',
     top: '0px',
     left: '0px',
     backgroundColor: '#dd0000'
   }
-  const selectStyle = {
-    width: '25%'
+
+  const itemStyle = {
+    width: '100%',
+    height: '55px',
+    margin: '0px 0px 0px 0px',
+    minWidth: '100%',
+    maxWidth: '100%',
+    padding: '0px 0px 0px 0px'
   }
 
   const barStyle = {
-    width: (windowSize.width - 6*55 - 40)
+    width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 6*55 - 40)
   }
 
   const home = () => {
@@ -73,12 +76,45 @@ const Menubar = (props) => {
     console.log(searchType)
     props.setSearchItems(search.value, 'all')
     props.history.push('/search')
-
+    window.scrollTo(0, 0)
     resetSearch()
   }
 
+  if (orientation === 'portrait') {
+    return ( <div style={menuStyle}>
+      <Menu style={itemStyle} inverted color='red'>
+        <Menu.Item onClick={home}>
+          <Icon name='home' />
+        </Menu.Item>
+        <Menu.Item onClick={workouts}>
+          <Icon name='hand rock' />
+        </Menu.Item>
+        <Menu.Item onClick={users}>
+          <Icon name='user circle' />
+        </Menu.Item>
+        <Menu.Item onClick={dash}>
+          <Icon name='id card' />
+        </Menu.Item>
+        <Menu.Item onClick={settings}>
+          <Icon name='settings' />
+        </Menu.Item>
+        <Menu.Item onClick={logout}>
+          <Icon name='log out' />
+        </Menu.Item>
+      </Menu>
+      <Menu style={itemStyle} inverted color='red'>
+        <Menu.Item >
+          <form onSubmit={doSearch}>
+            <Input size='mini' style={barStyle} {...search} placeholder='Search' />
+          </form>
+        </Menu.Item>
+      </Menu>
+      <SearchPopup searchterm={search.value} setSearchItems={setSearchItems} resetSearch={resetSearch} />
+    </div>)
+  }
+
   return ( <div style={menuStyle}>
-    <Menu inverted color='red'>
+    <Menu style={itemStyle} inverted color='red'>
       <Menu.Item onClick={home}>
         <Icon name='home' />
       </Menu.Item>
@@ -90,7 +126,7 @@ const Menubar = (props) => {
       </Menu.Item>
       <Menu.Item >
         <form onSubmit={doSearch}>
-          <Input size='mini' style={barStyle} {...search} />
+          <Input size='mini' style={barStyle} {...search} placeholder='Search' />
         </form>
       </Menu.Item>
       <Menu.Item onClick={dash}>

@@ -20,7 +20,7 @@ export const loginUser = (user) => {
     const loggedUser = result.data
     communicationService.setToken(loggedUser.token)
     window.localStorage.setItem('currentUser', JSON.stringify(loggedUser))
-    console.log(loggedUser)
+    
     dispatch({ type: 'LOGIN_USER', data: loggedUser })
   }
 }
@@ -50,10 +50,8 @@ export const addFriend = (friendId) => {
 
 export const updateUser = (data) => {
   return async dispatch => {
-    for (let pair of data.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-  }
     const updatedUser = await communicationService.update('/users/me', data)
+    
     console.log(updatedUser)
     window.localStorage.setItem('currentUser', JSON.stringify(updatedUser))
     dispatch({ type: 'SET_USER', data: updatedUser})

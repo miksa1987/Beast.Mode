@@ -3,9 +3,11 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setSearchItems } from '../../reducers/searchResultsReducer'
 import useWindowSize from '../../hooks/useWindowSize'
+import useOrientation from '../../hooks/useOrientation'
 
 const SearchPopup = (props) => {
   const windowSize = useWindowSize()
+  const orientation = useOrientation()
 
   const divStyle = {
     backgroundColor: 'white',
@@ -16,16 +18,26 @@ const SearchPopup = (props) => {
     width: windowSize.width - 6 * 55 - 40
   }
 
+  const mobileStyle = {
+    backgroundColor: 'white',
+    border: '1px solid #aaaaaa',
+    position: 'fixed',
+    top: '100px',
+    left: '20px',
+    width: windowSize.width - 40
+  }
+
   const search = (type) => {
     props.setSearchItems(props.searchterm, type)
     props.resetSearch()
+    window.scrollTo(0, 0)
   }
 
   if (props.searchterm === '') {
     return ( <div style={{ display: 'none' }}></div> )
   }
 
-  return ( <div style={divStyle}>
+  return ( <div style={orientation === 'portrait' ? mobileStyle : divStyle}>
     <table>
       <tbody>
         <tr>

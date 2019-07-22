@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Form, Input, Button, Menu } from 'semantic-ui-react'
 import { loginUser } from '../../reducers/currentUser'
+import { setNotification } from '../../reducers/notificationReducer'
 
 const Loginbar = (props) => {
   const loginStyle = {
@@ -20,7 +21,10 @@ const Loginbar = (props) => {
 
   const login = (event) => {
     event.preventDefault()
-    props.loginUser({ username: event.target.username.value, password: event.target.password.value })
+    const username = event.target.username.value
+    const password = event.target.password.value
+    props.loginUser({ username, password })
+    props.setNotification(`${username} logged in `, 3)
   }
 
   return ( <div style={loginStyle}>
@@ -44,4 +48,4 @@ const Loginbar = (props) => {
 }
 
 
-export default connect(null, { loginUser })(Loginbar)
+export default connect(null, { loginUser, setNotification })(Loginbar)
