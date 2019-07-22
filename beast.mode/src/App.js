@@ -6,7 +6,6 @@ import './App.css'
 
 import { setUser } from './reducers/currentUser'
 import userHelper from './util/userHelper'
-import socket from './service/socket'
 
 import Menubar from './components/Menubar'
 import Feed from './components/Feed'
@@ -15,6 +14,7 @@ import Users from './components/Users'
 import Dashboard from './components/profile/Dashboard'
 import Settings from './components/Settings'
 import LoginForm from './components/login/LoginForm'
+import SearchResults from './components/search/SearchResults'
 import DoWorkout from './components/DoWorkout'
 import Friends from './components/profile/Friends'
 import Activity from './components/profile/Activity'
@@ -41,6 +41,7 @@ const App = (props) => {
     <Route exact path='/users' render={() => <Users />} />
     <Route exact path='/dash' render={() => <Dashboard user={props.currentUser.id}/>} />
     <Route exact path='/settings' render={() => <Settings />} />
+    <Route exact path='/search' render={() => <SearchResults />} />
     <Route exact path='/profile/:id' render={ ({ match }) => <Dashboard user={match.params.id} />} />
     <Route exact path='/profile/:id/friends' render={() => <Friends />} />
     <Route exact path='/profile/:id/activity' render={() => <Activity />} />

@@ -1,13 +1,25 @@
-import React, { useState, useEffect } from 'react'
-import { Segment, Input, Menu, Icon } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Input, Menu, Icon, Select } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'
+import { setSearchItems } from '../reducers/searchResultsReducer'
 import useWindowSize from '../hooks/useWindowSize'
+import useField from '../hooks/useField'
+import SearchPopup from './search/SearchPopup'
 
 const Menubar = (props) => {
   const windowSize = useWindowSize()
+  const [search, resetSearch] = useField('text')
+  const [searchType, setSearchType] = useState('')
 
+  const searchOptions = [
+    { key: 'all', text: 'All', value: 'all' },
+    { key: 'user', text: 'Users', value: 'user' },
+    { key: 'post', text: 'Posts', value: 'post' },
+    { key: 'workout', text: 'Workouts', value: 'workout' },
+    { key: 'doneworkout', text: 'Done workouts', value: 'doneworkout' }
+  ]
   const menuStyle = {
     width: '100%',
     minWidth: '100%',
@@ -17,17 +29,12 @@ const Menubar = (props) => {
     left: '0px',
     backgroundColor: '#dd0000'
   }
+  const selectStyle = {
+    width: '25%'
+  }
 
   const barStyle = {
     width: (windowSize.width - 6*55 - 40)
-  }
-
-  const itemStyle0 = {
-    position: 'fixed',
-    right: '4px',
-    top: '10px',
-    padding: '5px 10px 0px',
-    backgroundColor: 'white'
   }
 
   const home = () => {
@@ -61,6 +68,15 @@ const Menubar = (props) => {
     props.logoutUser()
   }
 
+  const doSearch = (event) => {
+    event.preventDefault()
+    console.log(searchType)
+    props.setSearchItems(search.value, 'all')
+    props.history.push('/search')
+
+    resetSearch()
+  }
+
   return ( <div style={menuStyle}>
     <Menu inverted color='red'>
       <Menu.Item onClick={home}>
@@ -73,7 +89,9 @@ const Menubar = (props) => {
         <Icon name='user circle' />
       </Menu.Item>
       <Menu.Item >
-        <Input size='small' style={barStyle} />
+        <form onSubmit={doSearch}>
+          <Input size='mini' style={barStyle} {...search} />
+        </form>
       </Menu.Item>
       <Menu.Item onClick={dash}>
         <Icon name='id card' />
@@ -85,7 +103,8 @@ const Menubar = (props) => {
         <Icon name='log out' />
       </Menu.Item>
     </Menu>
+    <SearchPopup searchterm={search.value} setSearchItems={setSearchItems} resetSearch={resetSearch} />
   </div>)
 }
 
-export default connect(null, { logoutUser })(withRouter(Menubar))
+export default connect(null, { logoutUser, setSearchItems })(withRouter(Menubar))

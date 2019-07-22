@@ -18,36 +18,51 @@ searchRouter.post('/', async (request, response) => {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!decodedToken.id) return response.status(401).json({ error: 'Not authorized' })
 
-    let result = []
+    let results = []
     switch (request.body.type) {
       case 'user':
-        result = await User.find({ username: {
+        results = await User.find({ username: {
           '$regex': request.body.search,
           '$options': 'i'
         }})
         break
       case 'post':
-        result = await Post.find({ content: {
+        results = await Post.find({ content: {
           '$regex': request.body.search,
           '$options': 'i'
         }})
       case 'workout':
-        result = await Workout.find({ content: {
+        results = await Workout.find({ content: {
           '$regex': request.body.search,
           '$options': 'i'
         }})
         break  
       case 'doneworkout':
-        result = await DoneWorkout.find({ content: {
+        results = await DoneWorkout.find({ content: {
           '$regex': request.body.search,
           '$options': 'i'
         }})
         break
       default:
-
+        results = await User.find({ username: {
+          '$regex': request.body.search,
+          '$options': 'i'
+        }})
+        results = results.concat(await Post.find({ content: {
+          '$regex': request.body.search,
+          '$options': 'i'
+        }}))
+        results = results.concat(await Workout.find({ content: {
+          '$regex': request.body.search,
+          '$options': 'i'
+        }}))
+        results = results.concat(await DoneWorkout.find({ content: {
+          '$regex': request.body.search,
+          '$options': 'i'
+        }}))
     }
 
-    return response.status(200).json(result)
+    return response.status(200).json(results)
   } catch (error) {
     return response.status(400).json({ error: error.message })
   }
