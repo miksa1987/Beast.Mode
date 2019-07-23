@@ -1,36 +1,55 @@
 import React, { useEffect } from 'react'
+import { Button, Input, Divider } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Comment from './Comment'
 import { initCurrentPost } from '../../reducers/currentPost'
+import { addComment, like } from '../../reducers/feedReducer'
 
 const Viewpost = (props) => {
-  const tableStyle = {
-    width: '90%',
+  const divStyle = {
+    width: '80%',
+    padding: '0px 0px 0px 0px',
+    border: '1px solid #cccccc',
     align: 'center',
     margin: 'auto'
   }
 
   const picStyle = {
-    width: '70%'
+    width: '70%',
+    padding: '0px 0px 0px 0px'
   }
 
   const postStyle = {
-    width: '100%'
+    width: '100%',
+    verticalAlign: 'top',
+    padding: '0px 0px 0px 0px'
   }
+
 
   const commentsStyle = {
     display: 'flex',
     align: 'right',
     margin: '8px',
     width: '100%',
-    maxHeight: '150px',
-    overflowY: 'auto'
+    height: '85%',
+    minHeight: '85%',
+    maxHeight: '85%',
+    overflowY: 'auto',
+    padding: '0px 0px 0px 0px'
+  }
+
+  const contentStyle = {
+    width: '100%'
   }
 
   const commentStyle = {
     verticalAlign: 'top',
     overflowY: 'auto',
-    width: '100%'
+    width: '100%',
+    minHeight: '85%',
+    height: '85%',
+    display: 'block',
+    padding: '0px 0px 0px 0px'
   }
 
   useEffect(() => {
@@ -41,30 +60,49 @@ const Viewpost = (props) => {
     return ( <div></div> )
   }
 
-  return ( <div>
-    <table style={tableStyle}>
-      <tr>
-        <td style={picStyle}>
-          <img src={props.post.picture} alt='pic' />
-        </td>
-        <td style={postStyle}>
-          <table>
-            <tbody>
-              <tr>
-                <td>
-                  <strong>{props.post.user.username}</strong>
+  return ( <div style={divStyle}>
+    <table style={postStyle}>
+      <tbody>
+        <tr>
+          <td style={picStyle}>
+            <img src={props.post.picture} width='100%' alt='pic' />
+          </td>
+          <td style={postStyle}>
+            <table style={contentStyle}>
+              <tbody>
+                <tr>
+                  <td>
+                    <strong>{props.post.user.username}</strong>
                   <p>{props.post.content}</p>      
                 </td>
-                <td style={commentsStyle}>
-                  <div style={commentStyle}>
-                    {props.post.comments.map((c, i) => <Comment key={c._id} comment={c.content} user={c.user} />)} 
-                  </div>
+                </tr>
+                <tr>
+                  <td><Divider /></td>
+                </tr>
+                <tr>
+                  <td style={commentsStyle} height='80%'>
+                    <table style={commentStyle}>
+                      <tbody>
+                        {props.post.comments.map((c, i) => <tr key={c._id}><td><Comment comment={c.content} user={c.user} /></td></tr>)} 
+                      </tbody>
+                    </table>
+                  </td>
+              </tr>
+              <tr>
+                <td>
+                  <Button fluid>Like</Button>
                 </td>
-            </tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
+              </tr>
+              <tr>
+                <td>
+                  <Input fluid size='small' placeholder='Write comment' />
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div> )
 }
@@ -75,4 +113,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { initCurrentPost })(Viewpost)
+export default connect(mapStateToProps, { initCurrentPost, addComment, like })(Viewpost)
