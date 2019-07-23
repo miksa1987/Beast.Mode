@@ -2,9 +2,9 @@ import React from 'react'
 import { Button, Input, Divider, Image } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
-import { addComment, like } from '../reducers/feedReducer'
-import useField from '../hooks/useField'
-import useOrientation from '../hooks/useOrientation'
+import { addComment, like } from '../../reducers/feedReducer'
+import useField from '../../hooks/useField'
+import useOrientation from '../../hooks/useOrientation'
 import Comment from './Comment'
 
 const elementStyle = {

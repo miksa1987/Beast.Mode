@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Divider } from 'semantic-ui-react'
-import Newpost from './Newpost'
-import Post from './Post'
+import Newpost from './post/Newpost'
+import Post from './post/Post'
 import { connect } from 'react-redux'
 import { initFeed, addToFeed, removeFromFeed } from '../reducers/feedReducer'
 

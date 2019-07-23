@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Button, Input } from 'semantic-ui-react'
-import useTimer from '../hooks/useTimer'
+import useTimer from '../../hooks/useTimer'
 import { 
   initCurrentWorkout,
   setCurrentWorkoutExercises,
@@ -9,7 +9,7 @@ import {
   setCurrentWorkoutExerciseUndone,
   setCurrentWorkoutTime,
   setCurrentWorkoutDone
-} from '../reducers/currentWorkout'
+} from '../../reducers/currentWorkout'
 
 import DoWorkoutOfSets from './DoWorkoutOfSets'
 import DoWorkoutOfRounds from './DoWorkoutOfRounds'

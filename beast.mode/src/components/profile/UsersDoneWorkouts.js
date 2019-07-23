@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { initDoneWorkouts } from '../../reducers/doneWorkoutsReducer'
-import Post from '../Post'
+import Post from '../post/Post'
 
 const UsersDoneWorkouts = (props) => {
   useEffect(() => {

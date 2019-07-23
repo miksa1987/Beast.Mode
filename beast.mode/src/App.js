@@ -11,30 +11,21 @@ import userHelper from './util/userHelper'
 import Menubar from './components/Menubar'
 import Notification from './components/Notification'
 import Feed from './components/Feed'
-import Workouts from './components/Workouts'
+import Workouts from './components/workout/Workouts'
 import Users from './components/Users'
 import Dashboard from './components/profile/Dashboard'
 import Settings from './components/Settings'
 import LoginForm from './components/login/LoginForm'
 import SearchResults from './components/search/SearchResults'
-import DoWorkout from './components/DoWorkout'
+import DoWorkout from './components/workout/DoWorkout'
 import Friends from './components/profile/Friends'
 import Activity from './components/profile/Activity'
 import Photos from './components/profile/Photos'
 import UsersWorkouts from './components/profile/UsersWorkouts'
 import UsersDoneWorkouts from './components/profile/UsersDoneWorkouts'
-import Viewpost from './components/Viewpost'
-
-import useOrientation from './hooks/useOrientation'
+import Viewpost from './components/post/Viewpost'
 
 const App = (props) => {
-  const orientation = useOrientation()
-
-  const style = {
-    position: orientation === 'portrait' ? 'absolute' : null,
-    top: orientation === 'portrait' ? '140px' : '80px'
-  }
-
   useEffect(() => {
     userHelper.checkAndSetUser(props.setUser, props.setNotification)
   }, [])

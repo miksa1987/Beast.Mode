@@ -13,7 +13,7 @@ import Photos from './Photos'
 import UsersDoneWorkouts from './UsersDoneWorkouts'
 import UsersWorkouts from './UsersWorkouts'
 
-import Post from '../Post'
+import Post from '../post/Post'
 
 const Dashboard  = (props) => {
   const [view, setView] = useState('posts')

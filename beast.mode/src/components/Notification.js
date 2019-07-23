@@ -17,16 +17,18 @@ const Notification = (props) => {
     width: '100%',
     height: '2em'
   }
+  
   const mobileStyle = {
     backgroundColor: '#444444',
     position: 'fixed',
-    bottom: '0px',
-    left: '0px',
+    bottom: '10%',
+    left: '50%',
+    marginLeft: '-40%',
     textAlign: 'center',
     verticalAlign: 'middle',
     lineHeight: '2em',
     color: 'white',
-    width: '100%',
+    width: '80%',
     height: '2em'
   }
 

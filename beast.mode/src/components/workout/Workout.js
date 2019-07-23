@@ -1,7 +1,7 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { Button, Image, Divider } from 'semantic-ui-react'
-import parser from '../service/parser'
+import parser from '../../service/parser'
 
 const Workout = (props) => {
   const elementStyle = {

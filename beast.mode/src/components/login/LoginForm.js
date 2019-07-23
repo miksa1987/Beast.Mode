@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Form, Input, Button } from 'semantic-ui-react'
 
 import { loginUser } from '../../reducers/currentUser'
+import { setNotification } from '../../reducers/notificationReducer'
 import NewUser from './NewUser'
 import useOrientation from '../../hooks/useOrientation'
 
@@ -112,4 +113,4 @@ const LoginForm = (props) => {
   </div> )
 }
 
-export default connect(null, { loginUser })(LoginForm)
+export default connect(null, { loginUser, setNotification })(LoginForm)

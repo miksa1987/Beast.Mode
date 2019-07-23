@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { initWorkouts } from '../../reducers/workoutsReducer'
-import Post from '../Post'
-import Workout from '../Workout'
+import Workout from '../workout/Workout'
 
 const UsersWorkouts = (props) => {
   useEffect(() => {
@@ -14,7 +13,7 @@ const UsersWorkouts = (props) => {
   }
 
   return ( <div>
-    {props.workouts.map(workout => <Post key={workout._id} post={workout} />)}
+    {props.workouts.map(workout => <Workout key={workout._id} workout={workout} />)}
   </div> )
 }
 

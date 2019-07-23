@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from 'semantic-ui-react'
-import useTimer from '../hooks/useTimer'
+import useTimer from '../../hooks/useTimer'
 import WorkoutofSetsDone from './WorkoutOfSetsDone'
 
 const DoWorkoutOfRounds = (props) => {

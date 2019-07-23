@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import Comment from './Comment'
-import { initCurrentPost } from '../reducers/currentPost'
+import { initCurrentPost } from '../../reducers/currentPost'
 
 const Viewpost = (props) => {
   const tableStyle = {

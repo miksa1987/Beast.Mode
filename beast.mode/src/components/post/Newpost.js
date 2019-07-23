@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Form, TextArea, Button, Checkbox } from 'semantic-ui-react'
-import parser from '../service/parser'
-import communicationService from '../service/communication'
-import { addToFeed } from '../reducers/feedReducer'
+import parser from '../../service/parser'
+import communicationService from '../../service/communication'
+import { addToFeed } from '../../reducers/feedReducer'
 
 const elementStyle = {
   align: 'center',
