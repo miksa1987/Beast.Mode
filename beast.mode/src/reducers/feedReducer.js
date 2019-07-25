@@ -29,7 +29,6 @@ export const initFeed = (friends, myID) => {
     }
     feedPosts.sort(sorterService.comparePostDates)
 
-    console.log(feedPosts)
     dispatch({ type: 'INIT_FEED', data: feedPosts })
   }
 }

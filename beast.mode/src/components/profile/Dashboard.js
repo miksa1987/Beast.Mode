@@ -6,18 +6,26 @@ import { initUserPosts } from '../../reducers/currentUserPosts'
 import { initCurrentProfile } from '../../reducers/currentProfile'
 import { addFriend } from '../../reducers/currentUser'
 import useOrientation from '../../hooks/useOrientation'
-
+import Masonry from 'react-masonry-css'
 import Activity from './Activity'
 import Friends from './Friends'
 import Photos from './Photos'
 import UsersDoneWorkouts from './UsersDoneWorkouts'
 import UsersWorkouts from './UsersWorkouts'
+import '../Feed.css'
 
 import Post from '../post/Post'
 
 const Dashboard  = (props) => {
   const [view, setView] = useState('posts')
   const orientation = useOrientation()
+
+  const breakPoints = {
+    default: 4,
+    1400: 3,
+    950: 2,
+    500: 1
+  }
 
   useEffect(() => {
       props.initCurrentProfile(props.user)
@@ -95,7 +103,11 @@ const Dashboard  = (props) => {
       </Menu.Item>
     </Menu>
     {view === 'photos' && <Photos />}
-    {view === 'posts' && props.currentUserPosts.map(post => <Post key={post._id} post={post} /> )}
+    {view === 'posts' && 
+      <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
+        {props.currentUserPosts.map(post => 
+          <Post key={post._id} post={post} />)}
+    </Masonry> }
     {view === 'workouts' && <UsersWorkouts />}
     {view === 'doneworkouts' && <UsersDoneWorkouts />}
     {view === 'friends' && <Friends />}

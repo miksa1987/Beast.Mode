@@ -1,31 +1,39 @@
-import React, { useEffect } from 'react'
-import { Divider } from 'semantic-ui-react'
+import React, { useEffect, useState } from 'react'
+import Masonry from 'react-masonry-css'
 import Newpost from './post/Newpost'
 import Post from './post/Post'
+import useOrientation from '../hooks/useOrientation'
 import { connect } from 'react-redux'
 import { initFeed, addToFeed, removeFromFeed } from '../reducers/feedReducer'
-
-const feedStyle = {
-  display: 'flex',
-  flexWrap: 'wrap',
-  alignItems: 'flex-start'
-}
+import './Feed.css'
 
 const Feed = (props) => {
+  const orientation = useOrientation()
+
+  const breakPoints = {
+    default: 4,
+    1400: 3,
+    950: 2,
+    500: 1
+  }
+
   useEffect(() => {
-    if(props.feed.length === 0) {
+    if (props.feed.length === 0) {
       props.initFeed(props.currentUser.friends, props.currentUser.id)
     }
   }, [])
 
-  if(props.feed === undefined) {
+  if (props.feed === undefined) {
     return ( <div><Newpost /></div> )
   }
 
-  return ( <div style={feedStyle}>
+  return ( <div>
     <Newpost />
-    <Divider />
-    {props.feed.map(post => <Post key={post._id} post={post} />)}
+    <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
+      {props.feed.map(post => 
+        <Post key={post._id} post={post} />)}
+    </Masonry>
+    
   </div> )
 }
 
