@@ -4,10 +4,12 @@ import Newpost from './post/Newpost'
 import Post from './post/Post'
 import useOrientation from '../hooks/useOrientation'
 import { connect } from 'react-redux'
+import { Button, Icon } from 'semantic-ui-react'
 import { initFeed, addToFeed, removeFromFeed } from '../reducers/feedReducer'
 import './Feed.css'
 
 const Feed = (props) => {
+  const [showNewpost, setShowNewpost] = useState(false)
   const orientation = useOrientation()
 
   const breakPoints = {
@@ -28,12 +30,18 @@ const Feed = (props) => {
   }
 
   return ( <div>
-    <Newpost />
+    {orientation === 'portrait' && <Newpost />}
     <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
       {props.feed.map(post => 
         <Post key={post._id} post={post} />)}
     </Masonry>
-    
+    {showNewpost && <Newpost setShowNewpost={setShowNewpost} />}
+    { (orientation !== 'portrait' && !showNewpost) &&
+      <Button className="newpost-button" circular size="big" color="green"
+        onClick={() => setShowNewpost(!showNewpost)}>
+          <Icon name="plus" />
+          Post new
+      </Button> }
   </div> )
 }
 

@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { addComment, like } from '../../reducers/feedReducer'
 import useField from '../../hooks/useField'
-import useOrientation from '../../hooks/useOrientation'
-import Comment from './Comment'
+import Comments from './Comments'
 
 const elementStyle = {
   minWidth: '95%',
@@ -16,12 +15,26 @@ const elementStyle = {
   marginTop: '25px',
   border: '1px solid #dddddd',
   whiteSpace: 'pre-line',
-  textAlign: 'top'
+  textAlign: 'top',
+  borderRadius: '3px',
+  backgroundColor: '#ffffff'
+}
+
+const divStyle = {
+  marginTop: '10px',
+  marginLeft: '10px',
+  marginBottom: '10px'
+}
+
+const divStyle2 = {
+  marginTop: '10px',
+  marginLeft: '10px',
+  marginRight: '10px',
+  marginBottom: '10px'
 }
 
 const Post = (props) => {
   const [comment, resetComment] = useField('text')
-  const orientation = useOrientation()
 
   if(props.post === undefined) {
     return null
@@ -40,20 +53,27 @@ const Post = (props) => {
       <tbody>
         <tr>
           <td>
-            {props.post.user.picture && props.post.user.picture !== '' ?
-              <Image width='32px' height='32px' circular src={props.post.user.picture} />
-              : <Icon name='user' /> }
+            <div style={divStyle}>
+              {props.post.user.picture && props.post.user.picture !== '' ?
+                <Image width='32px' height='32px' circular src={props.post.user.picture} />
+                : <Icon name='user' /> }
+            </div>
           </td>
           <td>
-            <strong><Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link></strong>
+            <div style={divStyle}>
+              <strong><Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link></strong>
+            </div>
           </td>
-          {props.post.type === 'doneworkout' ? <td><p>{` did a workout`}</p></td> : null}
+          {props.post.type === 'doneworkout' ? <td><div style={divStyle}><p>{` did a workout`}</p></div></td> : null}
         </tr>
       </tbody>
     </table>
+    <div style={divStyle2}>
+      {(props.post.picture && props.post.picture !== '') || lineBreaks > 10 
+        ? <p>{props.post.content}</p> : <h3>{props.post.content}</h3>}
+    </div>
     {props.post.picture && props.post.picture !== '' ? <Image size='big' src={props.post.picture} /> : null }
-    {(props.post.picture && props.post.picture !== '') || lineBreaks > 10 
-      ? <p>{props.post.content}</p> : <h3>{props.post.content}</h3>}
+    <Comments comments={props.post.comments} />
     <table><tbody>
       <tr>
         <td>        
@@ -62,7 +82,9 @@ const Post = (props) => {
           </Button>
         </td>
         <td width='100%'>
-          <form onSubmit={sendComment}><Input fluid size='small' icon={{ name: 'comment' }} {...comment} /></form>
+          <form onSubmit={sendComment}>
+            <Input fluid size='small' icon={{ name: 'comment' }} {...comment} placeholder='Comment' />
+          </form>
         </td>
       </tr>
     </tbody></table>

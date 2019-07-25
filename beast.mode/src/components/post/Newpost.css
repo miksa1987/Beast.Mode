@@ -1,0 +1,28 @@
+.desktop {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -15%;
+  margin-left: -25%;
+  width: 50%;
+  padding: 10px 10px 10px 10px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+
+.input {
+  width: 85%;
+}
+
+.button {
+  width: 100%;
+}
+
+.mobile {
+  width: 95%;
+  padding: 10px 10px 10px 10px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  background-color: #ffffff;
+}

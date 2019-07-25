@@ -115,7 +115,7 @@ postRouter.post('/:id/comment', async (request, response) => {
       ...post.toObject(),
       comments: newComments
     }
-    const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true })
+    const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true }).populate('user')
     
     request.io.emit('post_comment', updatedPost)
     activityHelper.setActivity(decodedToken.id, 'comment', post._id)

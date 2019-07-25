@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { Button, Image, Divider } from 'semantic-ui-react'
 import parser from '../../service/parser'
+import './Workout.css'
 
 const Workout = (props) => {
   const elementStyle = {
@@ -50,15 +51,15 @@ const Workout = (props) => {
     return ( <div>Loading</div> )
   }
 
-  return ( <div style={elementStyle}>
+  return ( <div className='workout-component'>
     <table>
       <tbody>
         <tr>
-          <td style={imgStyle}>
+          <td className='workout-image'>
             <Image width='130px' height='130px' src={props.workout.picture && props.workout.picture !== '' 
               ? props.workout.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
           </td>
-          <td style={infoStyle}>
+          <td className='workout-info'>
             <table>
               <tbody>
                 <tr>
@@ -71,15 +72,15 @@ const Workout = (props) => {
                     <table>
                       <tbody>
                         <tr>
-                          <td style={segmentStyle}>
+                          <td className='workout-segment'>
                             <h2>{exercisesNumber}</h2>
                             exercises
                           </td>
-                          <td style={segmentStyle}>
+                          <td className='workout-segment'>
 
                           </td>
-                          <td style={segmentStyle}>
-                            {exercises}
+                          <td className='workout-segment'>
+                            {`${exercises}`}
                           </td>
                         </tr>
                       </tbody>
@@ -89,7 +90,7 @@ const Workout = (props) => {
               </tbody>
             </table>
           </td>
-          <td style={buttonStyle}>
+          <td className='workout-button'>
             <Button onClick={() => props.history.push(`/doworkout/${props.workout._id}`)}>
               View this workout
             </Button>
@@ -97,7 +98,6 @@ const Workout = (props) => {
         </tr>
       </tbody>
     </table>
-    <Divider />
   </div> )
 }
 

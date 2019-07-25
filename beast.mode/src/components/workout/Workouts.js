@@ -22,9 +22,8 @@ const Workouts = (props) => {
   }
   
   return ( <div>
-    <h2>Workouts</h2>
     <form onSubmit={doSearch}>
-      <Input fluid size='small' action={{ icon: 'search' }} { ...search } placeholder='Find workouts...' />
+      <Input fluid size='small' { ...search } placeholder='Find workouts...' />
     </form>
     <h3>Featured workouts</h3>
     <div>

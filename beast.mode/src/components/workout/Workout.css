@@ -1,0 +1,28 @@
+.workout-component {
+  width: 98%;
+  background-color: #ffffff;
+  margin: 15px 15px 15px 15px;
+  padding: 0px 0px 0px 0px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+}
+
+.workout-image {
+  width: 25%;
+}
+
+.workout-info {
+  width: 75%;
+  vertical-align: top;
+}
+
+.workout-button {
+  width: 100%;
+}
+
+.workout-segment {
+  line-break: strict;
+  white-space: pre-line;
+  vertical-align: top;
+  padding: 10px 10px 10px 10px;
+}

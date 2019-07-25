@@ -1,35 +1,18 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Form, TextArea, Button, Checkbox } from 'semantic-ui-react'
+import { Form, TextArea, Button, Checkbox, Icon } from 'semantic-ui-react'
 import parser from '../../service/parser'
 import communicationService from '../../service/communication'
 import { addToFeed } from '../../reducers/feedReducer'
-
-const elementStyle = {
-  align: 'center',
-  margin: 'auto',
-  minWidth: '95%',
-  maxWidth: '95%',
-  paddingTop: '5px',
-  paddingLeft: '5px',
-  flexGrow: '1',
-  flexShrink: '1',
-  flexBasis: '95%'
-}
-
-const buttonStyle = {
-  margin: '5px 5px 5px 5px',
-  width: '100%'
-}
-
-const inputStyle = {
-  width: '90%'
-}
+import useOrientation from '../../hooks/useOrientation'
+import './Newpost.css'
 
 const Newpost = (props) => {
   const [isWorkout, setIsWorkout] = useState(false)
   const [textContent, setTextContent] = useState('')
   const [file, setFile] = useState('')
+
+  const orientation = useOrientation()
 
   const style = {
     resize: 'none'
@@ -79,23 +62,30 @@ const Newpost = (props) => {
     console.log(newPost)
     props.addToFeed(newPost)
     setTextContent('')
+    props.setShowNewpost(false)
   }
 
-  return ( <div style={elementStyle}>
+  return ( <div className={orientation === 'portrait' ? 'mobile' : 'desktop'}>
       <Form onSubmit={post}>
         <table>
           <tbody>
             <tr>
-              <td style={inputStyle}>
+              {orientation !== 'portrait' && 
+                <td>
+                <Button circular icon='close' style={{ width: '36px'}} color='red'
+                  onClick={() => props.setShowNewpost(false)} />
+                </td>
+              }
+              <td className="input">
                 <input type='file' onChange={({ target }) => setFile(target.files[0])} />
               </td>
               <td>
-              <Button type='submit' style={buttonStyle}>Post!</Button>
+              <Button type='submit' className="button">Post!</Button>
               </td>
             </tr>
           </tbody>
         </table>
-        <TextArea style={style} name='post' onChange={changeText} rows={8} placeholder='What have you done?! (tip: you can use hashtags!)' />
+        <TextArea style={style} name='post' onChange={changeText} rows={12} placeholder='What have you done?! (tip: you can use hashtags!)' />
         { isWorkout ? <><Checkbox toggle name='workoutToggle' onChange={workoutToggleChange} /><strong>Did it!</strong></> : null }
       </Form>
   </div> )
