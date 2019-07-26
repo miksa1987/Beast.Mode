@@ -4,8 +4,9 @@ import { initAllWorkouts } from '../../reducers/workoutsReducer'
 import useOrientation from './../../hooks/useOrientation'
 import Workout from './Workout'
 import Sidebar from './Sidebar'
-import Searchbar from './Searchbar'
+import MobileSelection from './MobileSelection'
 import './Workouts.css'
+import { Button } from 'semantic-ui-react';
 
 const Workouts = (props) => {
   const orientation = useOrientation()
@@ -15,8 +16,8 @@ const Workouts = (props) => {
   }, [])
   
   return ( <div className={orientation === 'portrait' ? null : 'workouts-component'}>
-    {orientation === 'portrait' && <Searchbar /> }
-    <h3>Featured workouts</h3>
+    {orientation === 'portrait' && <MobileSelection currentUser={props.currentUser} /> }
+    <Button fluid color='blue'>Create new workout</Button>
     {props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} workout={workout} /> ) : null}
     {orientation !== 'portrait' && <Sidebar currentUser={props.currentUser} />}
   </div> )
