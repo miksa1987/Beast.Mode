@@ -1,0 +1,40 @@
+@media (max-width: 800) {
+  .component-width {
+    width: 95%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 800) {
+  .component-width {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+.viewpost-component {
+  padding: 0px;
+  border: #dddddd;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.table-style {
+  width: 100%;
+}
+
+.pic-style {
+  width: 65%;
+  padding: 0px;
+}
+
+.post-style {
+  width: 100%;
+  vertical-align: top;
+}
+
+.title-style {
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

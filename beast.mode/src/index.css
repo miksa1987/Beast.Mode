@@ -1,14 +1,10 @@
 body {
   background-color: #f4f4f4;
-  max-width: 95%;
-  min-width: 95%;
-  margin: auto;
   margin-top: 80px;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {
   body {
-    margin: auto;
     margin-top: 120px;
   }
 }
@@ -16,9 +12,6 @@ body {
 
 @media (min-width: 1024px) {
   body {
-    max-width: 95%;
-    min-width: 95%;
-    margin: auto;
     margin-top: 80px;
   }
 }

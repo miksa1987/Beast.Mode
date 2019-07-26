@@ -1,15 +1,22 @@
 import React, { useEffect } from 'react'
-import { Button, Input, Divider } from 'semantic-ui-react'
+import { Button, Input, Divider, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
+import useField from '../../hooks/useField'
 import Comment from './Comment'
+import useOrientation from '../../hooks/useOrientation'
 import { initCurrentPost } from '../../reducers/currentPost'
 import { addComment, like } from '../../reducers/feedReducer'
+import MobileViewpost from './MobileViewpost'
+import './Viewpost.css'
 
 const Viewpost = (props) => {
+  const orientation = useOrientation()
+
   const divStyle = {
     width: '80%',
     padding: '0px 0px 0px 0px',
-    border: '1px solid #cccccc',
+    border: '1px solid #dddddd',
+    borderRadius: '4px',
     align: 'center',
     margin: 'auto'
   }
@@ -24,7 +31,6 @@ const Viewpost = (props) => {
     verticalAlign: 'top',
     padding: '0px 0px 0px 0px'
   }
-
 
   const commentsStyle = {
     display: 'flex',
@@ -51,60 +57,79 @@ const Viewpost = (props) => {
     display: 'block',
     padding: '0px 0px 0px 0px'
   }
+  
+  const [comment, resetComment] = useField('text')
+
+  const sendComment = (event) => {
+    event.preventDefault()
+    props.addComment(props.post.type, props.post._id, comment.value)
+    resetComment()
+  }
 
   useEffect(() => {
     props.initCurrentPost(props.type, props.id)
   }, [])
 
-  if(!props.post.content) {
+  if (!props.post.content) {
     return ( <div></div> )
   }
 
-  return ( <div style={divStyle}>
-    <table style={postStyle}>
-      <tbody>
-        <tr>
-          <td style={picStyle}>
-            <img src={props.post.picture} width='100%' alt='pic' />
-          </td>
-          <td style={postStyle}>
-            <table style={contentStyle}>
-              <tbody>
-                <tr>
-                  <td>
-                    <strong>{props.post.user.username}</strong>
-                  <p>{props.post.content}</p>      
+  if (orientation === 'portrait') {
+    return ( <MobileViewpost post={props.post} sendComment={sendComment} comment={comment} like={props.like} /> )
+  }
+
+  return ( <div className='viewpost-component component-width'>
+    <table className='table-style'>
+      <tr>
+
+        <td className='pic-style'>
+          <img src={props.post.picture} width='100%' alt='pic' />
+        </td>
+
+        <td className='post-style'>
+          <table className='table-style'>
+            <tbody>
+              <tr>
+                <td className='title-style'>
+                  <strong>{props.post.user.username}</strong>
                 </td>
-                </tr>
-                <tr>
-                  <td><Divider /></td>
-                </tr>
-                <tr>
-                  <td style={commentsStyle} height='80%'>
-                    <table style={commentStyle}>
-                      <tbody>
-                        {props.post.comments.map((c, i) => <tr key={c._id}><td><Comment comment={c.content} user={c.user} /></td></tr>)} 
-                      </tbody>
-                    </table>
-                  </td>
+                <td className='title-style'>
+
+                </td>
+              
               </tr>
               <tr>
                 <td>
-                  <Button fluid>Like</Button>
+                  <p>{props.post.content}</p>
                 </td>
               </tr>
               <tr>
                 <td>
-                  <Input fluid size='small' placeholder='Write comment' />
+                  <table className='table-style'>
+                    <tbody>
+                      <tr>
+                        <td width='100%'>
+                          <form onSubmit={sendComment}>
+                            <Input fluid size='small' icon={{ name: 'comment' }} {...comment} placeholder='Comment' />
+                          </form>
+                        </td>
+                        <td>        
+                          <Button size='small' color='green' icon onClick={() => props.like(props.post.type, props.post._id)}>
+                            <Icon name='like' />
+                          </Button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </td>
               </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
+            </tbody>
+          </table>
+        </td>
+      </tr>
     </table>
-  </div> )
+  </div> 
+   )
 }
 
 const mapStateToProps = (state) => {

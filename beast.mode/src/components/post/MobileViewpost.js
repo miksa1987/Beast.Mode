@@ -1,33 +1,34 @@
-import React, { useEffect } from 'react'
-import { Button, Input } from 'semantic-ui-react'
-import { connect } from 'react-redux'
+import React from 'react'
+import { Button, Input, Image, Icon } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import Comment from './Comment'
-import { initCurrentPost } from '../../reducers/currentPost'
-import { addComment, like } from '../../reducers/feedReducer'
 
-const Viewpost = (props) => {
+const MobileViewpost = (props) => {
+  const elementStyle = {
+    minWidth: '95%',
+    maxHeight: '30%',
+    align: 'top',
+    maxWidth: '95%',
+    margin: 'auto',
+    marginTop: '25px',
+    border: '1px solid #dddddd',
+    whiteSpace: 'pre-line',
+    textAlign: 'top',
+    borderRadius: '3px',
+    backgroundColor: '#ffffff'
+  }
+
+  const divStyle = {
+    marginTop: '10px',
+    marginLeft: '10px',
+    marginBottom: '10px'
+  }
   
-  const tableStyle = {
-    width: '100%',
-    align: 'center',
-    margin: 'auto'
-  }
-
-  const picStyle = {
-    width: '70%'
-  }
-
-  const postStyle = {
-    width: '100%'
-  }
-
-  const commentsStyle = {
-    display: 'flex',
-    align: 'right',
-    margin: '8px',
-    width: '100%',
-    maxHeight: '150px',
-    overflowY: 'auto'
+  const divStyle2 = {
+    marginTop: '10px',
+    marginLeft: '10px',
+    marginRight: '10px',
+    marginBottom: '10px'
   }
 
   const commentStyle = {
@@ -36,51 +37,51 @@ const Viewpost = (props) => {
     width: '100%'
   }
 
-  useEffect(() => {
-    props.initCurrentPost(props.type, props.id)
-  }, [])
-
   if(!props.post.content) {
     return ( <div></div> )
   }
 
-  return ( <div>
-    <table style={tableStyle}>
+  return ( <div style={elementStyle}>     
+    <table>
       <tbody>
         <tr>
-          <td style={picStyle}>
-            <img src={props.post.picture} width='100%' alt='pic' />
+          <td>
+            <div style={divStyle}>
+              {props.post.user.picture && props.post.user.picture !== '' ?
+                <Image width='32px' height='32px' circular src={props.post.user.picture} />
+                : <Icon name='user' /> }
+            </div>
           </td>
-          <td style={postStyle}>
-            <table>
-              <tbody>
-                <tr>
-                  <td>
-                    <strong>{props.post.user.username}</strong>
-                  <p>{props.post.content}</p>      
-                </td>
-                </tr>
-                <tr>
-                  <td style={commentsStyle}>
-                    <div style={commentStyle}>
-                      <strong>Comments:</strong>
-                      {props.post.comments.map((c, i) => <Comment key={c._id} comment={c.content} user={c.user} />)} 
-                    </div>
-                  </td>
-              </tr>
-              </tbody>
-            </table>
+          <td>
+            <div style={divStyle}>
+              <strong><Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link></strong>
+            </div>
           </td>
+          {props.post.type === 'doneworkout' ? <td><div style={divStyle}><p>{` did a workout`}</p></div></td> : null}
         </tr>
       </tbody>
     </table>
+    <p>{props.post.content}</p>
+    <img src={props.post.picture} width='100%' alt='pic' /> 
+    <div style={commentStyle}>
+      <strong>Comments:</strong>
+        {props.post.comments.map((c, i) => <Comment key={c._id} comment={c.content} user={c.user} />)} 
+    </div>
+    <table><tbody>
+      <tr>
+        <td>        
+          <Button size='small' color='green' icon onClick={() => props.like(props.post.type, props.post._id)}>
+            <Icon name='like' />
+          </Button>
+        </td>
+        <td width='100%'>
+          <form onSubmit={props.sendComment}>
+            <Input fluid size='small' icon={{ name: 'comment' }} {...props.comment} placeholder='Comment' />
+          </form>
+        </td>
+      </tr>
+    </tbody></table>
   </div> )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    post: state.currentPost
-  }
-}
-
-export default connect(mapStateToProps, { initCurrentPost, addComment, like })(Viewpost)
+export default MobileViewpost
