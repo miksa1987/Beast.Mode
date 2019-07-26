@@ -30,18 +30,27 @@ const Feed = (props) => {
   }
 
   return ( <div>
+    <div className='newpost-button'>
+      <Button.Group>
+        <Button color='green'
+          onClick={() => setShowNewpost(!showNewpost)}>
+            <Icon name='plus' />
+            New post
+        </Button>
+        <Button color='blue'
+          onClick={() => setShowNewpost(!showNewpost)}>
+            <Icon name='plus' />
+            New workout
+        </Button>
+      </Button.Group>
+    </div>
+    <div className='placeholder' />
     {orientation === 'portrait' && <Newpost />}
     <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
       {props.feed.map(post => 
         <Post key={post._id} post={post} />)}
     </Masonry>
     {showNewpost && <Newpost setShowNewpost={setShowNewpost} />}
-    { (orientation !== 'portrait' && !showNewpost) &&
-      <Button className="newpost-button" circular size="big" color="green"
-        onClick={() => setShowNewpost(!showNewpost)}>
-          <Icon name="plus" />
-          Post new
-      </Button> }
   </div> )
 }
 

@@ -79,6 +79,36 @@ userRouter.get('/:id/workouts', async (request, response) => {
   }
 })
 
+userRouter.get('/:id/friendworkouts', async (request, response) => {
+  if (!request.token) {
+    return response.status(401).end()
+  }
+
+  try {
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
+    if (!decodedToken.id) {
+      return response.status(401).end()
+    }
+
+    const user = await User.findById(request.params.id)
+    if (!user) {
+      return response.status(401).end()
+    }
+
+    let workouts = []
+    for (let friend of user.friends) {
+      const friendsworkouts = await Workout.find({ user: friend }).populate('user')
+      if (friendsworkouts.length > 0) {
+        const random = Math.floor(Math.random() * friendsworkouts.length)
+        workouts = workouts.concat(friendsworkouts[random])
+      }
+    }
+    return response.json(workouts)
+  } catch(error) {
+    return response.status(400).json({ error: error.message })
+  }
+})
+
 userRouter.get('/:id/doneworkouts', async (request, response) => {
   try {
     const doneworkouts = await DoneWorkout.find({ user: request.params.id }).populate('user')

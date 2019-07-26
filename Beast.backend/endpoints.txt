@@ -3,8 +3,10 @@ GET  /users/randoms
 GET  /users/:id
 GET  /users/:id/posts
 GET  /users/:id/workouts
-GET  /users/:id/doneworkouts TBD
-GET  /users/:id/name
+GET  /users/:id/doneworkouts
+GET  /users/:id/name            TBD ?
+GET  /users/:id/friendworkouts  TBD
+GET  /users/name/:name          TBD
 POST /users/new
 POST /users/addfriend
 PUT  /users/me 
@@ -13,6 +15,9 @@ POST /login
 
 GET  /workouts/all
 GET  /workouts/:id
+GET  /workouts/random        
+GET  /workouts/newest        
+GET  /workouts/mostliked     
 POST /workouts/new
 POST /workouts/:id/comment 
 POST /workouts/:id/like 

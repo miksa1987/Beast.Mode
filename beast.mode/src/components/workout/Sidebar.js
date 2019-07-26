@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Menu } from 'semantic-ui-react'
-import { initFriendWorkouts, initNewestWorkouts, initAllWorkouts, initMostLikedWorkouts } from '../../reducers/workoutsReducer'
+import { initFriendWorkouts, initNewestWorkouts, initRandomWorkouts, initMostLikedWorkouts } from '../../reducers/workoutsReducer'
 import Searchbar from './Searchbar'
 import './Sidebar.css'
 
@@ -11,7 +11,7 @@ const Sidebar = (props) => {
       <Menu.Item>
         <Searchbar />
       </Menu.Item>
-      <Menu.Item onClick={props.initAllWorkouts}>
+      <Menu.Item onClick={props.initRandomWorkouts}>
         Featured
       </Menu.Item>
       <Menu.Item onClick={props.initNewestWorkouts}>
@@ -27,4 +27,4 @@ const Sidebar = (props) => {
   </div> )
 }
 
-export default connect(null, { initFriendWorkouts, initNewestWorkouts, initAllWorkouts, initMostLikedWorkouts })(Sidebar)
+export default connect(null, { initFriendWorkouts, initNewestWorkouts, initRandomWorkouts, initMostLikedWorkouts })(Sidebar)

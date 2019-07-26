@@ -7,7 +7,8 @@ const setToken = (newToken) => {
 }
 
 const get = async (uri) => {
-  const result = await axios.get(uri)
+  const config = { headers: { Authorization: token }}
+  const result = await axios.get(uri, config)
   return result.data
 }
 

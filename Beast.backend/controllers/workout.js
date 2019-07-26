@@ -9,16 +9,57 @@ const { imgparser, cloudinary } = require('../util/imageupload')
 workoutRouter.get('/all', async (request, response) => {
   try {
     const workouts = await Workout.find({}).populate('user')
-    return response.status(200).json(workouts)
+    return response.json(workouts)
   } catch(error) {
     return response.status(404).end()
+  }
+})
+
+workoutRouter.get('/random', async (request, response) => {
+  try {
+    const workouts = await Workout.aggregate([
+      { $sample: { size: 15 }},
+      { $lookup: {
+        "from": "users",
+        "localField": "user",
+        "foreignField": "_id",
+        "as": "user"
+      }},
+      { "$unwind": "$user" }])
+    console.log(workouts)
+    return response.json(workouts)
+  } catch(error) {
+    console.log(error.message)
+    return response.status(400).json({ error: error.message })
+  }
+})
+
+workoutRouter.get('/newest', async (request, response) => {
+  try {
+    const workouts = await Workout.find().sort({ _id: -1 }).limit(15).populate('user')
+    console.log(workouts)
+    return response.json(workouts)
+  } catch(error) {
+    console.log(error.message)
+    return response.status(400).json({ error: error.message })
+  }
+})
+
+workoutRouter.get('/mostliked', async (request, response) => {
+  try {
+    const workouts = await Workout.find().sort({ likesLength: -1 }).limit(15).populate('user')
+    console.log(workouts)
+    return response.json(workouts)
+  } catch(error) {
+    console.log(error.message)
+    return response.status(400).json({ error: error.message })
   }
 })
 
 workoutRouter.get('/:id', async (request, response) => {
   try {
     const workout = await Workout.findById(request.params.id).populate('user')
-    return response.status(200).json(workout)
+    return response.json(workout)
   } catch(error) {
     return response.status(404).send('Workout not found!')
   }
@@ -141,7 +182,8 @@ workoutRouter.post('/:id/like', async (request, response) => {
     
     const workoutToUpdate = {
       ...workout.toObject(),
-      likes: newLikes
+      likes: newLikes,
+      likesLength: newLikes.length
     }
     const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true }).populate('user')
     

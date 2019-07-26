@@ -32,9 +32,16 @@ export const initNewestWorkouts = () => {
   }
 }
 
+export const initRandomWorkouts = () => {
+  return async dispatch => {
+    const workouts = await communicationService.get(`/workouts/random`)
+    return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
+  }
+}
+
 export const initFriendWorkouts = (currentUser) => {
   return async dispatch => {
-    const workouts = await communicationService.get(`/user/${currentUser}/friendworkouts`)
+    const workouts = await communicationService.get(`/users/${currentUser}/friendworkouts`)
     return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
   }
 }
