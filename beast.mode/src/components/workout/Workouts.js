@@ -1,41 +1,32 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
 import { initAllWorkouts } from '../../reducers/workoutsReducer'
-import { Input } from 'semantic-ui-react'
-import { setSearchItems } from '../../reducers/searchResultsReducer'
-import useField from '../../hooks/useField'
+import useOrientation from './../../hooks/useOrientation'
 import Workout from './Workout'
+import Sidebar from './Sidebar'
+import Searchbar from './Searchbar'
+import './Workouts.css'
 
 const Workouts = (props) => {
-  const [search, resetSearch] = useField('text')
+  const orientation = useOrientation()
 
   useEffect(() => {
     props.initAllWorkouts() // Add some kind of checking to avoid loading already loaded workouts
   }, [])
-
-  const doSearch = (event) => {
-    event.preventDefault()
-    props.setSearchItems(search.value, 'workout')
-    props.history.push('/search')
-    resetSearch()
-  }
   
-  return ( <div>
-    <form onSubmit={doSearch}>
-      <Input fluid size='small' { ...search } placeholder='Find workouts...' />
-    </form>
+  return ( <div className={orientation === 'portrait' ? null : 'workouts-component'}>
+    {orientation === 'portrait' && <Searchbar /> }
     <h3>Featured workouts</h3>
-    <div>
-      { props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} workout={workout} /> ) : null}
-    </div>
+    {props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} workout={workout} /> ) : null}
+    {orientation !== 'portrait' && <Sidebar currentUser={props.currentUser} />}
   </div> )
 }
 
 const mapStateToProps = (state) => {
   return {
-    workouts: state.workouts
+    workouts: state.workouts,
+    currentUser: state.currentUser
   }
 }
 
-export default connect(mapStateToProps, { initAllWorkouts, setSearchItems })(withRouter(Workouts))
+export default connect(mapStateToProps, { initAllWorkouts })(Workouts)

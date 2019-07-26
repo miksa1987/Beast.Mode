@@ -25,6 +25,27 @@ export const initWorkouts = (id) => {
   }
 }
 
+export const initNewestWorkouts = () => {
+  return async dispatch => {
+    const workouts = await communicationService.get(`/workouts/newest`)
+    return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
+  }
+}
+
+export const initFriendWorkouts = (currentUser) => {
+  return async dispatch => {
+    const workouts = await communicationService.get(`/user/${currentUser}/friendworkouts`)
+    return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
+  }
+}
+
+export const initMostLikedWorkouts = () => {
+  return async dispatch => {
+    const workouts = await communicationService.get(`/workouts/mostliked`)
+    return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
+  }
+}
+
 export const addWorkout = ( workout ) => {
   return dispatch => dispatch({ type: 'ADD_WORKOUT', data: workout })
 }
