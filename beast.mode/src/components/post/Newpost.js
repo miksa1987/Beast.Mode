@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Form, TextArea, Button, Checkbox, Icon } from 'semantic-ui-react'
-import parser from '../../service/parser'
 import communicationService from '../../service/communication'
 import { addToFeed } from '../../reducers/feedReducer'
 import useOrientation from '../../hooks/useOrientation'
@@ -10,29 +9,10 @@ import './Newpost.css'
 
 const Newpost = (props) => {
   const [isWorkout, setIsWorkout] = useState(props.isWorkout)
+  const [didWorkout, setDidWorkout] = useState(false)
   const [text, resetText] = useField('text')
   //const [textContent, setTextContent] = useState('')
   const [file, setFile] = useState('')
-
-  const orientation = useOrientation()
-
-  const style = {
-    resize: 'none'
-  }
-
-  // Will think about this...
-  //const changeText = (event) => {
-  //  setTextContent(event.target.value)
-  //  console.log(textContent)
-  //  if (parser.isWorkout(textContent)) {
-  //    setIsWorkout(true)
-  //  } else {
-  //    setIsWorkout(false)
-  //  }
-  //  console.log(isWorkout)
-  //}
-
-  const workoutToggleChange = (event, data) => setIsWorkout(data.checked)
 
   const post = async (event) => {
     event.preventDefault()
@@ -45,43 +25,37 @@ const Newpost = (props) => {
     isWorkout ? data.append('type', 'workout') : data.append('type', 'post')
     isWorkout ? post.type = 'workout' : post.type = 'post'
     console.log(data)
-
+    console.log(file)
     const header = {
       'content-type': 'multipart/form-data'
     }
     let newPost = {}
 
-    if(post.type === 'post') newPost =  await communicationService.post('/posts/new', data, header)
-    if(post.type === 'workout') newPost = await communicationService.post('/workouts/new', data, header)
-    if(post.type === 'doneworkout') newPost = await communicationService.post('/doneworkouts/new', data, header)
+    if(!isWorkout) newPost =  await communicationService.post('/posts/new', data, header)
+    if(isWorkout && !didWorkout) newPost = await communicationService.post('/workouts/new', data, header)
+    if(isWorkout && didWorkout) newPost = await communicationService.post('/doneworkouts/new', data, header)
 
     resetText()
-    props.setShowNewpost(false)
+    props.setShowNewpost && props.setShowNewpost(false)
   }
-
-  return ( <div className={orientation === 'portrait' ? 'mobile' : 'desktop'}>
-      <Form onSubmit={post}>
-        <table>
-          <tbody>
-            <tr>
-              {orientation !== 'portrait' && 
-                <td>
-                <Button circular icon='close' style={{ width: '36px'}} color='red'
-                  onClick={() => props.setShowNewpost(false)} />
-                </td>
-              }
-              <td className="input-style">
+  
+  return ( <div className='newpost-component'>
+    <strong>Create new</strong>
+    <Form onSubmit={post}>
+      <TextArea style={{ resize: 'none' }} fluid rows={6} {...text} />
+              <label class='fileContainer'>
                 <input type='file' onChange={({ target }) => setFile(target.files[0])} />
-              </td>
-              <td>
-              <Button type='submit' className="button-style">Post!</Button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <TextArea style={style} {...text} rows={12} placeholder='What have you done?! (tip: you can use hashtags!)' />
-        { isWorkout ? <><Checkbox toggle name='workoutToggle' onChange={workoutToggleChange} /><strong>Did it!</strong></> : null }
-      </Form>
+              </label>
+  
+      <Button primary type='submit'>Post</Button>
+      {!props.isWorkout && <Button.Group>
+        <Button type='button' color={!isWorkout ? 'blue' : 'black'} onClick={() => setIsWorkout(false)}>Update</Button>
+        <Button type='button' color={isWorkout ? 'blue' : 'black'} onClick={() => setIsWorkout(true)}>Workout</Button>
+      </Button.Group>}
+      {` `}
+      {isWorkout && <Button type='button' color={didWorkout ? 'blue' : 'black'}
+        onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
+    </Form>
   </div> )
 }
 

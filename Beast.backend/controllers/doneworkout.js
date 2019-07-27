@@ -4,7 +4,8 @@ const multer = require('multer')
 const { cloudinary, storage } = require('../util/imageupload')
 const DoneWorkout = require('../models/DoneWorkout')
 const config = require('../util/config')
-
+const activityHelper = require('../util/activity')
+const userUpdater = require('../util/userUpdater')
 const imgparser = multer({ storage })
 
 doneWorkoutRouter.get('/all', async (request, response) => {
@@ -63,6 +64,7 @@ doneWorkoutRouter.post('/new', imgparser.single('image'), async (request, respon
     request.io.emit('user_add_doneworkout', savedDoneWorkout)
     return response.status(201).json(savedDoneWorkout)
   } catch (error) {
+    console.log(error.message)
     return response.status(400).send({ error: error.message })
   }
 })

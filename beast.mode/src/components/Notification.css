@@ -1,4 +1,4 @@
-@media (max-width: 600) {
+@media (max-width: 600px) {
   .notification-style {
     background-color: #444444;
     position: fixed;
@@ -10,11 +10,12 @@
     line-height: 2em;
     color: white;
     width: 80%;
-    height: 2em;
+    height: 3em;
+    border-radius: 6px;
   }
 }
 
-@media (min-width: 620) {
+@media (min-width: 620px) {
   .notification-style {
     background-color: rgba(40, 40, 40, 0.7);
     position: fixed;
@@ -25,7 +26,6 @@
     line-height: 2em;
     color: white;
     width: 100%;
-    height: 2em;
-    border-radius: 6px;
+    height: 2.5em;
   }
 }
