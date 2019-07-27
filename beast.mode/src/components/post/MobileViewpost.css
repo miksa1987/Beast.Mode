@@ -1,0 +1,25 @@
+.viewpost-element {
+  min-width: 95%;
+  max-height: 30%;
+  vertical-align: top;
+  max-width: 95%;
+  margin: auto;
+  margin-top: 25px;
+  border: 1px solid #dddddd;
+  white-space: pre-line;
+  text-align: top;
+  border-radius: 3px;
+  background-color: #ffffff;
+}
+
+.div-style {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+.comments {
+  vertical-align: top;
+  overflow-y: auto;
+  width: 100%;
+}

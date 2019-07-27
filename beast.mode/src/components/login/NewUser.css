@@ -1,0 +1,35 @@
+@media (min-width: 320px) and (max-width: 600px) {
+  .style {
+    width: 100%;
+  }
+}
+
+@media (min-width: 620px) and (max-width: 900px) {
+  .style {
+    width: 80%;
+  }
+}
+
+@media (min-width: 920px) and (max-width: 1400px) {
+  .style {
+    width: 60%;
+  }
+}
+
+@media (min-width: 1420px)  {
+  .style {
+    width: 40%;
+  }
+}
+
+.block {
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #ffffff;
+}
+
+.element {
+  width: 100%;
+  resize: none;
+}

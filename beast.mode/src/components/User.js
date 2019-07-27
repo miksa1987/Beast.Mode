@@ -1,21 +1,15 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Image } from 'semantic-ui-react'
-import useWindowSize from '../hooks/useWindowSize'
+import './Users.css'
 
 const User = (props) => {
-  const windowSize = useWindowSize()
-
-  const tableStyle = {
-    width: '100%'
-  }
-
   if (!props.user.username) {
     return ( <div></div> )
   }
 
   return ( <div>
-    <table style={tableStyle}>
+    <table className='user-tile-style'>
       <tbody>
         <tr>
           <td>

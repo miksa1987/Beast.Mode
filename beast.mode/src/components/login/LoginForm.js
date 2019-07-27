@@ -6,58 +6,14 @@ import { loginUser } from '../../reducers/currentUser'
 import { setNotification } from '../../reducers/notificationReducer'
 import NewUser from './NewUser'
 import useOrientation from '../../hooks/useOrientation'
+import './LoginForm.css'
 
 const LoginForm = (props) => {
   const [view, setView] = useState('login')
-  const orientation = useOrientation()
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
-
-  const backStyle = {
-    position: 'absolute',
-    top: '0px',
-    left: '0px',
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#880000'
-  }
-  
-  const loginStyle = {
-    color: 'white',
-    position: 'absolute',
-    width: '40%',
-    top: '30%',
-    left: '50%',
-    marginLeft: '-20%'
-  }
-
-  const mobileStyle = {
-    color: 'white',
-    position: 'absolute',
-    width: '80%',
-    top: '30%',
-    left: '50%',
-    marginLeft: '-40%'
-  }
-
-  const tableStyle = {
-    width: '100%'
-  }
-  
-  const bottomStyle = {
-    color: 'white',
-    position: 'fixed',
-    bottom: '0px',
-    left: '0px',
-    width: '100%'
-  }
-
-  const elementStyle = {
-    width: '100%'
-  }
-
   const login = (event) => {
     event.preventDefault()
     const username = event.target.username.value
@@ -70,11 +26,11 @@ const LoginForm = (props) => {
     return ( <div><NewUser setView={setView} /></div>)
   }
 
-  return ( <div style={backStyle}>
-    <div style={orientation === 'portrait' ? mobileStyle : loginStyle}>
-      <p style={bottomStyle}>About Beast.MODE</p>
+  return ( <div className='background'>
+    <div className='login'>
+      <p className='bottom'>About Beast.MODE</p>
       <Form onSubmit={login}>
-        <table style={tableStyle}>
+        <table className='element'>
           <tbody>
             <tr>
               <td>
@@ -88,22 +44,22 @@ const LoginForm = (props) => {
             </tr>
             <tr>
               <td>
-                <Input style={elementStyle} placeholder='username' name='username' />
+                <Input className='element' placeholder='username' name='username' />
               </td>
             </tr>
             <tr>
               <td>
-                <Input style={elementStyle} placeholder='password' name='password' type='password' />
+                <Input className='element' placeholder='password' name='password' type='password' />
               </td>
             </tr>
             <tr>
               <td>
-                <Button color='green' style={elementStyle} type='submit'>Log in</Button>
+                <Button color='green' className='element' type='submit'>Log in</Button>
               </td>
             </tr>
             <tr>
               <td>
-                <Button color='blue' style={elementStyle} onClick={() => setView('newuser')}>New user?</Button>
+                <Button color='blue' className='element' onClick={() => setView('newuser')}>New user?</Button>
               </td>
             </tr>
           </tbody>

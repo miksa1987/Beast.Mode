@@ -11,13 +11,19 @@ import './Feed.css'
 const Feed = (props) => {
   const [showNewpost, setShowNewpost] = useState(false)
   const orientation = useOrientation()
-
+  
   const breakPoints = {
     default: 4,
     1400: 3,
     950: 2,
     500: 1
   }
+
+  // This could maybe work ?
+  const items = []
+    .concat(<Newpost key='WEEEEEE' />)
+    .concat(props.feed.map(post =>
+       <Post key={post._id} post={post} />))
 
   useEffect(() => {
     if (props.feed.length === 0) {
@@ -30,25 +36,9 @@ const Feed = (props) => {
   }
 
   return ( <div>
-    <div className='newpost-button'>
-      <Button.Group>
-        <Button color='green'
-          onClick={() => setShowNewpost(!showNewpost)}>
-            <Icon name='plus' />
-            New post
-        </Button>
-        <Button color='blue'
-          onClick={() => setShowNewpost(!showNewpost)}>
-            <Icon name='plus' />
-            New workout
-        </Button>
-      </Button.Group>
-    </div>
-    <div className='placeholder' />
     {orientation === 'portrait' && <Newpost />}
     { orientation !== 'portrait' && <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
-      {props.feed.map(post => 
-        <Post key={post._id} post={post} />)}
+      {items}
     </Masonry> }
     { orientation === 'portrait' && props.feed.map(post => 
       <Post key={post._id} post={post} />)}

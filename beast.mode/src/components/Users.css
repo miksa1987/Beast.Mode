@@ -11,3 +11,7 @@
   padding-top: 15px; 
   background-clip: padding-box;
 }
+
+.user-tile-style {
+  width: 100%;
+}

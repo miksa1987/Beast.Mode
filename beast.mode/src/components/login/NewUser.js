@@ -2,28 +2,9 @@ import React from 'react'
 import communicationService from '../../service/communication'
 import { Input, TextArea, Button, Form } from 'semantic-ui-react'
 import useField from '../../hooks/useField'
-import useOrientation from '../../hooks/useOrientation'
+import './NewUser.css'
 
 const NewUser = (props) => {
-  const orientation = useOrientation()
-
-  const style = {
-    width: '50%'
-  }
-  
-  const mobileStyle = {
-    width: '90%'
-  }
-
-  const tableStyle = {
-    width: '100%'
-  }
-
-  const elementStyle = {
-    width: '100%',
-    resize: 'none'
-  }
-
   const [username, resetUsername] = useField('text')
   const [email, resetEmail] = useField('text')
   const [info, resetInfo] = useField('text')
@@ -50,46 +31,46 @@ const NewUser = (props) => {
     props.setView('login')
   }
 
-  return ( <div style={orientation === 'portrait' ? mobileStyle : style}>
+  return ( <div className='style block'>
     <h2>Create new user</h2>
     <Form onSubmit={create}>
-      <table style={tableStyle}>
+      <table className='element'>
         <tbody>
           <tr>
             <td>
-              <Input placeholder='Desired username' {...username} size='small' style={elementStyle} />
+              <Input placeholder='Desired username' {...username} size='small' fluid />
             </td>
           </tr>
           <tr>
             <td>
-              <Input placeholder='Your email' {...email} size='small' style={elementStyle} />
+              <Input placeholder='Your email' {...email} size='small' fluid />
             </td>
           </tr>
           <tr>
             <td>
-              <Input name='birthday' placeholder='Birth day' type='number' size='small' style={elementStyle} />
-              <Input name='birthmonth' placeholder='Birth month' type='number' size='small' style={elementStyle} />
-              <Input name='birthyear' placeholder='Birth year' type='number' size='small' style={elementStyle} />
+              <Input name='birthday' placeholder='Birth day' type='number' size='small' fluid />
+              <Input name='birthmonth' placeholder='Birth month' type='number' size='small' fluid />
+              <Input name='birthyear' placeholder='Birth year' type='number' size='small' fluid />
             </td>
           </tr>
           <tr>
             <td>
-              <TextArea placeholder='Write some information about yourself' rows='5' style={elementStyle} {...info} />
+              <TextArea placeholder='Write some information about yourself' rows='5' className='element' {...info} />
             </td>
           </tr>
           <tr>
             <td>
-              <Input placeholder='Create a password' {...password} size='small' style={elementStyle} />
+              <Input placeholder='Create a password' {...password} size='small' fluid />
             </td>
           </tr>
           <tr>
             <td>
-              <Input placeholder='Repeat password' {...rPassword} size='small' style={elementStyle} />
+              <Input placeholder='Repeat password' {...rPassword} size='small' fluid />
             </td>
           </tr>
         </tbody>
       </table>
-      <Button style={elementStyle} type='submit'>Create your account</Button>
+      <Button fluid type='submit'>Create your account</Button>
     </Form>
   </div> )
 }
