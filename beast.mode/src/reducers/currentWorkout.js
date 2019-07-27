@@ -2,13 +2,18 @@ import communicationService from '../service/communication'
 import parser from '../service/parser'
 
 const emptyWorkout = {
+  id: '',
   type: null,
   exercises: [],
   time: {
     time: 0,
     visible: false
   },
-  done: false
+  textcontent: '',
+  done: false,
+  comments: [],
+  likes: [],
+  picture: ''
 }
 
 const currentWorkoutReducer = (state = emptyWorkout, action) => {
@@ -30,7 +35,13 @@ export const initCurrentWorkout = (workoutid) => {
   return async dispatch => {
     const rawWorkout = await communicationService.get(`/workouts/${workoutid}`)
     const workout = parser.doWorkout(rawWorkout.content)
-    dispatch({ type: 'INIT_CURRENT_WORKOUT', data: workout })
+    dispatch({ type: 'INIT_CURRENT_WORKOUT', data: {
+      ...workout, 
+      id: rawWorkout._id,
+      picture: rawWorkout.picture, 
+      comments: rawWorkout.comments,
+      likes: rawWorkout.likes
+    } })
   }
 }
 

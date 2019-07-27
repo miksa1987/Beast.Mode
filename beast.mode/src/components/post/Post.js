@@ -5,33 +5,7 @@ import { withRouter, Link } from 'react-router-dom'
 import { addComment, like } from '../../reducers/feedReducer'
 import useField from '../../hooks/useField'
 import Comments from './Comments'
-
-const elementStyle = {
-  minWidth: '95%',
-  maxHeight: '30%',
-  align: 'top',
-  maxWidth: '95%',
-  marginLeft: '5px',
-  marginTop: '25px',
-  border: '1px solid #dddddd',
-  whiteSpace: 'pre-line',
-  textAlign: 'top',
-  borderRadius: '3px',
-  backgroundColor: '#ffffff'
-}
-
-const divStyle = {
-  marginTop: '10px',
-  marginLeft: '10px',
-  marginBottom: '10px'
-}
-
-const divStyle2 = {
-  marginTop: '10px',
-  marginLeft: '10px',
-  marginRight: '10px',
-  marginBottom: '10px'
-}
+import './Post.css'
 
 const Post = (props) => {
   const [comment, resetComment] = useField('text')
@@ -47,28 +21,28 @@ const Post = (props) => {
   }
 
   const lineBreaks = (props.post.content.match(/\n/g) || []).length
-  console.log(lineBreaks)
-  return ( <div style={elementStyle}>
+
+  return ( <div className='post-component'>
     <table>
       <tbody>
         <tr>
           <td>
-            <div style={divStyle}>
+            <div className='div-style'>
               {props.post.user.picture && props.post.user.picture !== '' ?
                 <Image width='32px' height='32px' circular src={props.post.user.picture} />
                 : <Icon name='user' /> }
             </div>
           </td>
           <td>
-            <div style={divStyle}>
+            <div className='div-style'>
               <strong><Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link></strong>
             </div>
           </td>
-          {props.post.type === 'doneworkout' ? <td><div style={divStyle}><p>{` did a workout`}</p></div></td> : null}
+          {props.post.type === 'doneworkout' ? <td><div className='div-style'><p>{` did a workout`}</p></div></td> : null}
         </tr>
       </tbody>
     </table>
-    <div style={divStyle2}>
+    <div className='div-style2'>
       {(props.post.picture && props.post.picture !== '') || lineBreaks > 10 
         ? <p>{props.post.content}</p> : <h3>{props.post.content}</h3>}
     </div>

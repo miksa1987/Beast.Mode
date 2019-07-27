@@ -1,0 +1,14 @@
+.preview-component {
+  width: 100%;
+  white-space: pre-line;
+  vertical-align: top;
+}
+
+.content-style {
+  width: 60%;
+  vertical-align: top;
+}
+
+.fullwidth {
+  width: 100%;
+}

@@ -12,7 +12,7 @@ const Comments = (props) => {
     </div> )
   }
 
-  return ( <div className="component">
+  return ( <div className='component'>
     {(!props.showAll && props.comments.length > 3) 
       && <Link to={`/post/${props.postid}`}>Show all comments</Link>}
     {!props.showAll && shownComments.map((comment, i) => 

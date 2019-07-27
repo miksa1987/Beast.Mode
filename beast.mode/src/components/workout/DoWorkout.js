@@ -10,28 +10,44 @@ import {
   setCurrentWorkoutTime,
   setCurrentWorkoutDone
 } from '../../reducers/currentWorkout'
+import useOrientation from '../../hooks/useOrientation'
 
+import Preview from './Preview'
 import DoWorkoutOfSets from './DoWorkoutOfSets'
 import DoWorkoutOfRounds from './DoWorkoutOfRounds'
 
+import './DoWorkout.css'
+
 const DoWorkout = (props) => {
   const timer = useTimer(0)
+  const orientation = useOrientation()
   
   useEffect(() => {
     props.initCurrentWorkout(props.workoutid)
   }, [])
 
   // Workout type 0 default
-  return ( <div>
-    <Button color='red' onClick={() => timer.start()}>Start this workout</Button>
-    <Button color='green' onClick={() => props.setCurrentWorkoutDone()}>
-      Mark this workout done</Button>
-    <Button color='blue'>Edit this workout</Button>
-    {props.currentWorkout.type === '0' && <DoWorkoutOfSets timer={timer}
+  return ( <div className='doworkout-component'>
+    {orientation === 'portrait' &&
+    <Button.Group fluid>
+      <Button color='red' compact onClick={() => timer.start()}>Start workout</Button>
+      <Button color='green' compact onClick={() => props.setCurrentWorkoutDone()}>
+        Workout done</Button>
+      <Button color='blue' compact>Edit workout</Button>
+    </Button.Group>}
+    {orientation !== 'portrait' &&
+    <Button.Group fluid>
+      <Button color='red' onClick={() => timer.start()}>Start workout</Button>
+      <Button color='green' onClick={() => props.setCurrentWorkoutDone()}>
+        Mark workout done</Button>
+      <Button color='blue'>Edit workout</Button>
+    </Button.Group>}
+    {!timer.active && <Preview workout={props.currentWorkout} />}
+    {(props.currentWorkout.type === '0' && timer.active) && <DoWorkoutOfSets timer={timer}
       currentWorkout={props.currentWorkout} 
       setCurrentWorkoutExerciseDone={props.setCurrentWorkoutExerciseDone}
       setCurrentWorkoutDone={props.setCurrentWorkoutDone} />}
-    {props.currentWorkout.type === '1' && <DoWorkoutOfRounds timer={timer}
+    {(props.currentWorkout.type === '1' && timer.active) && <DoWorkoutOfRounds timer={timer}
       currentWorkout={props.currentWorkout} 
       setCurrentWorkoutExerciseDone={props.setCurrentWorkoutExerciseDone}
       setCurrentWorkoutDone={props.setCurrentWorkoutDone}
