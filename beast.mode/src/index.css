@@ -1,6 +1,9 @@
 body {
   background-color: #f4f4f4;
   margin-top: 80px;
+  width: 95%;
+  align: center;
+  margin: auto;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {

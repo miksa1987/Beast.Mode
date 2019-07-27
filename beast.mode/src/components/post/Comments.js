@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import './Comments.css'
 
 const Comments = (props) => {
@@ -12,7 +13,13 @@ const Comments = (props) => {
   }
 
   return ( <div className="component">
-    {shownComments.map((comment, i) => 
+    {(!props.showAll && props.comments.length > 3) 
+      && <Link to={`/post/${props.postid}`}>Show all comments</Link>}
+    {!props.showAll && shownComments.map((comment, i) => 
+      <div key={i}>
+        <strong>{comment.user}</strong>{` `}{comment.content}
+      </div> )}
+    {props.showAll && props.comments.map((comment, i) => 
       <div key={i}>
         <strong>{comment.user}</strong>{` `}{comment.content}
       </div> )}

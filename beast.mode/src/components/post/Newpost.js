@@ -5,11 +5,13 @@ import parser from '../../service/parser'
 import communicationService from '../../service/communication'
 import { addToFeed } from '../../reducers/feedReducer'
 import useOrientation from '../../hooks/useOrientation'
+import useField from '../../hooks/useField'
 import './Newpost.css'
 
 const Newpost = (props) => {
-  const [isWorkout, setIsWorkout] = useState(false)
-  const [textContent, setTextContent] = useState('')
+  const [isWorkout, setIsWorkout] = useState(props.isWorkout)
+  const [text, resetText] = useField('text')
+  //const [textContent, setTextContent] = useState('')
   const [file, setFile] = useState('')
 
   const orientation = useOrientation()
@@ -18,31 +20,25 @@ const Newpost = (props) => {
     resize: 'none'
   }
 
-  const changeText = (event) => {
-    setTextContent(event.target.value)
-    console.log(textContent)
-    if (parser.isWorkout(textContent)) {
-      setIsWorkout(true)
-    } else {
-      setIsWorkout(false)
-    }
-    console.log(isWorkout)
-  }
+  // Will think about this...
+  //const changeText = (event) => {
+  //  setTextContent(event.target.value)
+  //  console.log(textContent)
+  //  if (parser.isWorkout(textContent)) {
+  //    setIsWorkout(true)
+  //  } else {
+  //    setIsWorkout(false)
+  //  }
+  //  console.log(isWorkout)
+  //}
 
   const workoutToggleChange = (event, data) => setIsWorkout(data.checked)
 
   const post = async (event) => {
     event.preventDefault()
-    let post = {
-      content: textContent,
-      picture: '',
-      user: props.currentUser.id,
-      likes: 0,
-      comments: []
-    }
 
     const data = new FormData()
-    data.append('content', textContent)
+    data.append('content', text.value)
     data.append('image', file)
     data.append('user', props.currentUser.id)
     data.append('likes', 0)
@@ -59,9 +55,7 @@ const Newpost = (props) => {
     if(post.type === 'workout') newPost = await communicationService.post('/workouts/new', data, header)
     if(post.type === 'doneworkout') newPost = await communicationService.post('/doneworkouts/new', data, header)
 
-    console.log(newPost)
-    props.addToFeed(newPost)
-    setTextContent('')
+    resetText()
     props.setShowNewpost(false)
   }
 
@@ -76,16 +70,16 @@ const Newpost = (props) => {
                   onClick={() => props.setShowNewpost(false)} />
                 </td>
               }
-              <td className="input">
+              <td className="input-style">
                 <input type='file' onChange={({ target }) => setFile(target.files[0])} />
               </td>
               <td>
-              <Button type='submit' className="button">Post!</Button>
+              <Button type='submit' className="button-style">Post!</Button>
               </td>
             </tr>
           </tbody>
         </table>
-        <TextArea style={style} name='post' onChange={changeText} rows={12} placeholder='What have you done?! (tip: you can use hashtags!)' />
+        <TextArea style={style} {...text} rows={12} placeholder='What have you done?! (tip: you can use hashtags!)' />
         { isWorkout ? <><Checkbox toggle name='workoutToggle' onChange={workoutToggleChange} /><strong>Did it!</strong></> : null }
       </Form>
   </div> )

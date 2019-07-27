@@ -46,11 +46,14 @@ const Feed = (props) => {
     </div>
     <div className='placeholder' />
     {orientation === 'portrait' && <Newpost />}
-    <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
+    { orientation !== 'portrait' && <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
       {props.feed.map(post => 
         <Post key={post._id} post={post} />)}
-    </Masonry>
-    {showNewpost && <Newpost setShowNewpost={setShowNewpost} />}
+    </Masonry> }
+    { orientation === 'portrait' && props.feed.map(post => 
+      <Post key={post._id} post={post} />)}
+
+    {showNewpost && <Newpost isWorkout={false}  setShowNewpost={setShowNewpost} />}
   </div> )
 }
 

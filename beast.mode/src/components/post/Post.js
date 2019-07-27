@@ -73,7 +73,7 @@ const Post = (props) => {
         ? <p>{props.post.content}</p> : <h3>{props.post.content}</h3>}
     </div>
     {props.post.picture && props.post.picture !== '' ? <Image size='big' src={props.post.picture} /> : null }
-    <Comments comments={props.post.comments} />
+    <Comments comments={props.post.comments} showAll={false} postid={props.post._id} />
     <table><tbody>
       <tr>
         <td>        

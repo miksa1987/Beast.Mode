@@ -11,16 +11,15 @@
   background-color: #ffffff;
 }
 
-.input {
+.input-style {
   width: 85%;
 }
 
-.button {
+.button-style {
   width: 100%;
 }
 
 .mobile {
-  width: 95%;
   padding: 10px 10px 10px 10px;
   border: 1px solid #dddddd;
   border-radius: 4px;
