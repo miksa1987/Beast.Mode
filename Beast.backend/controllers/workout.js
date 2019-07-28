@@ -103,7 +103,7 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
   
   try {
     const decodedToken = jwt.verify(request.token, config.SECRET)
-    
+    console.log(request.file)
     if (request.file) {
       await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
       userUpdater.addToPictures(decodedToken.id, request.file.secure_url)
