@@ -3,16 +3,19 @@ import { Button } from 'semantic-ui-react'
 import useTimer from '../../../hooks/useTimer'
 import useWindowSize from '../../../hooks/useWindowSize'
 import Timer from './Timer'
-import WorkoutOfSetsDone from './WorkoutOfSetsDone'
+import parser from '../../../service/parser'
 
 const DoWorkoutOfSets = (props) => {
   const [current, setCurrent] = useState({ exercise: 0, set: 0 })
   const [currentReps, setCurrentReps] = useState(5)
+  
+  const rows = props.currentWorkout.textcontent
+    .split('\n')
+    .filter(line => parser.match0(line))
+  
+  console.log(rows)
   const window = useWindowSize()
   
-  // Soon...
-  const exerciseTimer = useTimer(0) 
-
   const setDone = () => {
     if(props.currentWorkout.done || !props.timer.active) return
 
@@ -25,6 +28,7 @@ const DoWorkoutOfSets = (props) => {
         } else {
           props.setCurrentWorkoutDone()
           props.timer.stop()
+          props.setView('done')
         }
       }  
     }, 25)
@@ -34,22 +38,12 @@ const DoWorkoutOfSets = (props) => {
     return ( <div>Loading...</div> )
   }
 
-  if (props.currentWorkout.done) {
-    if (!props.currentWorkout.posted) props.setCurrentWorkoutDone()
-    return ( <div>
-      <WorkoutOfSetsDone currentWorkout={props.currentWorkout} />
-    </div> )
-  }
-
   if (window.width < window.height) {
     return ( <div className='container'>
       <Timer secs={props.timer.value} />
-      <h2>Exercise {current.exercise + 1} of {props.currentWorkout.exercises.length}</h2>
-        <h3>GOAL:{props.currentWorkout.exercises[current.exercise].length} sets, 
-        {' ' + props.currentWorkout.exercises[current.exercise][0].reps + ' '} reps per set</h3> 
-      <ul>{props.currentWorkout.exercises[current.exercise].map((exercise, i) =>
-          <li key={i}>{exercise.reps} {exercise.exercise}
-        {exercise.done ? <strong>DID {exercise.doneReps} reps!</strong> : null}</li>)} </ul>
+      <h2>Exercise {current.exercise + 1}</h2>
+      <h3>Set {current.set + 1}</h3>
+      <h4>Now do at least {props.currentWorkout.exercises[current.exercise][current.set].reps} {props.currentWorkout.exercises[current.exercise][current.set].exercise}</h4>
       <h4>How many reps did you do? {currentReps} reps</h4>
       <Button.Group>
         <Button icon='left chevron' onClick={() => setCurrentReps(currentReps - 1)}></Button>
@@ -65,14 +59,13 @@ const DoWorkoutOfSets = (props) => {
         <tr>
           <td className='sidebar-component'>
             <Timer secs={props.timer.value} />
+            
+            {rows.map((row, i) => i === current.exercise ? <h2 key={i}>{row}</h2> : <h3 key={i}>{row}</h3>)}
           </td>
           <td className='view-component'>
             <h2>Exercise {current.exercise + 1}</h2>
-            <h3>GOAL:{props.currentWorkout.exercises[current.exercise].length} sets, 
-              {' ' + props.currentWorkout.exercises[current.exercise][0].reps + ' '} reps per set</h3> 
-            <ul>{props.currentWorkout.exercises[current.exercise].map((exercise, i) =>
-              <li key={i}>{exercise.reps} {exercise.exercise}
-            {exercise.done && <strong>DID {exercise.doneReps} reps!</strong>}</li>)} </ul>
+            <h3>Set {current.set + 1}</h3>
+            <h4>Now do at least {props.currentWorkout.exercises[current.exercise][current.set].reps} {props.currentWorkout.exercises[current.exercise][current.set].exercise}</h4>
             <h4>How many reps did you do? {currentReps} reps</h4>
             <Button.Group>
               <Button icon='left chevron' onClick={() => setCurrentReps(currentReps - 1)}></Button>

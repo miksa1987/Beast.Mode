@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Button } from 'semantic-ui-react'
 import useTimer from '../../../hooks/useTimer'
@@ -10,48 +10,55 @@ import {
   setCurrentWorkoutTime,
   setCurrentWorkoutDone
 } from '../../../reducers/currentWorkout'
-import useOrientation from '../../../hooks/useOrientation'
+import useWindowSize from '../../../hooks/useWindowSize'
 
 import Preview from './Preview'
 import DoWorkoutOfSets from './DoWorkoutOfSets'
 import DoWorkoutOfRounds from './DoWorkoutOfRounds'
+import WorkoutDone from './WorkoutDone'
 
 import './DoWorkout.css'
 
 const DoWorkout = (props) => {
   const timer = useTimer(0)
-  const orientation = useOrientation()
+  const screen = useWindowSize()
+  const [view, setView] = useState('preview')
   
   useEffect(() => {
     props.initCurrentWorkout(props.workoutid)
   }, [])
 
+  const start = () => {
+    timer.start()
+    setView('workout')
+  }
   // Workout type 0 default
   return ( <div className='doworkout-component'>
-    {orientation === 'portrait' &&
+    {view === 'preview' ?
     <Button.Group fluid>
-      <Button color='red' compact onClick={() => timer.start()}>Start workout</Button>
-      <Button color='green' compact onClick={() => props.setCurrentWorkoutDone()}>
-        Workout done</Button>
-      <Button color='blue' compact>Edit workout</Button>
-    </Button.Group>}
-    {orientation !== 'portrait' &&
-    <Button.Group fluid>
-      <Button color='red' onClick={() => timer.start()}>Start workout</Button>
+      <Button color='red' onClick={start}>Start</Button>
       <Button color='green' onClick={() => props.setCurrentWorkoutDone()}>
-        Mark workout done</Button>
-      <Button color='blue'>Edit workout</Button>
-    </Button.Group>}
-    {!timer.active && <Preview workout={props.currentWorkout} />}
+        Mark done</Button>
+      <Button color='blue'>Edit</Button>
+    </Button.Group>
+    : view !== 'done' && <Button color='green' onClick={() => props.setCurrentWorkoutDone()}>
+      Mark done</Button>}
+
+    {view === 'preview' && <Preview workout={props.currentWorkout} />}
+    {view === 'done' && <WorkoutDone />}
+
     {(props.currentWorkout.type === '0' && timer.active) && <DoWorkoutOfSets timer={timer}
       currentWorkout={props.currentWorkout} 
       setCurrentWorkoutExerciseDone={props.setCurrentWorkoutExerciseDone}
-      setCurrentWorkoutDone={props.setCurrentWorkoutDone} />}
+      setCurrentWorkoutDone={props.setCurrentWorkoutDone}
+      setView={setView} />}
+
     {(props.currentWorkout.type === '1' && timer.active) && <DoWorkoutOfRounds timer={timer}
       currentWorkout={props.currentWorkout} 
       setCurrentWorkoutExerciseDone={props.setCurrentWorkoutExerciseDone}
       setCurrentWorkoutDone={props.setCurrentWorkoutDone}
-      setCurrentWorkoutExerciseUndone={setCurrentWorkoutExerciseUndone} />}
+      setCurrentWorkoutExerciseUndone={setCurrentWorkoutExerciseUndone}
+      setView={setView} />}
   </div> )
 }
 

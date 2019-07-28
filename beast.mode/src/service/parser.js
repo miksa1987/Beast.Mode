@@ -78,6 +78,7 @@ const doExercises = (type, text) => {
 
   if (type === '0') {
     lines.forEach(line => {
+      console.log(`do ${line}`)
       if(match0(line)) exercises.push(getRepsSetsAndExercise(line))
     })
   }
@@ -103,8 +104,10 @@ const doWorkout = (text) => {
     textcontent: text
   }
 
-  if(match0(text)) workout.type = '0'
-  if(match1(text)) workout.type = '1'
+  if(/^\d\d?x\d\d?\s+\D+/gm.exec(text)) workout.type = '0'
+  if(/^\d\d?\s+\D+/gm.exec(text)) workout.type = '1'
+
+  console.log(`workout type ${workout.type}`)
 
   workout.exercises = doExercises(workout.type, text)
 
