@@ -1,0 +1,24 @@
+.doworkout-component {
+  padding: 10px 10px 10px 10px;
+  border: #dddddd;
+  border-radius: 4px;
+  background-color: white;
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+}
+
+.sidebar-component {
+  vertical-align: top;
+  width: 40%;
+  padding: 10px 10px 10px 10px;
+  border-radius: 5px;
+  background-color: #f5f5f5
+}
+
+.view-component {
+  width: 100%;
+  padding: 10px 10px 10px 10px;
+}

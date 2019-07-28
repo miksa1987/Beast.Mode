@@ -123,12 +123,13 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
       date: new Date()
     })
     const savedWorkout = await workout.save()
+    const workoutToReturn = await savedWorkout.populate('user').execPopulate()
 
-    request.io.emit('user_add_workout', savedWorkout)
-    activityHelper.setActivity(decodedToken.id, 'workout', savedWorkout._id)
-    userUpdater.addToWorkouts(decodedToken.id, savedWorkout._id)
+    request.io.emit('user_add_workout', workoutToReturn)
+    activityHelper.setActivity(decodedToken.id, 'workout', workoutToReturn._id)
+    userUpdater.addToWorkouts(decodedToken.id, workoutToReturn._id)
     
-    return response.status(201).json(savedWorkout)
+    return response.status(201).json(workoutToReturn)
   } catch(error) {
     return response.status(400).send({ error: error.message })
   }

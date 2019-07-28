@@ -21,9 +21,9 @@ const Workouts = (props) => {
     {orientation === 'portrait' && <MobileSelection currentUser={props.currentUser} /> }
     <Button color='blue' onClick={() => setShowNewpost(true) }>Create new workout</Button>
     {(orientation === 'portrait' && showNewpost) && <Newpost setShowNewpost={setShowNewpost} />}
+    {(orientation !== 'portrait' && showNewpost) && <Newpost setShowNewpost={setShowNewpost} isWorkout={true} />}
     {props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} workout={workout} /> ) : null}
     {orientation !== 'portrait' && <Sidebar currentUser={props.currentUser} />}
-    {(orientation !== 'portrait' && showNewpost) && <Newpost setShowNewpost={setShowNewpost} isWorkout={true} />}
   </div> )
 }
 

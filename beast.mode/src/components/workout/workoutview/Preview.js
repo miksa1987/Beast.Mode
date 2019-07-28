@@ -1,8 +1,8 @@
 import React from 'react'
 import { Image, Input, Button, Icon } from 'semantic-ui-react'
 import './Preview.css'
-import Comments from '../post/Comments'
-import useOrientation from '../../hooks/useOrientation'
+import Comments from '../../post/Comments'
+import useOrientation from '../../../hooks/useOrientation'
 
 const Preview = (props) => {
   const orientation = useOrientation()

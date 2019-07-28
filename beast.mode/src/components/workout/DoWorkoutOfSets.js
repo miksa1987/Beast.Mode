@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from 'semantic-ui-react'
-import useTimer from '../../hooks/useTimer'
+import useTimer from '../../../hooks/useTimer'
 import Timer from './Timer'
 import WorkoutOfSetsDone from './WorkoutOfSetsDone'
 
@@ -39,6 +39,7 @@ const DoWorkoutOfSets = (props) => {
     </div> )
   }
   return ( <div>
+    
     <Timer secs={props.timer.value} />
     <h2>Exercise {current.exercise + 1}</h2>
     <h3>GOAL:{props.currentWorkout.exercises[current.exercise].length} sets, 

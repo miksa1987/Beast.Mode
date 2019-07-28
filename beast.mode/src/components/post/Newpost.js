@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Form, TextArea, Button, Checkbox, Icon } from 'semantic-ui-react'
 import communicationService from '../../service/communication'
 import { addToFeed } from '../../reducers/feedReducer'
-import useOrientation from '../../hooks/useOrientation'
+import { addWorkout } from '../../reducers/workoutsReducer'
 import useField from '../../hooks/useField'
 import './Newpost.css'
 
@@ -31,9 +31,11 @@ const Newpost = (props) => {
     }
     let newPost = {}
 
-    if(!isWorkout) newPost =  await communicationService.post('/posts/new', data, header)
+    if(!isWorkout) newPost = await communicationService.post('/posts/new', data, header)
     if(isWorkout && !didWorkout) newPost = await communicationService.post('/workouts/new', data, header)
     if(isWorkout && didWorkout) newPost = await communicationService.post('/doneworkouts/new', data, header)
+
+    isWorkout ? props.addWorkout(newPost) : props.addToFeed(newPost)
 
     resetText()
     props.setShowNewpost && props.setShowNewpost(false)
@@ -42,10 +44,8 @@ const Newpost = (props) => {
   return ( <div className='newpost-component'>
     <strong>Create new</strong>
     <Form onSubmit={post}>
-      <TextArea style={{ resize: 'none' }} fluid rows={6} {...text} />
-              <label class='fileContainer'>
-                <input type='file' onChange={({ target }) => setFile(target.files[0])} />
-              </label>
+      <TextArea style={{ resize: 'none' }} rows={6} {...text} />
+      <input type='file' onChange={({ target }) => setFile(target.files[0])} />
   
       <Button primary type='submit'>Post</Button>
       {!props.isWorkout && <Button.Group>
@@ -55,6 +55,7 @@ const Newpost = (props) => {
       {` `}
       {isWorkout && <Button type='button' color={didWorkout ? 'blue' : 'black'}
         onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
+      {props.setShowNewpost && <Button color='blue' floated='right' onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
     </Form>
   </div> )
 }
@@ -63,4 +64,4 @@ const mapStateToProps = (state) => {
   return { currentUser: state.currentUser }
 }
 
-export default connect(mapStateToProps, { addToFeed })(Newpost)
+export default connect(mapStateToProps, { addToFeed, addWorkout })(Newpost)
