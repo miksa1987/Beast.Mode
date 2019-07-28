@@ -46,7 +46,7 @@ const getRepsAndExercise = (text) => {
 
   if (typeof reps !== 'number') return null
 
-  const exercise = text.substring((whereToSplit + 1), (text.length - whereToSplit + 1))
+  const exercise = text.substring((whereToSplit + 1), (text.length - whereToSplit + 2))
 
   return { exercise, reps, done: false, doneReps: 0 }
 }
