@@ -30,7 +30,6 @@ const DoWorkoutOfSets = (props) => {
         console.log('check 2')
         newCurrent = { round: current.round + 1, exercise: 0 }
       } else {
-        props.setCurrentWorkoutDone()
         props.timer.stop()
         props.setView('done')
       }

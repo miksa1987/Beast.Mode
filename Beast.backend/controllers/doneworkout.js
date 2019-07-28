@@ -30,6 +30,8 @@ doneWorkoutRouter.post('/new', imgparser.single('image'), async (request, respon
   if (!request.token) return response.status(401)
 
   try {
+    console.log(request.body)
+    console.log(request.file)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!decodedToken.id) return response.status(401)
     

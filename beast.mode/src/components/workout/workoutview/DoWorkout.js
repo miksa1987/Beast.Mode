@@ -28,6 +28,7 @@ const DoWorkout = (props) => {
     props.initCurrentWorkout(props.workoutid)
   }, [])
 
+  console.log(props.currentWorkout)
   const start = () => {
     timer.start()
     setView('workout')
@@ -37,7 +38,7 @@ const DoWorkout = (props) => {
     {view === 'preview' ?
     <Button.Group fluid>
       <Button color='red' onClick={start}>Start</Button>
-      <Button color='green' onClick={() => props.setCurrentWorkoutDone()}>
+      <Button color='green' onClick={() => setView('done')}>
         Mark done</Button>
       <Button color='blue'>Edit</Button>
     </Button.Group>
@@ -45,7 +46,7 @@ const DoWorkout = (props) => {
       Mark done</Button>}
 
     {view === 'preview' && <Preview workout={props.currentWorkout} />}
-    {view === 'done' && <WorkoutDone />}
+    {view === 'done' && <WorkoutDone workout={props.currentWorkout} time={timer.value} setDone={props.setCurrentWorkoutDone} />}
 
     {(props.currentWorkout.type === '0' && timer.active) && <DoWorkoutOfSets timer={timer}
       currentWorkout={props.currentWorkout} 

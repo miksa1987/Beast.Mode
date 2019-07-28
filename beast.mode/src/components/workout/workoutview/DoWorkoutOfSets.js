@@ -18,20 +18,18 @@ const DoWorkoutOfSets = (props) => {
   
   const setDone = () => {
     if(props.currentWorkout.done || !props.timer.active) return
-
+    let newCurrent = { ...current, set: current.set + 1}
     props.setCurrentWorkoutExerciseDone(currentReps, current.exercise, current.set)
-    setCurrent({ ...current, set: current.set + 1 })
-    setTimeout(() => { 
-      if (current.set + 1 > props.currentWorkout.exercises[current.exercise].length - 1) {
-        if (current.exercise  < props.currentWorkout.exercises.length - 1) {
-          setCurrent({ exercise: current.exercise + 1, set: 0 })
-        } else {
-          props.setCurrentWorkoutDone()
-          props.timer.stop()
-          props.setView('done')
-        }
-      }  
-    }, 25)
+    
+    if (current.set + 1 > props.currentWorkout.exercises[current.exercise].length - 1) {
+      if (current.exercise  < props.currentWorkout.exercises.length - 1) {
+        newCurrent = { exercise: current.exercise + 1, set: 0 }
+      } else {
+        props.timer.stop()
+        props.setView('done')
+      }
+    }  
+    setCurrent(newCurrent)
   }
 
   if (props.currentWorkout.exercises.length === 0) {

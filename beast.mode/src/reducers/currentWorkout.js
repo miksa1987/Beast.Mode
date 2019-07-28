@@ -81,16 +81,13 @@ export const setCurrentWorkoutTime = (time, visible) => {
   return dispatch => dispatch({ type: 'SET_CURRENT_WORKOUT_TIME', data: { time, visible } })
 }
 
-export const setCurrentWorkoutDone = (time) => {
+export const setCurrentWorkoutDone = (doneWorkout) => {
   return async (dispatch, getState) => {
-    console.log(getState().currentWorkout)
-    const doneWorkout = {
-      content: getState().currentWorkout.textcontent,
-      additional: '',
-      picture: '',
-      time
+    const header = {
+      'content-type': 'multipart/form-data'
     }
-    await communicationService.post('/doneworkouts/new', doneWorkout)
+
+    await communicationService.post('/doneworkouts/new', doneWorkout, header)
     dispatch({ type: 'SET_CURRENT_WORKOUT_DONE' })
   }
 }
