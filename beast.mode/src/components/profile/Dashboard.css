@@ -1,0 +1,30 @@
+@media (max-width: 600px) {
+  .add-button {
+    width: 10em;
+  }
+
+  .remove-button {
+    width: 10em;
+  }
+}
+
+@media (min-width: 620px) {
+  .add-button {
+    width: 10em;
+    position: absolute;
+    top: 100px;
+    right: 50px;
+  }
+
+  .remove-button {
+    width: 10em;
+    position: absolute;
+    top: 100px;
+    right: 50px;
+  }
+}
+
+.info {
+  vertical-align: top;
+  width: 50%;
+}

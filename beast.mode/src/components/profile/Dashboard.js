@@ -14,6 +14,7 @@ import UsersDoneWorkouts from './UsersDoneWorkouts'
 import UsersWorkouts from './UsersWorkouts'
 import Spinner from '../Spinner'
 import '../Feed.css'
+import './Dashboard.css'
 
 import Post from '../post/Post'
 
@@ -30,22 +31,11 @@ const Dashboard  = (props) => {
 
   useEffect(() => {
       props.initCurrentProfile(props.user)
-      
-      if (props.currentProfile.id && props.currentProfile.id !== props.user || props.currentUserPosts.length === 0) {
+      console.log(props.currentUser)
+      if ((props.currentProfile.id && props.currentProfile.id !== props.user) || props.currentUserPosts.length === 0) {
         props.initUserPosts(props.user)
       }
   }, [])
-
-  const infoStyle = {
-    verticalAlign: 'top',
-    width: '50%'
-  }
-
-  const addFriendButtonStyle = {
-    position: 'absolute',
-    right: '75px',
-    top: '100px'
-  }
 
   if (!props.currentProfile.id && props.currentUserPosts.length === 0) {
     return ( <div><Spinner /></div> )
@@ -59,24 +49,18 @@ const Dashboard  = (props) => {
             <Image height='150px' width='150px' circular src={props.currentProfile.picture && props.currentProfile.picture !== '' ? 
               props.currentProfile.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
           </td>
-          <td style={infoStyle}>
+          <td className='info'>
             <h2>{props.currentProfile.username}</h2>
             <p>{props.currentProfile.info}</p>
           </td>
         </tr>
       </tbody>
     </table>
-    {orientation === 'portrait' ? 
-      <Button color='green'
-        onClick={() => props.addFriend(props.currentProfile.id)}>
-        <Icon name='plus' />
-        Add as friend
-      </Button>
-      : <Button style={addFriendButtonStyle} color='green'
-        onClick={() => props.addFriend(props.currentProfile.id)}>
-        <Icon name='plus' />
-        Add as friend
-      </Button> }
+
+    {props.currentUser.friends.indexOf(props.currentProfile.id) > -1 
+    ? <Button className='add-button' color='red' onClick={() => console.log('Hes gone!')} >Remove friend</Button>
+    : <Button className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >Add friend</Button> }
+
     <Menu pointing secondary stackable>
       <Menu.Item onClick={() => setView('posts')} active={view === 'posts'}>
         <Icon name='sticky note' />
@@ -103,6 +87,7 @@ const Dashboard  = (props) => {
         Activity
       </Menu.Item>
     </Menu>
+
     {view === 'photos' && <Photos />}
     {view === 'posts' && 
       <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
@@ -119,7 +104,8 @@ const Dashboard  = (props) => {
 const mapStateToProps = (state) => {
   return { 
     currentUserPosts: state.currentUserPosts,
-    currentProfile: state.currentProfile
+    currentProfile: state.currentProfile,
+    currentUser: state.currentUser
   }
 }
 
