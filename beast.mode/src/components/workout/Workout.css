@@ -20,9 +20,22 @@
   width: 100%;
 }
 
+.first {
+  width: 33%;
+}
+
+.second {
+  width: 33%;
+}
+
+.third {
+  width: 100%;
+}
+
 .workout-segment {
   line-break: strict;
   white-space: pre-line;
+  text-align: left;
   vertical-align: top;
-  padding: 10px 10px 10px 10px;
+  padding: 0px;
 }

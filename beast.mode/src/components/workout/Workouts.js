@@ -7,7 +7,8 @@ import Sidebar from './Sidebar'
 import MobileSelection from './MobileSelection'
 import Newpost from '../post/Newpost'
 import './Workouts.css'
-import { Button } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react'
+import Spinner from '../Spinner'
 
 const Workouts = (props) => {
   const orientation = useOrientation()
@@ -16,6 +17,10 @@ const Workouts = (props) => {
   useEffect(() => {
     props.initAllWorkouts() // Add some kind of checking to avoid loading already loaded workouts
   }, [])
+
+  if (props.workouts.length === 0) {
+    return ( <div><Spinner /></div> )
+  }
   
   return ( <div className={orientation === 'portrait' ? null : 'workouts-component'}>
     {orientation === 'portrait' && <MobileSelection currentUser={props.currentUser} /> }

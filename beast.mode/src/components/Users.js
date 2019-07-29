@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { initUsers } from '../reducers/usersReducer'
 import User from './User'
 import './Users.css'
+import Spinner from './Spinner'
 
 const Users = (props) => {
   const listStyle = {
@@ -23,7 +24,7 @@ const Users = (props) => {
   }, [])
 
   if(props.users.length === 0) {
-    return ( <div></div> )
+    return ( <div><Spinner /></div> )
   }
 
   return ( <div style={listStyle}>

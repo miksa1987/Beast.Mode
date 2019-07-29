@@ -12,6 +12,7 @@ import Friends from './Friends'
 import Photos from './Photos'
 import UsersDoneWorkouts from './UsersDoneWorkouts'
 import UsersWorkouts from './UsersWorkouts'
+import Spinner from '../Spinner'
 import '../Feed.css'
 
 import Post from '../post/Post'
@@ -46,8 +47,8 @@ const Dashboard  = (props) => {
     top: '100px'
   }
 
-  if (!props.currentProfile.id && !props.currentUserPosts.length === 0) {
-    return ( <div>Loading...</div> )
+  if (!props.currentProfile.id && props.currentUserPosts.length === 0) {
+    return ( <div><Spinner /></div> )
   }
 
   return ( <div>

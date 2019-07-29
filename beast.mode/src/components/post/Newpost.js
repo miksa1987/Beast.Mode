@@ -22,14 +22,17 @@ const Newpost = (props) => {
     data.append('image', file)
     data.append('user', props.currentUser.id)
     data.append('likes', 0)
-    isWorkout ? data.append('type', 'workout') : data.append('type', 'post')
-    isWorkout ? post.type = 'workout' : post.type = 'post'
-    console.log(data)
-    console.log(file)
+    !isWorkout ? data.append('type', 'post') 
+      : didWorkout ? data.append('type', 'doneworkout') : data.append('type', 'workout') 
+
     const header = {
       'content-type': 'multipart/form-data'
     }
     let newPost = {}
+
+    for(let pair of data.entries()) {
+      console.log(`${pair[0]} ${pair[1]}`)
+    }
 
     if(!isWorkout) newPost = await communicationService.post('/posts/new', data, header)
     if(isWorkout && !didWorkout) newPost = await communicationService.post('/workouts/new', data, header)

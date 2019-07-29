@@ -5,31 +5,6 @@ import parser from '../../service/parser'
 import './Workout.css'
 
 const Workout = (props) => {
-  const elementStyle = {
-    width: '98%'
-  }
-
-  const imgStyle = {
-    width: '20%'
-  }
-
-  const infoStyle = {
-    verticalAlign: 'top',
-    width: '75%'
-  }
-
-  const buttonStyle = {
-    width: '100%'
-  }
-
-  const segmentStyle = {
-    whiteSpace: 'pre-line',
-    lineBreak: 'strict',
-    verticalAlign: 'top',
-    padding: '10px 10px 10px 10px'
-  }
-
-  console.log(props.workout)
   // Get first lines from content
   const getExercises = () => {
     const lines = props.workout.content.split('\n')
@@ -60,7 +35,7 @@ const Workout = (props) => {
               ? props.workout.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
           </td>
           <td className='workout-info'>
-            <table>
+            <table className='third'>
               <tbody>
                 <tr>
                   <td>
@@ -69,18 +44,21 @@ const Workout = (props) => {
                 </tr>
                 <tr>
                   <td>
-                    <table>
+                    <table className='third'>
                       <tbody>
                         <tr>
-                          <td className='workout-segment'>
+                          <td className='workout-segment first'>
                             <h2>{exercisesNumber}</h2>
                             exercises
                           </td>
-                          <td className='workout-segment'>
-
+                          <td className='workout-segment second'>
+                            <h2>{props.workout.likes.length}</h2>
+                            likes
                           </td>
-                          <td className='workout-segment'>
-                            {`${exercises}`}
+                          <td className='workout-segment third'>
+                            <ul>
+                              {exercises.map((exercise, i) => <li key={i}>{exercise}</li>)}
+                            </ul>
                           </td>
                         </tr>
                       </tbody>

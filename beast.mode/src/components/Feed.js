@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Masonry from 'react-masonry-css'
 import Newpost from './post/Newpost'
 import Post from './post/Post'
+import Spinner from './Spinner'
 import useOrientation from '../hooks/useOrientation'
 import { connect } from 'react-redux'
 import { Button, Icon } from 'semantic-ui-react'
@@ -32,7 +33,7 @@ const Feed = (props) => {
   }, [])
 
   if (props.feed === undefined) {
-    return ( <div><Newpost /></div> )
+    return ( <div><Newpost /><Spinner /></div> )
   }
 
   return ( <div>
