@@ -50,7 +50,7 @@ const setActivity = async (userid, type, id) => {
     case 'addfriend':
         activity = {
           text: `${user.username} added a friend`,
-          uri: `/profilex/${id}`
+          uri: `/profile/${id}`
         } 
       break
     default:

@@ -52,7 +52,7 @@ postRouter.put('/:id', async (request, response) => {
   }
 })
 
-postRouter.post('/new', imgparser.single('image'), async (request, response, next) => {
+postRouter.post('/new', async (request, response, next) => {
   if(!request.token) {
     return response.status(401).end()
   }
@@ -61,20 +61,11 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
   }
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-    let imageUri = ''
-
-    if (request.file) {
-      await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
-      
-      const splittedUri = request.file.secure_url.split('upload') 
-      imageUri = splittedUri[0].concat('upload/w_1280').concat(splittedUri[1])
-      userUpdater.addToPictures(decodedToken.id, imageUri)
-    }
 
     const post = new Post({
       content: request.body.content,
-      picture: imageUri,
-      pictureThumb: imageUri, // TBD change this to real thumbnail
+      picture: request.body.picture,
+      pictureThumb: request.body.picture, // TBD change this to real thumbnail
       type: request.body.type,
       user: decodedToken.id,
       likes: [],
@@ -82,6 +73,8 @@ postRouter.post('/new', imgparser.single('image'), async (request, response, nex
       date: new Date()
     })
     const savedPost = await post.save()
+
+    if (request.body.picture !== '') userUpdater.addToPictures(decodedToken.id, request.body.picture)
 
     activityHelper.setActivity(decodedToken.id, 'post', savedPost._id)
     userUpdater.addToPosts(decodedToken.id, savedPost._id)

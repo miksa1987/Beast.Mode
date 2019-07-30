@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Form, TextArea, Button, Checkbox, Icon } from 'semantic-ui-react'
+import { Form, TextArea, Button, Image } from 'semantic-ui-react'
 import communicationService from '../../service/communication'
 import { addToFeed } from '../../reducers/feedReducer'
 import { addWorkout } from '../../reducers/workoutsReducer'
@@ -11,32 +11,45 @@ const Newpost = (props) => {
   const [isWorkout, setIsWorkout] = useState(props.isWorkout)
   const [didWorkout, setDidWorkout] = useState(false)
   const [text, resetText] = useField('text')
-  //const [textContent, setTextContent] = useState('')
   const [file, setFile] = useState('')
+  const [image, setImage] = useState('')
 
-  const post = async (event) => {
-    event.preventDefault()
+  const postFile = async (event) => {
+    await setFile(event.target.files[0])
+    console.log(file)
 
     const data = new FormData()
-    data.append('content', text.value)
     data.append('image', file)
-    data.append('user', props.currentUser.id)
-    data.append('likes', 0)
-    !isWorkout ? data.append('type', 'post') 
-      : didWorkout ? data.append('type', 'doneworkout') : data.append('type', 'workout') 
 
     const header = {
       'content-type': 'multipart/form-data'
     }
-    let newPost = {}
 
-    for(let pair of data.entries()) {
-      console.log(`${pair[0]} ${pair[1]}`)
+    const response = await communicationService.post('/image/new', data, header)
+    console.log(response)
+    setImage(response.imageuri)
+  }
+
+  const post = async (event) => {
+    event.preventDefault()
+
+    let post = {
+      content: text.value,
+      picture: image,
+      user: props.currentUser.id,
+      likes: 0,
+      type: 'post'
     }
 
-    if(!isWorkout) newPost = await communicationService.post('/posts/new', data, header)
-    if(isWorkout && !didWorkout) newPost = await communicationService.post('/workouts/new', data, header)
-    if(isWorkout && didWorkout) newPost = await communicationService.post('/doneworkouts/new', data, header)
+    if (isWorkout) {
+      if (didWorkout) post.type = 'doneworkout'
+      else post.type = 'workout'
+    }
+
+    let newPost = {}
+    if(!isWorkout) newPost = await communicationService.post('/posts/new', post)
+    if(isWorkout && !didWorkout) newPost = await communicationService.post('/workouts/new', post)
+    if(isWorkout && didWorkout) newPost = await communicationService.post('/doneworkouts/new', post)
 
     isWorkout ? props.addWorkout(newPost) : props.addToFeed(newPost)
 
@@ -48,23 +61,38 @@ const Newpost = (props) => {
     <strong>Create new</strong>
     <Form onSubmit={post}>
       <TextArea style={{ resize: 'none' }} rows={6} {...text} />
-      <input type='file' onChange={({ target }) => setFile(target.files[0])} />
+      
+      <table>
+        <tbody>
+          <tr>
+            {image !== '' && <td><Image src={image} size='tiny' /></td>}
+            <td>
+              <input type='file' onChange={postFile} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
   
-      <Button primary type='submit'>Post</Button>
+      <Button primary className='button-style' type='submit'>Post</Button>
       {!props.isWorkout && <Button.Group>
-        <Button type='button' color={!isWorkout ? 'blue' : 'black'} onClick={() => setIsWorkout(false)}>Update</Button>
-        <Button type='button' color={isWorkout ? 'blue' : 'black'} onClick={() => setIsWorkout(true)}>Workout</Button>
+        <Button className='button-style' type='button' color={!isWorkout ? 'blue' : 'black'} 
+          onClick={() => setIsWorkout(false)}>Update</Button>
+        <Button className='button-style' type='button' color={isWorkout ? 'blue' : 'black'} 
+          onClick={() => setIsWorkout(true)}>Workout</Button>
       </Button.Group>}
       {` `}
-      {isWorkout && <Button type='button' color={didWorkout ? 'blue' : 'black'}
+      {isWorkout && <Button className='button-style' type='button' color={didWorkout ? 'blue' : 'black'}
         onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
-      {props.setShowNewpost && <Button color='blue' floated='right' onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
+      {props.setShowNewpost && <Button className='button-style' color='blue' floated='right' 
+        onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
     </Form>
   </div> )
 }
 
 const mapStateToProps = (state) => {
-  return { currentUser: state.currentUser }
+  return { 
+    currentUser: state.currentUser 
+  }
 }
 
 export default connect(mapStateToProps, { addToFeed, addWorkout })(Newpost)

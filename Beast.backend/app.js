@@ -17,6 +17,7 @@ const workoutRouter       = require('./controllers/workout')
 const doneWorkoutRouter   = require('./controllers/doneworkout')
 const loginRouter         = require('./controllers/login')
 const searchRouter        = require('./controllers/search')
+const imageRouter         = require('./controllers/image')
 const resetRouter         = require('./controllers/reset')
 
 mongoose.set('useCreateIndex', true)
@@ -42,6 +43,7 @@ app.use('/workouts', workoutRouter)
 app.use('/doneworkouts', doneWorkoutRouter)
 app.use('/login', loginRouter)
 app.use('/search', searchRouter)
+app.use('/image', imageRouter)
 
 app.use('/resetonlyifyouarecompletelysureaboutthis', resetRouter) // This has to be changed to TEST env variable only and different collection
 

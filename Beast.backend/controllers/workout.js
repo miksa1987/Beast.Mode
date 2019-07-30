@@ -103,20 +103,11 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
   
   try {
     const decodedToken = jwt.verify(request.token, config.SECRET)
-    let imageUri = ''
-
-    if (request.file) {
-      await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
-      
-      const splittedUri = request.file.secure_url.split('upload')
-      imageUri = splittedUri[0].concat('upload/w_1280').concat(splittedUri[1])
-      userUpdater.addToPictures(decodedToken.id, imageUri)
-    }
 
     const workout = new Workout({
       content: request.body.content,
-      picture: imageUri,
-      pictureThumb: imageUri, // TBD change this to real thumbnail
+      picture: request.body.picture,
+      pictureThumb: request.body.picture, // TBD change this to real thumbnail
       type: request.body.type,
       user: decodedToken.id,
       likes: [],
@@ -125,6 +116,8 @@ workoutRouter.post('/new', imgparser.single('image'), async (request, response, 
     })
     const savedWorkout = await workout.save()
     const workoutToReturn = await savedWorkout.populate('user').execPopulate()
+
+    if (request.body.picture !== '') userUpdater.addToPictures(decodedToken.id, request.body.picture)
 
     request.io.emit('user_add_workout', workoutToReturn)
     activityHelper.setActivity(decodedToken.id, 'workout', workoutToReturn._id)
