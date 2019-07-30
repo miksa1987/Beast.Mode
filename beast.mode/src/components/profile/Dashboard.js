@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { Image, Menu, Icon, Button } from 'semantic-ui-react'
 import { initUserPosts } from '../../reducers/currentUserPosts'
 import { initCurrentProfile } from '../../reducers/currentProfile'
-import { addFriend } from '../../reducers/currentUser'
+import { addFriend, removeFriend } from '../../reducers/currentUser'
 import useOrientation from '../../hooks/useOrientation'
 import Masonry from 'react-masonry-css'
 import Activity from './Activity'
@@ -58,8 +58,10 @@ const Dashboard  = (props) => {
     </table>
 
     {props.currentUser.friends.indexOf(props.currentProfile.id) > -1 
-    ? <Button className='add-button' color='red' onClick={() => console.log('Hes gone!')} >Remove friend</Button>
-    : <Button className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >Add friend</Button> }
+    ? <Button className='add-button' color='red' onClick={() => props.removeFriend(props.currentProfile.id)} >
+        Remove friend</Button>
+    : <Button className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >
+        Add friend</Button> }
 
     <Menu pointing secondary stackable>
       <Menu.Item onClick={() => setView('posts')} active={view === 'posts'}>
@@ -109,4 +111,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { initUserPosts, initCurrentProfile, addFriend })(withRouter(Dashboard))
+export default connect(mapStateToProps, { initUserPosts, initCurrentProfile, addFriend, removeFriend })(withRouter(Dashboard))

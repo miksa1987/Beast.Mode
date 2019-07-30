@@ -48,6 +48,14 @@ export const addFriend = (friendId) => {
   }
 }
 
+export const removeFriend = (friendId) => {
+  return async dispatch => {
+    const updatedUser = await communicationService.post('/users/removefriend', { friendToRemove: friendId })
+    
+    dispatch({ type: 'SET_USER', data: updatedUser })
+  }
+}
+
 export const updateUser = (data) => {
   return async dispatch => {
     const updatedUser = await communicationService.update('/users/me', data)

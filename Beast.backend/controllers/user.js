@@ -168,21 +168,24 @@ userRouter.post('/addfriend', async (request, response, next) => {
   }
 })
 
-userRouter.put('/removefriend', async (request, response) => {
+userRouter.post('/removefriend', async (request, response) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     
     if (!request.token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
-    if (!request.friendToRemove) return response.status(400).json({ error: 'Friend to remove missing' })
-
-    const user = await User.findById(decodedToken.id)
-    const userToUpdate = { ...user, friends: user.friends.filter(friend => friend !== friendToRemove) }
-    const updatedUser = await User.findByIdAndUpdate(decodedToken.id, userToUpdate, { new: true })
-
+    if (!request.body.friendToRemove) {
+      return response.status(400).json({ error: 'Friend to remove missing' })
+    }
+    
+    await User.updateOne( { _id: decodedToken.id }, { "$pull": { "friends": request.body.friendToRemove } })
+    await User.updateOne( { _id: request.body.friendToRemove }, { "$pull": { "friends": decodedToken.id } })
+    const updatedUser = await User.findById(decodedToken.id)
+   
     return response.json(updatedUser)
   } catch (error) {
+    console.log(error.message)
     return response.status(400).json({ error: error.message })
   }
 })
