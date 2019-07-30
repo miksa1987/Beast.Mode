@@ -15,19 +15,22 @@ const Newpost = (props) => {
   const [image, setImage] = useState('')
 
   const postFile = async (event) => {
-    await setFile(event.target.files[0])
-    console.log(file)
+    const chosenFile = event.target.files[0]
 
-    const data = new FormData()
-    data.append('image', file)
+    if (chosenFile !== file) {
+      setFile(chosenFile)
 
-    const header = {
-      'content-type': 'multipart/form-data'
+      const data = new FormData()
+      data.append('image', chosenFile)
+
+      const header = {
+        'content-type': 'multipart/form-data'
+      }
+
+      const response = await communicationService.post('/image/new', data, header)
+      console.log(response)
+      setImage(response.imageuri)
     }
-
-    const response = await communicationService.post('/image/new', data, header)
-    console.log(response)
-    setImage(response.imageuri)
   }
 
   const post = async (event) => {
