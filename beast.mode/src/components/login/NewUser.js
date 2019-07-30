@@ -38,39 +38,39 @@ const NewUser = (props) => {
         <tbody>
           <tr>
             <td>
-              <Input placeholder='Desired username' {...username} size='small' fluid />
+              <Input placeholder='Desired username' {...username} size='small' fluid id='username' />
             </td>
           </tr>
           <tr>
             <td>
-              <Input placeholder='Your email' {...email} size='small' fluid />
+              <Input placeholder='Your email' {...email} size='small' fluid id='email' />
             </td>
           </tr>
           <tr>
             <td>
               <Input name='birthday' placeholder='Birth day' type='number' size='small' fluid />
               <Input name='birthmonth' placeholder='Birth month' type='number' size='small' fluid />
-              <Input name='birthyear' placeholder='Birth year' type='number' size='small' fluid />
+              <Input name='birthyear' placeholder='Birth year' type='number' size='small' fluid/>
             </td>
           </tr>
           <tr>
             <td>
-              <TextArea placeholder='Write some information about yourself' rows='5' className='element' {...info} />
+              <TextArea placeholder='Write some information about yourself' rows='5' className='element' {...info} id='info' />
             </td>
           </tr>
           <tr>
             <td>
-              <Input placeholder='Create a password' {...password} size='small' fluid />
+              <Input placeholder='Create a password' {...password} size='small' fluid id='passwd' />
             </td>
           </tr>
           <tr>
             <td>
-              <Input placeholder='Repeat password' {...rPassword} size='small' fluid />
+              <Input placeholder='Repeat password' {...rPassword} size='small' fluid id='passwd2' />
             </td>
           </tr>
         </tbody>
       </table>
-      <Button fluid type='submit'>Create your account</Button>
+      <Button fluid type='submit' id='submit'>Create your account</Button>
     </Form>
   </div> )
 }

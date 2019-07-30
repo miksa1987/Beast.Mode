@@ -26,7 +26,8 @@
   "scripts": {
     "start": "cross-env BEASTMODE_ENV=production node app.js",
     "watch": "cross-env BEASTMODE_ENV=dev nodemon app.js",
-    "test": "cross-env BEASTMODE_ENV=test jest --verbose --runInBand"
+    "test": "cross-env BEASTMODE_ENV=test jest --verbose --runInBand",
+    "start:test": "cross-env BEASTMODE_ENV=test node app.js"
   },
   "author": "",
   "license": "ISC",

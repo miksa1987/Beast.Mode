@@ -44,22 +44,22 @@ const LoginForm = (props) => {
             </tr>
             <tr>
               <td>
-                <Input className='element' placeholder='username' name='username' />
+                <Input className='element' id='username' placeholder='username' name='username' />
               </td>
             </tr>
             <tr>
               <td>
-                <Input className='element' placeholder='password' name='password' type='password' />
+                <Input className='element' id='passwd' placeholder='password' name='password' type='password' />
               </td>
             </tr>
             <tr>
               <td>
-                <Button color='green' className='element' type='submit'>Log in</Button>
+                <Button color='green' id='login' className='element' type='submit'>Log in</Button>
               </td>
             </tr>
             <tr>
               <td>
-                <Button color='blue' className='element' onClick={() => setView('newuser')}>New user?</Button>
+                <Button color='blue' id='newuser' className='element' onClick={() => setView('newuser')}>New user?</Button>
               </td>
             </tr>
           </tbody>
