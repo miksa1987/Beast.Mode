@@ -1,10 +1,11 @@
 const postRouter = require('express').Router()
 const config = require('../util/config')
 const Post = require('../models/Post')
+const User = require('../models/User')
 const userUpdater = require('../util/userUpdater')
+const dates = require('../util/dates')
 const jwt = require('jsonwebtoken')
 const activityHelper = require('../util/activity')
-const { imgparser, cloudinary } = require('../util/imageupload')
 
 postRouter.get('/all', async (request, response) => {
   try {
@@ -21,6 +22,42 @@ postRouter.get('/:id', async (request, response) => {
     return response.status(200).json(post)
   } catch(error) {
     return response.status(404).send('Post not found')
+  }
+})
+
+// Date format: YYYY-MM-DD-hh-mm CAUTION: No zero in front of single-digit values!
+//              0000 11 22 33 44
+postRouter.get('/byfriends/:date', async (request, response) => {
+  if (!request.token) {
+    return response.status(401).end()
+  }
+  
+  const decodedToken = await jwt.verify(request.token, config.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).end()
+  }
+  const user = await User.findById(decodedToken.id)
+
+  try {
+    let [startdate, enddate] = dates.getFetchDates(request.params.date)
+
+    let posts = await Post.find({
+      $and: [
+        { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }} ]},
+        { user: { $in: user.friends }}
+      ]
+    })
+
+    const responsedata = {
+      posts,
+      startdate,
+      enddate,
+      end: false
+    }
+
+    return response.json(responsedata)
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
   }
 })
 

@@ -17,7 +17,8 @@ GET  /workouts/all
 GET  /workouts/:id
 GET  /workouts/random        
 GET  /workouts/newest        
-GET  /workouts/mostliked     
+GET  /workouts/mostliked   
+GET  /workouts/byfriends/:date  TBD
 POST /workouts/new
 POST /workouts/:id/comment 
 POST /workouts/:id/like 
@@ -25,6 +26,7 @@ PUT  /workouts/:id
 
 GET  /posts/all
 GET  /posts/:id
+GET  /posts/byfriends/:date  WIP
 POST /posts/new
 POST /posts/:id/comment
 POST /posts/:id/like 
@@ -32,6 +34,7 @@ PUT  /posts/:id
 
 GET  /doneworkouts/all 
 GET  /doneworkouts/:id 
+GET  /doneworkouts/byfriends/:date  TBD
 POST /doneworkouts/new
 POST /doneworkouts/:id/comment
 POST /doneworkouts/:id/like 
