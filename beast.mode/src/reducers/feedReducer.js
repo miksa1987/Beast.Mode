@@ -5,7 +5,8 @@ import moment from 'moment'
 const initialState = {
   feed: [],
   loadedUntil: 0,
-  loading: false
+  loading: false,
+  endDate: 0
 }
 
 const feedReducer = (state = initialState, action) => {
@@ -24,6 +25,8 @@ const feedReducer = (state = initialState, action) => {
       return { ...state, loading: action.data }
     case 'SET_LOADED_UNTIL_TO':
       return { ...state, loadedUntil: action.data }
+    case 'SET_FEED_END_DATE':
+      return { ...state, endDate: action.data }
     default:
       return state
   }
@@ -52,8 +55,8 @@ export const loadMorePosts = () => {
     let posts = await communicationService.get(`/posts/byfriends/${dateString}`)
     let doneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
     let feedPosts = posts.posts.concat(doneworkouts.doneworkouts).sort(sorterService.comparePostDates)
-
-    while (feedPosts.length === 0) {
+    
+    while (feedPosts.length === 0 && moment(dateString, 'YYYY-M-D-h-m').isAfter(moment(getState().feed.endDate, 'YYYY-M-D-h-m'))) {
       dateString = moment(dateString, 'YYYY-M-D-h-m').add(-15, 'hours').format('YYYY-M-D-h-m')
       console.log(`load ${dateString}`)
       posts = await communicationService.get(`/posts/byfriends/${dateString}`)
@@ -83,6 +86,19 @@ export const removeFromFeed = (post) => {
     }
 
     dispatch({ type: 'REMOVE_FROMFEED', data: { id: post._id } })
+  }
+}
+
+export const setEndDate = () => {
+  return async dispatch => {
+    const post = await communicationService.get('/posts/oldest')
+    const doneworkout = await communicationService.get('/doneworkouts/oldest')
+
+    if (moment(post.oldest, 'YYYY-M-D-h-m').isBefore(moment(doneworkout.oldest, 'YYYY-M-D-h-m'))) {
+      dispatch({ type: 'SET_FEED_END_DATE', data: post.oldest })
+    } else {
+      dispatch({ type: 'SET_FEED_END_DATE', data: doneworkout.oldest })
+    }
   }
 }
 

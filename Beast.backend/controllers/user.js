@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { cloudinary, imgparser } = require('../util/imageupload')
 const activityHelper = require('../util/activity')
+const dates = require('../util/dates')
 
 userRouter.get('/all', async (request, response) => {
   try {
@@ -79,36 +80,6 @@ userRouter.get('/:id/workouts', async (request, response) => {
   }
 })
 
-userRouter.get('/:id/friendworkouts', async (request, response) => {
-  if (!request.token) {
-    return response.status(401).end()
-  }
-
-  try {
-    const decodedToken = await jwt.verify(request.token, config.SECRET)
-    if (!decodedToken.id) {
-      return response.status(401).end()
-    }
-
-    const user = await User.findById(request.params.id)
-    if (!user) {
-      return response.status(401).end()
-    }
-
-    let workouts = []
-    for (let friend of user.friends) {
-      const friendsworkouts = await Workout.find({ user: friend }).populate('user')
-      if (friendsworkouts.length > 0) {
-        const random = Math.floor(Math.random() * friendsworkouts.length)
-        workouts = workouts.concat(friendsworkouts[random])
-      }
-    }
-    return response.json(workouts)
-  } catch(error) {
-    return response.status(400).json({ error: error.message })
-  }
-})
-
 userRouter.get('/:id/doneworkouts', async (request, response) => {
   try {
     const doneworkouts = await DoneWorkout.find({ user: request.params.id }).populate('user')
@@ -117,6 +88,77 @@ userRouter.get('/:id/doneworkouts', async (request, response) => {
     return response.status(404).end()
   }
 })
+
+userRouter.get('/:id/posts/:date', async (request, response) => {
+  if (!request.token) {
+    return response.status(401).end()
+  }
+  
+  const decodedToken = await jwt.verify(request.token, config.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).end()
+  }
+  const user = await User.findById(decodedToken.id)
+
+  try {
+    let [startdate, enddate] = dates.getFetchDates(request.params.date)
+
+    let posts = await Post.find({
+      $and: [
+          { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
+          { _id: decodedToken.id }
+        ]}
+      ]
+    }).sort({ _id: 1 })
+
+    const responsedata = {
+      posts,
+      startdate,
+      enddate,
+      end: false
+    }
+
+    return response.json(responsedata)
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
+  }
+})
+
+userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
+  if (!request.token) {
+    return response.status(401).end()
+  }
+  
+  const decodedToken = await jwt.verify(request.token, config.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).end()
+  }
+  const user = await User.findById(decodedToken.id)
+
+  try {
+    let [startdate, enddate] = dates.getFetchDates(request.params.date)
+
+    let posts = await DoneWorkout.find({
+      $and: [
+          { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
+          { _id: decodedToken.id }
+        ]}
+      ]
+    }).sort({ _id: 1 })
+
+    const responsedata = {
+      doneworkouts,
+      startdate,
+      enddate,
+      end: false
+    }
+
+    return response.json(responsedata)
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
+  }
+})
+
 
 userRouter.post('/new', async (request, response) => {
   const saltRounds = 10

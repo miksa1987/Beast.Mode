@@ -5,6 +5,7 @@ const User            = require('../models/User')
 const userUpdater     = require('../util/userUpdater')
 const dates           = require('../util/dates')
 const jwt             = require('jsonwebtoken')
+const moment          = require('moment')
 const activityHelper  = require('../util/activity')
 
 postRouter.get('/all', async (request, response) => {
@@ -13,6 +14,27 @@ postRouter.get('/all', async (request, response) => {
     return response.status(200).json(posts)
   } catch(error) {
     return response.status(404).end()
+  }
+})
+
+postRouter.get('/oldest', async (request, response) => {
+  if(!request.token) {
+    return response.status(401).end()
+  }
+
+  try {
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
+    if(!decodedToken.id) {
+      return response.status(401).end()
+    }
+
+    const post = await Post.findOne().sort({ _id: 1 }).limit(1)
+    const date = moment(post.date).format('YYYY-M-D-h-m')
+    console.log(date)
+
+    return response.json({ oldest: date })
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
   }
 })
 

@@ -5,7 +5,7 @@ import Post from './post/Post'
 import Spinner from './Spinner'
 import useOrientation from '../hooks/useOrientation'
 import { connect } from 'react-redux'
-import { initFeed, addToFeed, removeFromFeed, loadMorePosts } from '../reducers/feedReducer'
+import { initFeed, addToFeed, removeFromFeed, loadMorePosts, setEndDate } from '../reducers/feedReducer'
 import useScrollPercentage from '../hooks/useScrollPercentage'
 import './Feed.css'
 
@@ -31,7 +31,8 @@ const Feed = (props) => {
 
   useEffect(() => {
     if (props.feed.feed.length === 0) {
-      props.initFeed(props.currentUser.friends, props.currentUser.id)
+      props.setEndDate()
+      props.initFeed()
     }
   }, [])
 
@@ -65,7 +66,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  initFeed, addToFeed, removeFromFeed, loadMorePosts
+  initFeed, addToFeed, removeFromFeed, loadMorePosts, setEndDate
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Feed)
