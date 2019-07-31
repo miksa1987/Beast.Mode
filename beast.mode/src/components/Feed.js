@@ -7,11 +7,17 @@ import useOrientation from '../hooks/useOrientation'
 import { connect } from 'react-redux'
 import { Button, Icon } from 'semantic-ui-react'
 import { initFeed, addToFeed, removeFromFeed } from '../reducers/feedReducer'
+import useScrollPercentage from '../hooks/useScrollPercentage'
 import './Feed.css'
 
 const Feed = (props) => {
   const [showNewpost, setShowNewpost] = useState(false)
   const orientation = useOrientation()
+  const scrollPercentage = useScrollPercentage()
+
+  console.log(scrollPercentage)
+
+  if (scrollPercentage > 90) console.log('LOAD MOAR')
   
   const breakPoints = {
     default: 4,

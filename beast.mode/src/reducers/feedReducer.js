@@ -1,6 +1,11 @@
 import communicationService from '../service/communication'
 import sorterService from '../service/sorter'
 
+const initialState = {
+  feed: [],
+  loadedUntil: 0
+}
+
 const feedReducer = (state = [], action) => {
   switch(action.type) {
     case 'INIT_FEED':
