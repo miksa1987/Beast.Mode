@@ -40,7 +40,7 @@ postRouter.get('/byfriends/:date', async (request, response) => {
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
-
+    console.log
     let posts = await Post.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
@@ -49,32 +49,17 @@ postRouter.get('/byfriends/:date', async (request, response) => {
       ]
     }).sort({ _id: 1 }).populate('user')
 
-    let date = dates.getFetchDates(dates.getDateString(startdate))
-    for (let i = 0; i < 5; i++) {
-      if (posts.length >= 10) break
-
-      date = dates.getFetchDates(dates.getDateString(date[0]))
-
-      const morePosts = await Post.find({
-        $and: [
-            { $and: [ { date: { $gte: date[0] }}, { date: { $lte: date[1] }},
-            { user: { $in: user.friends }}
-          ]}
-        ]
-      }).sort({ _id: 1 }).populate('user')
-
-      posts = posts.concat(morePosts)
-    }
 
     const responsedata = {
       posts,
       startdate,
-      enddate: date[1],
+      enddate,
       end: false
     }
 
     return response.json(responsedata)
   } catch (error) {
+    console.log(error.message)
     return response.status(400).json({ error: error.message })
   }
 })

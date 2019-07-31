@@ -88,27 +88,10 @@ workoutRouter.get('/byfriends/:date', async (request, response) => {
       ]
     }).sort({ _id: 1 }).populate('user')
 
-    let date = dates.getFetchDates(dates.getDateString(startdate))
-    for (let i = 0; i < 5; i++) {
-      if (workouts.length >= 10) break
-      
-      date = dates.getFetchDates(dates.getDateString(date[0]))
-
-      const moreWorkouts = await Workout.find({
-        $and: [
-            { $and: [ { date: { $gte: date[0] }}, { date: { $lte: date[1] }},
-            { user: { $in: user.friends }}
-          ]}
-        ]
-      }).sort({ _id: 1 }).populate('user')
-
-      workouts = workouts.concat(moreWorkouts)
-    }
-
     const responsedata = {
       workouts,
       startdate,
-      enddate: date[1],
+      enddate,
       end: false
     }
 

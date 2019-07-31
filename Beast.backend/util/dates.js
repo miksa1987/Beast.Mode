@@ -1,23 +1,11 @@
 const moment = require('moment')
 
 const getFetchDates = (dateString) => {
-  const splittedDate = dateString.split('-')
-
-  const startdate = new Date(moment([
-    Number(splittedDate[0]), 
-    Number(splittedDate[1]), 
-    Number(splittedDate[2]),
-    Number(splittedDate[3]),
-    Number(splittedDate[4]), 0, 0]).add(-10, 'h').format())
-  console.log(`startdate ${startdate}`)
+  const first = moment(dateString, 'YYYY-M-D-h-m').add(-15, 'hours')
+  const second = moment(dateString, 'YYYY-M-D-h-m')
   
-  const enddate = new Date(moment([
-    Number(splittedDate[0]), 
-    Number(splittedDate[1]), 
-    Number(splittedDate[2]),
-    Number(splittedDate[3]),
-    Number(splittedDate[4]), 0, 0]).format())
-  console.log(`enddate ${enddate}`)
+  const startdate = new Date(first.format())
+  const enddate = new Date(second.format())
   
   return [ startdate, enddate ]
 }
@@ -29,7 +17,6 @@ const getDateString = (date) => {
   const hours = date.getHours()
   const minutes = date.getMinutes()
   
-  console.log(`${year}-${month}-${day}-${hours}-${minutes}`)
   return `${year}-${month}-${day}-${hours}-${minutes}`
 }
 

@@ -10,7 +10,7 @@ import './Post.css'
 const Post = (props) => {
   const [comment, resetComment] = useField('text')
 
-  if(props.post === undefined) {
+  if(props.post === undefined || Object.entries(props.post).length === 0) {
     return null
   }
   
@@ -20,7 +20,7 @@ const Post = (props) => {
     resetComment()
   }
 
-  const lineBreaks = (props.post.content.match(/\n/g) || []).length
+  const lineBreaks = props.post.content ? (props.post.content.match(/\n/g) || []).length : 0
 
   return ( <div className='post-component'>
     <table>
