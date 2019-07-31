@@ -1,10 +1,10 @@
-const supertest = require('supertest')
-const mongoose = require('mongoose')
-const app = require('../app')
-const config = require('../util/config')
-const helper = require('../util/testhelper')
-const api = supertest(app)
-
+const supertest   = require('supertest')
+const mongoose    = require('mongoose')
+const app         = require('../app')
+const config      = require('../util/config')
+const dates       = require('../util/dates')
+const helper      = require('../util/testhelper')
+const api         = supertest(app)
 const DoneWorkout = require('../models/DoneWorkout')
 
 let token = null
@@ -63,6 +63,16 @@ describe('done workouts collection is empty in the beginning', () => {
       .expect(200)
 
     expect(response.body.content).toEqual('TEHTY')
+  })
+
+  test('Done workout can be returned with date', async () => {
+    const dateString = dates.getDateString(new Date())
+    
+    const response = await api
+      .get(`/doneworkouts/byfriends/${dateString}`)
+      .expect(200)
+    
+    expect(response.body[0].content).toEqual('TEHTY')
   })
 
   test('Done workout can be updated', async () => {

@@ -2,9 +2,9 @@ const supertest = require('supertest')
 const mongoose = require('mongoose')
 const app = require('../app')
 const config = require('../util/config')
+const dates       = require('../util/dates')
 const helper = require('../util/testhelper')
 const api = supertest(app)
-
 const Workout = require('../models/Workout')
 
 let token = null
@@ -64,6 +64,16 @@ describe('workouts collection is empty in the beginning', () => {
       .expect(200)
 
     expect(response.body.content).toEqual('POST')
+  })
+  
+  test('Workout can be returned with date', async () => {
+    const dateString = dates.getDateString(new Date())
+    
+    const response = await api
+      .get(`/workouts/byfriends/${dateString}`)
+      .expect(200)
+    
+    expect(response.body[0].content).toEqual('TEHTY')
   })
 
   test('Workout can be updated', async () => {
