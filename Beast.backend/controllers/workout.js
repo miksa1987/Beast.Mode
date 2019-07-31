@@ -1,10 +1,11 @@
-const workoutRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
-const config = require('../util/config')
-const Workout = require('../models/Workout')
-const userUpdater = require('../util/userUpdater')
-const activityHelper = require('../util/activity')
-const { imgparser, cloudinary } = require('../util/imageupload')
+const workoutRouter     = require('express').Router()
+const jwt               = require('jsonwebtoken')
+const config            = require('../util/config')
+const Workout           = require('../models/Workout')
+const User              = require('../models/User')
+const userUpdater       = require('../util/userUpdater')
+const activityHelper    = require('../util/activity')
+const dates             = require('../util/dates')
 
 workoutRouter.get('/all', async (request, response) => {
   try {
@@ -65,6 +66,41 @@ workoutRouter.get('/:id', async (request, response) => {
   }
 })
 
+workoutRouter.get('/byfriends/:date', async (request, response) => {
+  if (!request.token) {
+    return response.status(401).end()
+  }
+  
+  const decodedToken = await jwt.verify(request.token, config.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).end()
+  }
+  const user = await User.findById(decodedToken.id)
+
+  try {
+    let [startdate, enddate] = dates.getFetchDates(request.params.date)
+
+    let workouts = await Workout.find({
+      $and: [
+        { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
+        { user: { $in: user.friends }}
+        ]}
+      ]
+    })
+
+    const responsedata = {
+      workouts,
+      startdate,
+      enddate,
+      end: false
+    }
+
+    return response.json(responsedata)
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
+  }
+})
+
 workoutRouter.put('/:id', async (request, response) => {
   if(!request.token) {
     return response.status(401).end()
@@ -93,7 +129,7 @@ workoutRouter.put('/:id', async (request, response) => {
   }
 })
 
-workoutRouter.post('/new', imgparser.single('image'), async (request, response, next) => {
+workoutRouter.post('/new', async (request, response, next) => {
   if(!request.token) {
     return response.status(401).end()
   }

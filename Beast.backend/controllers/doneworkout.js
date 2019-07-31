@@ -1,10 +1,11 @@
-const doneWorkoutRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
-const { cloudinary, imgparser } = require('../util/imageupload')
-const DoneWorkout = require('../models/DoneWorkout')
-const config = require('../util/config')
-const activityHelper = require('../util/activity')
-const userUpdater = require('../util/userUpdater')
+const doneWorkoutRouter   = require('express').Router()
+const jwt                 = require('jsonwebtoken')
+const DoneWorkout         = require('../models/DoneWorkout')
+const User                = require('../models/User')
+const config              = require('../util/config')
+const activityHelper      = require('../util/activity')
+const userUpdater         = require('../util/userUpdater')
+const dates               = require('../util/dates')
 
 doneWorkoutRouter.get('/all', async (request, response) => {
   try {
@@ -19,6 +20,41 @@ doneWorkoutRouter.get('/:id', async (request, response) => {
   try {
     const doneWorkout = await DoneWorkout.findById(request.params.id)
     return response.status(200).json(doneWorkout)
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
+  }
+})
+
+doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
+  if (!request.token) {
+    return response.status(401).end()
+  }
+  
+  const decodedToken = await jwt.verify(request.token, config.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).end()
+  }
+  const user = await User.findById(decodedToken.id)
+
+  try {
+    let [startdate, enddate] = dates.getFetchDates(request.params.date)
+
+    let doneworkouts = await DoneWorkout.find({
+      $and: [
+        { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
+        { user: { $in: user.friends }}
+        ]}
+      ]
+    })
+
+    const responsedata = {
+      doneworkouts,
+      startdate,
+      enddate,
+      end: false
+    }
+
+    return response.json(responsedata)
   } catch (error) {
     return response.status(400).json({ error: error.message })
   }

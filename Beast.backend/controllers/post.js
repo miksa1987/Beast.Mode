@@ -1,11 +1,11 @@
-const postRouter = require('express').Router()
-const config = require('../util/config')
-const Post = require('../models/Post')
-const User = require('../models/User')
-const userUpdater = require('../util/userUpdater')
-const dates = require('../util/dates')
-const jwt = require('jsonwebtoken')
-const activityHelper = require('../util/activity')
+const postRouter      = require('express').Router()
+const config          = require('../util/config')
+const Post            = require('../models/Post')
+const User            = require('../models/User')
+const userUpdater     = require('../util/userUpdater')
+const dates           = require('../util/dates')
+const jwt             = require('jsonwebtoken')
+const activityHelper  = require('../util/activity')
 
 postRouter.get('/all', async (request, response) => {
   try {
@@ -25,8 +25,8 @@ postRouter.get('/:id', async (request, response) => {
   }
 })
 
-// Date format: YYYY-MM-DD-hh-mm CAUTION: No zero in front of single-digit values!
-//              0000 11 22 33 44
+// Date format: YYYY-MM-DD-hh-mm 
+// CAUTION: No zero in front of single-digit values!
 postRouter.get('/byfriends/:date', async (request, response) => {
   if (!request.token) {
     return response.status(401).end()
@@ -43,8 +43,9 @@ postRouter.get('/byfriends/:date', async (request, response) => {
 
     let posts = await Post.find({
       $and: [
-        { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }} ]},
+        { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
         { user: { $in: user.friends }}
+        ]}
       ]
     })
 

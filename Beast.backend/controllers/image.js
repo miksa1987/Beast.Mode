@@ -17,11 +17,15 @@ imageRouter.post('/new', imgparser.single('image'), async (request, response) =>
   }
 
   try {
-    await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
-    const splittedUri = request.file.secure_url.split('upload')
-    const imageuri = splittedUri[0].concat('upload/w_1280').concat(splittedUri[1])
+    await cloudinary.uploader.upload_stream(request.file.buffer, { 
+      resource_type: 'raw',
+      eager: [
+        { width: 1280 }
+      ] }).end(request.file.buffer)
+    //const splittedUri = request.file.secure_url.split('upload')
+    //const imageuri = splittedUri[0].concat('upload/w_1280').concat(splittedUri[1])
 
-    return response.json({ imageuri })
+    return response.json({ imageuri: request.file.secure_url })
   } catch (error) {
     console.log(error.message)
     return response.status(400).json({ error: error.message })
