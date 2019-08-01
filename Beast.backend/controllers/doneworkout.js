@@ -99,7 +99,7 @@ doneWorkoutRouter.post('/new', async (request, response, next) => {
       content: request.body.content,
       picture: request.body.picture,
       pictureThumb: request.body.picture, // TBD change this to real thumbnail
-      type: request.body.type,
+      type: 'doneworkout',
       user: decodedToken.id,
       likes: [],
       comments: [],

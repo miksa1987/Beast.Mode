@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { Form, TextArea, Button, Image } from 'semantic-ui-react'
 import communicationService from '../../service/communication'
-import { addToFeed } from '../../reducers/feedReducer'
+import { addNewToFeed } from '../../reducers/feedReducer'
 import { addWorkout } from '../../reducers/workoutsReducer'
 import useField from '../../hooks/useField'
 import './Newpost.css'
@@ -50,11 +50,11 @@ const Newpost = (props) => {
     }
 
     let newPost = {}
-    if(!isWorkout) newPost = await communicationService.post('/posts/new', post)
+    if(!isWorkout) props.addNewToFeed(post)
     if(isWorkout && !didWorkout) newPost = await communicationService.post('/workouts/new', post)
-    if(isWorkout && didWorkout) newPost = await communicationService.post('/doneworkouts/new', post)
+    if(isWorkout && didWorkout) props.addNewToFeed(post)
 
-    isWorkout ? props.addWorkout(newPost) : props.addToFeed(newPost)
+    isWorkout ? props.addWorkout(newPost) : console.log('HII')
 
     resetText()
     props.setShowNewpost && props.setShowNewpost(false)
@@ -98,4 +98,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { addToFeed, addWorkout })(Newpost)
+export default connect(mapStateToProps, { addNewToFeed, addWorkout })(Newpost)

@@ -140,9 +140,10 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
 
     let doneworkouts = await DoneWorkout.find({
       $and: [
-          { date: { $gte: startdate }}, { date: { $lte: enddate }},
-          { user: decodedToken.id }
-      ]
+        { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
+        { user: decodedToken.id }
+      ]}
+    ]
     }).sort({ _id: 1 }).populate('user')
     console.log(doneworkouts)
 

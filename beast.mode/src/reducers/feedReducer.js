@@ -11,11 +11,14 @@ const initialState = {
 
 const feedReducer = (state = initialState, action) => {
   switch(action.type) {
+    case 'EMPTY_FEED':
+      return initialState
     case 'INIT_FEED':
       return { ...state, feed: action.data }
     case 'ADD_NEW_TO_FEED':
-      return { ...state, feed: action.data.concat(state.feed) }
+      return { ...state, feed: [ action.data ].concat(state.feed) }
     case 'ADD_TOFEED':
+      // I'll keep this here just in case it's needed
       return { ...state, feed: state.feed.concat(action.data) }
     case 'REMOVE_FROMFEED':
       return {...state, feed: state.feed.filter(p => p._id !== action.data._id) }
@@ -32,24 +35,23 @@ const feedReducer = (state = initialState, action) => {
   }
 }
 
+export const emptyFeed = () => {
+  return dispatch => {
+    dispatch({ type: 'EMPTY_FEED' })
+  }
+}
 export const initFeed = () => {
   return async (dispatch, getState) => {
-    let dateString = moment().format('YYYY-M-D-H-m')
+    let dateString = moment().add(15, 'minutes').format('YYYY-M-D-H-m')
     const user = getState().currentUser.id
     let feedPosts = []
     let startdate = 0
 
     while (feedPosts.length === 0) {
-      console.log(dateString)
-      console.log(feedPosts)
       const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
-      console.log(friendPosts.posts)
       const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
-      console.log(friendDoneworkouts.doneworkouts)
       const myPosts = await communicationService.get(`/users/${user}/posts/${dateString}`)
-      console.log(myPosts.posts)
       const myDoneworkouts = await communicationService.get(`/users/${user}/doneworkouts/${dateString}`)
-      console.log(myDoneworkouts.doneworkouts)
 
       feedPosts = feedPosts
       .concat(friendPosts.posts)
@@ -58,12 +60,9 @@ export const initFeed = () => {
       .concat(myDoneworkouts.doneworkouts)
       .sort(sorterService.comparePostDates)
 
-      console.log(feedPosts)
       dateString = moment(dateString, 'YYYY-M-D-H-m').add(-12, 'hours').format('YYYY-M-D-H-m')
 
       startdate = myPosts.startdate
-      console.log(startdate)
-      console.log(getState().feed.loadedUntil)
     }   
 
     dispatch({ type: 'SET_LOADED_UNTIL_TO', data: startdate})
@@ -75,7 +74,6 @@ export const loadMorePosts = () => {
   return async (dispatch, getState) => {
     let dateString = getState().feed.loadedUntil
     
-    console.log(getState().feed.loadedUntil)
     const user = getState().currentUser.id
     let startdate = 0
 
@@ -100,19 +98,25 @@ export const loadMorePosts = () => {
       
       dateString = moment(dateString, 'YYYY-M-D-H-m').add(-12, 'hours').format('YYYY-M-D-H-m')
       startdate = myPosts.startdate
-      console.log(getState().feed.loadedUntil)
     } 
 
     dispatch({ type: 'SET_LOADING_TO', data: false })
-
-    console.log(feedPosts)
     dispatch({ type: 'SET_LOADED_UNTIL_TO', data:startdate})
     dispatch({ type: 'ADD_TOFEED', data: feedPosts })
   }
 }
 
+export const addNewToFeed = (post) => {
+  return async dispatch => {
+    console.log(post)
+    const addedPost = post.type === 'post' ?
+      await communicationService.post('/posts/new', post) : await communicationService.post('/doneworkouts/new', post)
+    dispatch({ type: 'ADD_NEW_TO_FEED', data: addedPost })
+  }
+}
+
 export const addToFeed = (post) => {
-  return async dispatch => dispatch({ type: 'ADD_TOFEED', data: post })
+  return async dispatch => dispatch({ type: 'ADD_NEW_TO_FEED', data: post })
 }
 
 export const removeFromFeed = (post) => {

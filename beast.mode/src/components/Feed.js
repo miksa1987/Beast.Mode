@@ -13,6 +13,7 @@ const Feed = (props) => {
   const [showNewpost, setShowNewpost] = useState(false)
   const orientation = useOrientation()
   const scrollPercentage = useScrollPercentage()
+  const feedLength = props.feed.feed.length
 
   const breakPoints = {
     default: 4,
@@ -30,7 +31,13 @@ const Feed = (props) => {
   }, [])
 
   useEffect(() => {
-    if (scrollPercentage > 80 && !props.feed.loading) {
+    if (feedLength > 0 && feedLength < 20) {
+      props.loadMorePosts()
+    }
+  }, [feedLength])
+
+  useEffect(() => {
+    if (scrollPercentage > 60 && !props.feed.loading) {
       console.log('trigger more posts')
       props.loadMorePosts()
     }

@@ -136,14 +136,15 @@ postRouter.post('/new', async (request, response, next) => {
       date: new Date()
     })
     const savedPost = await post.save()
+    const populatedPost = await savedPost.populate('user').execPopulate()
 
     if (request.body.picture !== '') userUpdater.addToPictures(decodedToken.id, request.body.picture)
 
-    activityHelper.setActivity(decodedToken.id, 'post', savedPost._id)
-    userUpdater.addToPosts(decodedToken.id, savedPost._id)
-    request.io.emit('user_add_post', savedPost)
+    activityHelper.setActivity(decodedToken.id, 'post', populatedPost._id)
+    userUpdater.addToPosts(decodedToken.id, populatedPost._id)
+    request.io.emit('user_add_post', populatedPost)
 
-    return response.status(201).json(savedPost)
+    return response.status(201).json(populatedPost)
   } catch(error) {
     console.log(error.message)
     return response.status(400).send({ error: error.message })
