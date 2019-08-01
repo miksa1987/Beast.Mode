@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { Button, Image, Divider } from 'semantic-ui-react'
 import parser from '../../service/parser'
 import './Workout.css'
+import '../Animation.css'
 
 const Workout = (props) => {
   // Get first lines from content
@@ -26,7 +27,7 @@ const Workout = (props) => {
     return ( <div>Loading</div> )
   }
 
-  return ( <div className='workout-component'>
+  return ( <div className='workout-component fade-in-fast'>
     <table>
       <tbody>
         <tr>

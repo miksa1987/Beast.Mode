@@ -6,6 +6,7 @@ import { addNewToFeed } from '../../reducers/feedReducer'
 import { addWorkout } from '../../reducers/workoutsReducer'
 import useField from '../../hooks/useField'
 import './Newpost.css'
+import '../Animation.css'
 
 const Newpost = (props) => {
   const [isWorkout, setIsWorkout] = useState(props.isWorkout)
@@ -60,7 +61,7 @@ const Newpost = (props) => {
     props.setShowNewpost && props.setShowNewpost(false)
   }
   
-  return ( <div className='newpost-component'>
+  return ( <div className='newpost-component fade-in-fast'>
     <strong>Create new</strong>
     <Form onSubmit={post}>
       <TextArea style={{ resize: 'none' }} rows={6} {...text} />

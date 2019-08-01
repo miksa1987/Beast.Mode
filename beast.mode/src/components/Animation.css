@@ -1,0 +1,37 @@
+.fade-in-with-blur-slow {
+  animation: fade-in-blur ease-out 2s;
+}
+
+.fade-in-with-blur-fast {
+  animation: fade-in-blur 0.75s;
+}
+
+.fade-in-fast {
+  animation: fade-in 1s;
+}
+
+.fade-in-slow {
+  animation: fade-in 2s;
+}
+
+@keyframes fade-in-blur {
+  from {
+    opacity: 0;
+    filter: blur(50px);
+    transform: scale(1.5);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}

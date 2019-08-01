@@ -18,6 +18,7 @@ import DoWorkoutOfRounds from './DoWorkoutOfRounds'
 import WorkoutDone from './WorkoutDone'
 
 import './DoWorkout.css'
+import '../../Animation.css'
 
 const DoWorkout = (props) => {
   const timer = useTimer(0)
@@ -34,7 +35,7 @@ const DoWorkout = (props) => {
     setView('workout')
   }
   // Workout type 0 default
-  return ( <div className='doworkout-component'>
+  return ( <div className='doworkout-component fade-in-fast'>
     {view === 'preview' ?
     <Button.Group fluid>
       <Button color='red' onClick={start}>Start</Button>

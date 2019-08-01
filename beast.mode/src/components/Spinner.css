@@ -1,5 +1,4 @@
 .spinner {
-  animation: fade-in 3s;
   position: fixed;
   margin-left: -7.5%;
   left: 50%;
@@ -47,15 +46,6 @@
 .spinner-sector-red4 {
   animation: rotate 4s ease-out infinite;
   border-top: 20px solid rgba(0, 0, 0, 0.5);
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0
-  }
-  to {
-    opacity: 1
-  }
 }
 
 @keyframes rotate {

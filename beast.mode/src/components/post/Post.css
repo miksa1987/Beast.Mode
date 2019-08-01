@@ -1,5 +1,4 @@
 .post-component {
-  animation: fade-in ease 1.5s;
   min-width: 95%;
   max-height: 30%;
   vertical-align: top;
@@ -24,13 +23,4 @@
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opactiy: 1;
-  }
 }

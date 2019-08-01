@@ -7,6 +7,7 @@ import { setNotification } from '../../reducers/notificationReducer'
 import NewUser from './NewUser'
 import useOrientation from '../../hooks/useOrientation'
 import './LoginForm.css'
+import '../Animation.css'
 
 const LoginForm = (props) => {
   const [view, setView] = useState('login')
@@ -26,7 +27,7 @@ const LoginForm = (props) => {
     return ( <div><NewUser setView={setView} /></div>)
   }
 
-  return ( <div className='background'>
+  return ( <div className='background fade-in-with-blur-slow'>
     <div className='login'>
       <p className='bottom'>About Beast.MODE</p>
       <Form onSubmit={login}>

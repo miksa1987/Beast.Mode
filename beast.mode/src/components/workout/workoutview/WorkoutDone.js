@@ -3,6 +3,7 @@ import { Button, Image } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
 import communicationService from '../../../service/communication'
 import './Preview.css'
+import '../../Animation.css'
 
 const WorkoutOfSetsDone = (props) => {
   const [file, setFile] = useState('')
@@ -39,7 +40,7 @@ const WorkoutOfSetsDone = (props) => {
     props.setDone(workout)
   }
 
-  return ( <div className='preview-component'>
+  return ( <div className='preview-component fade-in-fast'>
     <Image src={image} floated='right' size='small' />
     <h1>Workout done!</h1>
     <h3>{props.workout.textcontent}</h3>

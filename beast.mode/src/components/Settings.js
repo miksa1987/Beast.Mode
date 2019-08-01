@@ -5,6 +5,8 @@ import { updateUser } from '../reducers/currentUser'
 import useField from '../hooks/useField'
 import useOrientation from '../hooks/useOrientation'
 
+import './Animation.css'
+
 const Settings = (props) => {
   const [file, setFile]                           = useState('')
   const [email, resetEmail]                       = useField('text')
@@ -79,7 +81,7 @@ const Settings = (props) => {
     </div> )
   }
 
-  return ( <div>
+  return ( <div className='fade-in-fast'>
     <h3>Settings</h3>
     <Form onSubmit={saveChanges}>
     <table style={picStyle}>

@@ -1,9 +1,10 @@
 import React from 'react'
 import './Spinner.css'
+import './Animation.css'
 
 const Spinner = () => {
   return (
-    <div className='spinner'>
+    <div className='spinner fade-in-with-blur-fast'>
       <div className='base' />
       <div className='spinner-sector spinner-sector-red0' />
       <div className='spinner-sector spinner-sector-red1' />

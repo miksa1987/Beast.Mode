@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Image } from 'semantic-ui-react'
 import './Users.css'
+import './Animation.css'
 
 const User = (props) => {
   if (!props.user.username) {
@@ -9,7 +10,7 @@ const User = (props) => {
   }
 
   return ( <div>
-    <table className='user-tile-style'>
+    <table className='user-tile-style fade-in-fast'>
       <tbody>
         <tr>
           <td>

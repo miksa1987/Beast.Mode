@@ -15,6 +15,7 @@ import UsersWorkouts from './UsersWorkouts'
 import Spinner from '../Spinner'
 import '../Feed.css'
 import './Dashboard.css'
+import '../Animation.css'
 
 import Post from '../post/Post'
 
@@ -41,13 +42,14 @@ const Dashboard  = (props) => {
     return ( <div><Spinner /></div> )
   }
 
-  return ( <div>
+  return ( <div className='fade-in-fast'>
     <table>
       <tbody>
         <tr>
           <td>
             <Image height='150px' width='150px' circular src={props.currentProfile.picture && props.currentProfile.picture !== '' ? 
-              props.currentProfile.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
+              props.currentProfile.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} 
+              className='fade-in-with-blur-slow' />
           </td>
           <td className='info'>
             <h2>{props.currentProfile.username}</h2>

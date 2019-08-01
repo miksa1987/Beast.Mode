@@ -6,6 +6,7 @@ import { addComment, like } from '../../reducers/feedReducer'
 import useField from '../../hooks/useField'
 import Comments from './Comments'
 import './Post.css'
+import '../Animation.css'
 
 const Post = (props) => {
   const [comment, resetComment] = useField('text')
@@ -22,7 +23,7 @@ const Post = (props) => {
 
   const lineBreaks = props.post.content ? (props.post.content.match(/\n/g) || []).length : 0
 
-  return ( <div className='post-component'>
+  return ( <div className='post-component fade-in-fast'>
     <table>
       <tbody>
         <tr>
