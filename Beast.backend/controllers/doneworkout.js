@@ -29,7 +29,7 @@ doneWorkoutRouter.get('/oldest', async (request, response) => {
     }
 
     const doneWorkout = await DoneWorkout.findOne().sort({ _id: 1 }).limit(1)
-    const date = moment(doneWorkout.date).format('YYYY-M-D-h-m')
+    const date = moment(doneWorkout.date).format('YYYY-M-D-H-m')
     console.log(date)
 
     return response.json({ oldest: date })
@@ -104,9 +104,7 @@ doneWorkoutRouter.post('/new', async (request, response, next) => {
       likes: [],
       comments: [],
       date: new Date(),
-      done: {
-        time: request.body.time ? request.body.time : 0
-      }
+      time: request.body.time ? request.body.time : 0
     })
     const savedDoneWorkout = await doneWorkout.save()
     const doneWorkoutToReturn = await savedDoneWorkout.populate('user').execPopulate()

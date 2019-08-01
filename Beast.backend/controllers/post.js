@@ -29,7 +29,7 @@ postRouter.get('/oldest', async (request, response) => {
     }
 
     const post = await Post.findOne().sort({ _id: 1 }).limit(1)
-    const date = moment(post.date).format('YYYY-M-D-h-m')
+    const date = moment(post.date).format('YYYY-M-D-H-m')
     console.log(date)
 
     return response.json({ oldest: date })

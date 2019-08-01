@@ -59,7 +59,7 @@ export const initFeed = () => {
       .sort(sorterService.comparePostDates)
 
       console.log(feedPosts)
-      dateString = moment(dateString, 'YYYY-M-D-h-m').add(-12, 'hours').format('YYYY-M-D-h-m')
+      dateString = moment(dateString, 'YYYY-M-D-H-m').add(-12, 'hours').format('YYYY-M-D-H-m')
 
       startdate = myPosts.startdate
       console.log(startdate)
@@ -83,7 +83,7 @@ export const loadMorePosts = () => {
     dispatch({ type: 'SET_LOADING_TO', data: true })
     
     while (feedPosts.length === 0) {
-      if(moment(dateString, 'YYYY-M-D-h-m').isBefore(moment(getState().feed.endDate, 'YYYY-M-D-h-m'))) break
+      if(moment(dateString, 'YYYY-M-D-H-m').isBefore(moment(getState().feed.endDate, 'YYYY-M-D-H-m'))) break
 
       const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
       const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
@@ -98,7 +98,7 @@ export const loadMorePosts = () => {
       .sort(sorterService.comparePostDates)
 
       
-      dateString = moment(dateString, 'YYYY-M-D-h-m').add(-12, 'hours').format('YYYY-M-D-h-m')
+      dateString = moment(dateString, 'YYYY-M-D-H-m').add(-12, 'hours').format('YYYY-M-D-H-m')
       startdate = myPosts.startdate
       console.log(getState().feed.loadedUntil)
     } 
@@ -133,7 +133,7 @@ export const setEndDate = () => {
     const post = await communicationService.get('/posts/oldest')
     const doneworkout = await communicationService.get('/doneworkouts/oldest')
 
-    if (moment(post.oldest, 'YYYY-M-D-h-m').isBefore(moment(doneworkout.oldest, 'YYYY-M-D-h-m'))) {
+    if (moment(post.oldest, 'YYYY-M-D-H-m').isBefore(moment(doneworkout.oldest, 'YYYY-M-D-H-m'))) {
       dispatch({ type: 'SET_FEED_END_DATE', data: post.oldest })
     } else {
       dispatch({ type: 'SET_FEED_END_DATE', data: doneworkout.oldest })

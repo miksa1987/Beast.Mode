@@ -8,13 +8,14 @@ const WorkoutOfSetsDone = (props) => {
 
   const submit = (event) => {
     event.preventDefault()
-    const data = new FormData()
-    file !== '' && data.append('image', file)
-    data.append('content', props.workout.textcontent)
-    data.append('additional', '')
-    data.append('time', props.time)
+    
+    const workout = {
+      content: props.workout.textcontent,
+      additional: props.workout.additional || '',
+      time: props.time || 0
+    }
 
-    props.setDone(data)
+    props.setDone(workout)
   }
 
   return ( <div className='preview-component'>

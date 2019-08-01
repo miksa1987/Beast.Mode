@@ -12,11 +12,8 @@ const doneWorkoutSchema = mongoose.Schema({
     content: String,
     date: Date
   } ],
-  done: {
-    date: Date,
-    time: Number, // Time in seconds
-    done: Boolean
-  }
+  date: Date,
+  time: Number
 })
 
 module.exports = mongoose.model('DoneWorkout', doneWorkoutSchema)
