@@ -14,8 +14,6 @@ const Feed = (props) => {
   const orientation = useOrientation()
   const scrollPercentage = useScrollPercentage()
 
-  console.log(props.feed)
-
   const breakPoints = {
     default: 4,
     1400: 3,
@@ -23,14 +21,9 @@ const Feed = (props) => {
     500: 1
   }
 
-  // This could maybe work ?
-  const items = []
-    .concat(<Newpost key='WEEEEEE' />)
-    .concat(props.feed.feed.map(post =>
-       <Post key={post._id} post={post} />))
-
   useEffect(() => {
     if (props.feed.feed.length === 0) {
+      console.log(props.feed.feed)
       props.setEndDate()
       props.initFeed()
     }
@@ -38,13 +31,20 @@ const Feed = (props) => {
 
   useEffect(() => {
     if (scrollPercentage > 80 && !props.feed.loading) {
+      console.log('trigger more posts')
       props.loadMorePosts()
     }
   }, [scrollPercentage])
 
-  if (props.feed === undefined) {
+  if (props.feed.feed.length === 0) {
+    console.log('spinner')
     return ( <div><Newpost /><Spinner /></div> )
   }
+  // This could maybe work ?
+  const items = []
+    .concat(<Newpost key='WEEEEEE' />)
+    .concat(props.feed.feed.map(post =>
+       <Post key={post._id} post={post} />))
 
   return ( <div>
     {orientation === 'portrait' && <Newpost />}

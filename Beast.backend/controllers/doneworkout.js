@@ -71,8 +71,8 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
 
     const responsedata = {
       doneworkouts,
-      startdate,
-      enddate,
+      startdate: dates.getDateString(startdate),
+      enddate: dates.getDateString(enddate),
       end: false
     }
 
@@ -83,10 +83,12 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
 })
 
 doneWorkoutRouter.post('/new', async (request, response, next) => {
+  console.log(request.body)
   if(!request.token) {
     return response.status(401).end()
   }
   if(!request.body.content) {
+    console.log('content missing')
     return response.status(400).send('Description or exercises missing')
   }
   
@@ -101,8 +103,8 @@ doneWorkoutRouter.post('/new', async (request, response, next) => {
       user: decodedToken.id,
       likes: [],
       comments: [],
+      date: new Date(),
       done: {
-        date: new Date(),
         time: request.body.time ? request.body.time : 0
       }
     })

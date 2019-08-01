@@ -33,41 +33,80 @@ const feedReducer = (state = initialState, action) => {
 }
 
 export const initFeed = () => {
-  return async dispatch => {
-    const dateString = moment().format('YYYY-M-D-H-m')
-    console.log(dateString)
-    
-    const posts = await communicationService.get(`/posts/byfriends/${dateString}`)
-    const doneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
-    console.log(posts)
-    console.log(new Date(posts.enddate).getHours())
-    const feedPosts = posts.posts.concat(doneworkouts.doneworkouts).sort(sorterService.comparePostDates)
-    dispatch({ type: 'SET_LOADED_UNTIL_TO', data: posts.startdate})
+  return async (dispatch, getState) => {
+    let dateString = moment().format('YYYY-M-D-H-m')
+    const user = getState().currentUser.id
+    let feedPosts = []
+    let startdate = 0
+
+    while (feedPosts.length === 0) {
+      console.log(dateString)
+      console.log(feedPosts)
+      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
+      console.log(friendPosts.posts)
+      const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
+      console.log(friendDoneworkouts.doneworkouts)
+      const myPosts = await communicationService.get(`/users/${user}/posts/${dateString}`)
+      console.log(myPosts.posts)
+      const myDoneworkouts = await communicationService.get(`/users/${user}/doneworkouts/${dateString}`)
+      console.log(myDoneworkouts.doneworkouts)
+
+      feedPosts = feedPosts
+      .concat(friendPosts.posts)
+      .concat(friendDoneworkouts.doneworkouts)
+      .concat(myPosts.posts)
+      .concat(myDoneworkouts.doneworkouts)
+      .sort(sorterService.comparePostDates)
+
+      console.log(feedPosts)
+      dateString = moment(dateString, 'YYYY-M-D-h-m').add(-12, 'hours').format('YYYY-M-D-h-m')
+
+      startdate = myPosts.startdate
+      console.log(startdate)
+      console.log(getState().feed.loadedUntil)
+    }   
+
+    dispatch({ type: 'SET_LOADED_UNTIL_TO', data: startdate})
     dispatch({ type: 'INIT_FEED', data: feedPosts })
   }
 }
 
 export const loadMorePosts = () => {
   return async (dispatch, getState) => {
-    let dateString = moment(getState().feed.loadedUntil).format('YYYY-M-D-h-m')
-    dispatch({ type: 'SET_LOADING_TO', data: true })
-
-    let posts = await communicationService.get(`/posts/byfriends/${dateString}`)
-    let doneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
-    let feedPosts = posts.posts.concat(doneworkouts.doneworkouts).sort(sorterService.comparePostDates)
+    let dateString = getState().feed.loadedUntil
     
-    while (feedPosts.length === 0 && moment(dateString, 'YYYY-M-D-h-m').isAfter(moment(getState().feed.endDate, 'YYYY-M-D-h-m'))) {
-      dateString = moment(dateString, 'YYYY-M-D-h-m').add(-15, 'hours').format('YYYY-M-D-h-m')
-      console.log(`load ${dateString}`)
-      posts = await communicationService.get(`/posts/byfriends/${dateString}`)
-      doneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
-      feedPosts = posts.posts.concat(doneworkouts.doneworkouts).sort(sorterService.comparePostDates)
+    console.log(getState().feed.loadedUntil)
+    const user = getState().currentUser.id
+    let startdate = 0
+
+    let feedPosts = []
+    dispatch({ type: 'SET_LOADING_TO', data: true })
+    
+    while (feedPosts.length === 0) {
+      if(moment(dateString, 'YYYY-M-D-h-m').isBefore(moment(getState().feed.endDate, 'YYYY-M-D-h-m'))) break
+
+      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
+      const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
+      const myPosts = await communicationService.get(`/users/${user}/posts/${dateString}`)
+      const myDoneworkouts = await communicationService.get(`/users/${user}/doneworkouts/${dateString}`)
+
+      feedPosts = feedPosts
+      .concat(friendPosts.posts)
+      .concat(friendDoneworkouts.doneworkouts)
+      .concat(myPosts.posts)
+      .concat(myDoneworkouts.doneworkouts)
+      .sort(sorterService.comparePostDates)
+
+      
+      dateString = moment(dateString, 'YYYY-M-D-h-m').add(-12, 'hours').format('YYYY-M-D-h-m')
+      startdate = myPosts.startdate
+      console.log(getState().feed.loadedUntil)
     } 
 
     dispatch({ type: 'SET_LOADING_TO', data: false })
 
     console.log(feedPosts)
-    dispatch({ type: 'SET_LOADED_UNTIL_TO', data: posts.startdate})
+    dispatch({ type: 'SET_LOADED_UNTIL_TO', data:startdate})
     dispatch({ type: 'ADD_TOFEED', data: feedPosts })
   }
 }

@@ -1,18 +1,19 @@
 const moment = require('moment')
 
 const getFetchDates = (dateString) => {
-  const first = moment(dateString, 'YYYY-M-D-h-m').add(-15, 'hours')
+  console.log(dateString)
+  const first = moment(dateString, 'YYYY-M-D-h-m').add(-12, 'hours')
   const second = moment(dateString, 'YYYY-M-D-h-m')
-  
-  const startdate = new Date(first.format())
-  const enddate = new Date(second.format())
+  console.log(first.format('MMMM D, YYYY hh:mm:ss'))
+  const startdate = new Date(first.format('MMMM D, YYYY hh:mm:ss'))
+  const enddate = new Date(second.format('MMMM D, YYYY hh:mm:ss'))
   
   return [ startdate, enddate ]
 }
 
 const getDateString = (date) => {
   const year = date.getFullYear()
-  const month = date.getMonth()
+  const month = date.getMonth() + 1
   const day = date.getDate()
   const hours = date.getHours()
   const minutes = date.getMinutes()

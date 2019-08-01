@@ -62,7 +62,8 @@ postRouter.get('/byfriends/:date', async (request, response) => {
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
-    console.log
+    console.log(startdate)
+    console.log(enddate)
     let posts = await Post.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
@@ -74,8 +75,8 @@ postRouter.get('/byfriends/:date', async (request, response) => {
 
     const responsedata = {
       posts,
-      startdate,
-      enddate,
+      startdate: dates.getDateString(startdate),
+      enddate: dates.getDateString(enddate),
       end: false
     }
 

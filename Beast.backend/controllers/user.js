@@ -106,15 +106,15 @@ userRouter.get('/:id/posts/:date', async (request, response) => {
     let posts = await Post.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
-          { _id: decodedToken.id }
+          { user: decodedToken.id }
         ]}
       ]
-    }).sort({ _id: 1 })
+    }).sort({ _id: 1 }).populate('user')
 
     const responsedata = {
       posts,
-      startdate,
-      enddate,
+      startdate: dates.getDateString(startdate),
+      enddate: dates.getDateString(enddate),
       end: false
     }
 
@@ -138,18 +138,19 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
-    let posts = await DoneWorkout.find({
+    let doneworkouts = await DoneWorkout.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
-          { _id: decodedToken.id }
+          { user: decodedToken.id }
         ]}
       ]
-    }).sort({ _id: 1 })
+    }).sort({ _id: 1 }).populate('user')
+    console.log(doneworkouts)
 
     const responsedata = {
       doneworkouts,
-      startdate,
-      enddate,
+      startdate: dates.getDateString(startdate),
+      enddate: dates.getDateString(enddate),
       end: false
     }
 
