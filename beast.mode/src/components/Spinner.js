@@ -5,9 +5,11 @@ const Spinner = () => {
   return (
     <div className='spinner'>
       <div className='base' />
-      <div className='spinner-sector spinner-sector-red' />
-      <div className='spinner-sector spinner-sector-darkred' />
-      <div className='spinner-sector spinner-sector-darkerred' />
+      <div className='spinner-sector spinner-sector-red0' />
+      <div className='spinner-sector spinner-sector-red1' />
+      <div className='spinner-sector spinner-sector-red2' />
+      <div className='spinner-sector spinner-sector-red3' />
+      <div className='spinner-sector spinner-sector-red4' />
     </div>
   )
 }

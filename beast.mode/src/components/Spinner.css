@@ -1,11 +1,11 @@
 .spinner {
-  position: absolute;
-  margin-left: -5%;
-  margin-top: -5%;
+  animation: fade-in 3s;
+  position: fixed;
+  margin-left: -7.5%;
   left: 50%;
-  top: 50%;
-  width: 10%;
-  height: 10%;
+  bottom: 5%;
+  width: 15%;
+  height: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -13,31 +13,49 @@
 
 .base {
   border-radius: 50%;
-  background-color: #550000;
-  color: #550000;
-  border: 15px solid #550000;
+  background-color: rgba(230, 0, 0, 0.5);
+  color: rgba(230, 0, 0, 0.5);
+  border: 25px solid rgba(230, 0, 0, 0.5);
 }
 
 .spinner-sector {
   border-radius: 50%;
   position: absolute;
-  border: 10px solid transparent;
+  border: 20px solid transparent;
   mix-blend-mode: overlay;
 }
 
-.spinner-sector-red {
+.spinner-sector-red0 {
   animation: rotate 2s ease-out infinite;
-  border-top: 10px solid red;
+  border-top: 20px solid rgba(250, 0, 0, 0.5);
 }
 
-.spinner-sector-darkerred {
+.spinner-sector-red1 {
   animation: rotate 1s ease-out infinite;
-  border-top: 10px solid darkred;
+  border-top: 20px solid rgba(190, 0, 0, 0.5);
 }
 
-.spinner-sector-darkred {
-  animation: rotate 3s ease-out infinite;
-  border-top: 10px solid #aa0000;
+.spinner-sector-red2 {
+  animation: rotate 1.5s ease-out infinite;
+  border-top: 20px solid rgba(120, 0, 0, 0.5);
+}
+.spinner-sector-red3 {
+  animation: rotate 5s ease-out infinite;
+  border-top: 20px solid rgba(80, 0, 0, 0.5);;
+}
+
+.spinner-sector-red4 {
+  animation: rotate 4s ease-out infinite;
+  border-top: 20px solid rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
 }
 
 @keyframes rotate {

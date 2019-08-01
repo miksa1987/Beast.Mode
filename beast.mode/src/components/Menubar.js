@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'
 import { setSearchItems } from '../reducers/searchResultsReducer'
+import { emptyFeed } from '../reducers/feedReducer'
 import useWindowSize from '../hooks/useWindowSize'
 import useOrientation from '../hooks/useOrientation'
 import useField from '../hooks/useField'
@@ -68,6 +69,7 @@ const Menubar = (props) => {
   const logout = () => {
     window.scrollTo(0, 0)
     props.history.push('/')
+    props.emptyFeed()
     props.logoutUser()
   }
 
@@ -143,4 +145,4 @@ const Menubar = (props) => {
   </div>)
 }
 
-export default connect(null, { logoutUser, setSearchItems })(withRouter(Menubar))
+export default connect(null, { logoutUser, setSearchItems, emptyFeed })(withRouter(Menubar))

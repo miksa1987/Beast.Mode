@@ -60,8 +60,7 @@ const Feed = (props) => {
     </Masonry> }
     { orientation === 'portrait' && props.feed.feed.map(post => 
       <Post key={post._id} post={post} />)}
-
-    {showNewpost && <Newpost isWorkout={false}  setShowNewpost={setShowNewpost} />}
+    {props.feed.loading && <Spinner />}
   </div> )
 }
 
