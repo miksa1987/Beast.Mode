@@ -40,6 +40,7 @@ export const emptyFeed = () => {
     dispatch({ type: 'EMPTY_FEED' })
   }
 }
+
 export const initFeed = () => {
   return async (dispatch, getState) => {
     let dateString = moment().add(15, 'minutes').format('YYYY-M-D-H-m')

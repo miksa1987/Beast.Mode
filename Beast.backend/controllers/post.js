@@ -172,7 +172,13 @@ postRouter.post('/:id/comment', async (request, response) => {
     }
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true }).populate('user')
     
-    request.io.emit('post_comment', updatedPost)
+    request.io.emit('comment_post', { 
+      username: decodedToken.username, 
+      userid: decodedToken.id,
+      comment: request.body.comment, 
+      postid: updatedPost._id 
+    })
+
     activityHelper.setActivity(decodedToken.id, 'comment', post._id)
     return response.status(200).json(updatedPost)
   } catch(error) {
@@ -201,10 +207,16 @@ postRouter.post('/:id/like', async (request, response) => {
       ...post.toObject(),
       comments: post.comments
     }
-
-    request.io.emit('post_like', updatedPost)
-    activityHelper.setActivity(decodedToken.id, 'like', post._id)
+    
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true }).populate('user')
+
+    activityHelper.setActivity(decodedToken.id, 'like', updatedPost._id)
+    request.io.emit('like_post', { 
+      username: decodedToken.username, 
+      userid: decodedToken.id,
+      postid: updatedPost._id 
+    })
+
     return response.status(200).json(updatedPost)
   } catch(e) {
     return response.status(400).send({ error: e.message })

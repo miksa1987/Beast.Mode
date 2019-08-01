@@ -111,7 +111,7 @@ doneWorkoutRouter.post('/new', async (request, response, next) => {
 
     if (request.body.picture !== '') userUpdater.addToPictures(decodedToken.id, request.body.picture)
 
-    request.io.emit('user_add_workout', doneWorkoutToReturn)
+    request.io.emit('user_add_doneworkout', doneWorkoutToReturn)
     activityHelper.setActivity(decodedToken.id, 'workout', doneWorkoutToReturn._id)
     userUpdater.addToWorkouts(decodedToken.id, doneWorkoutToReturn._id)
     
@@ -122,26 +122,32 @@ doneWorkoutRouter.post('/new', async (request, response, next) => {
   }
 })
 
-doneWorkoutRouter.post('/:id/comment', async (request, response) => {
+doneWorkoutRouter.post('/:id/comment', async (request, response, next) => {
   if (!request.token) return response.status(401).end()
   
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!decodedToken.id) return response.status(401).end()
 
-    const user = await user.findById(decodedToken.id)
+    const user = await User.findById(decodedToken.id)
     const doneWorkout = await DoneWorkout.findById(request.params.id)
 
-    const newComments = doneWorkout.comments.concat(request.body.comment)
+    const newComments = doneWorkout.comments.concat({ content: request.body.comment, user: decodedToken.username })
     const doneWorkoutToUpdate = { ...doneWorkout.toObject(), comments: newComments }
 
     const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true })
 
-    request.io.emit('doneworkout_comment', updatedPost)
+    request.io.emit('comment_doneworkout', { 
+      username: decodedToken.username, 
+      userid: decodedToken.id,
+      comment: request.body.comment, 
+      doneworkoutid: updatedDoneWorkout._id 
+    })
     activityHelper.setActivity(decodedToken.id, 'comment', updatedDoneWorkout._id)
     return response.status(200).json(updatedDoneWorkout)
 
   } catch (error) {
+    console.log(error.message)
     return response.status(400).json({ error: error.message})
   }
 })
@@ -170,8 +176,13 @@ doneWorkoutRouter.post('/:id/like', async (request, response) => {
     
     const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true }).populate('user')
     
-    request.io.emit('doneworkout_like', updatedDoneWorkout)
     activityHelper.setActivity(decodedToken.id, 'like', updatedDoneWorkout._id)
+    request.io.emit('like_doneworkout', { 
+      username: decodedToken.username, 
+      userid: decodedToken.id,
+      doneworkoutid: updatedDoneWorkout._id 
+    })
+
     return response.status(200).json(updatedDoneWorkout)
   } catch(error) {
     return response.status(400).send({ error: error.message })
