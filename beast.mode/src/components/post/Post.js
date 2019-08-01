@@ -5,6 +5,8 @@ import { withRouter, Link } from 'react-router-dom'
 import { addComment, like } from '../../reducers/feedReducer'
 import useField from '../../hooks/useField'
 import Comments from './Comments'
+import LikeButton from '../universal/LikeButton'
+
 import './Post.css'
 import '../Animation.css'
 
@@ -52,9 +54,7 @@ const Post = (props) => {
     <table><tbody>
       <tr>
         <td>        
-          <Button size='small' color='green' icon onClick={() => props.like(props.post.type, props.post._id)}>
-            <Icon name='like' />
-          </Button>
+          <LikeButton like={props.like} likes={props.post.likes.length} />
         </td>
         <td width='100%'>
           <form onSubmit={sendComment}>

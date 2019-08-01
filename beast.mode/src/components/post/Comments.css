@@ -8,5 +8,5 @@
   margin-right: 5px;
   vertical-align: top;
   padding: 10px 10px 10px 10px;
-  width: 100%;
+  width: calc(100% - 10px);
 }

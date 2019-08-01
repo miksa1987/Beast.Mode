@@ -7,7 +7,9 @@ import useOrientation from '../../hooks/useOrientation'
 import { initCurrentPost } from '../../reducers/currentPost'
 import { addComment, like } from '../../reducers/feedReducer'
 import MobileViewpost from './MobileViewpost'
+import LikeButton from '../universal/LikeButton'
 import './Viewpost.css'
+import '../Animation.css'
 
 const Viewpost = (props) => {
   const orientation = useOrientation()
@@ -32,7 +34,7 @@ const Viewpost = (props) => {
     return ( <MobileViewpost post={props.post} sendComment={sendComment} comment={comment} like={props.like} /> )
   }
 
-  return ( <div className='viewpost-component component-width'>
+  return ( <div className='viewpost-component component-width fade-in-fast'>
     <table className='table-style'><tbody>
       <tr>
         <td className='pic-style'>
@@ -84,10 +86,8 @@ const Viewpost = (props) => {
                             <Input fluid size='small' icon={{ name: 'comment' }} {...comment} placeholder='Comment' />
                           </form>
                         </td>
-                        <td>        
-                          <Button size='small' color='green' icon onClick={() => props.like(props.post.type, props.post._id)}>
-                            <Icon name='like' />
-                          </Button>
+                        <td>       
+                          <LikeButton like={props.like} likes={props.post.likes.length} />
                         </td>
                       </tr>
                     </tbody>

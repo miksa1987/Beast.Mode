@@ -1,10 +1,6 @@
 .post-component {
-  min-width: 95%;
-  max-height: 30%;
   vertical-align: top;
-  max-width: 95%;
-  margin-left: 5px;
-  margin-top: 25px;
+  margin-top: 5px;
   border: 1px solid #dddddd;
   white-space: pre-line;
   text-align: top;
