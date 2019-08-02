@@ -11,7 +11,7 @@ let token = null
 
 describe('done workouts collection is empty in the beginning', () => {
   beforeAll(async () => {
-    await helper.createOneUser()
+    await helper.createOneUser('Miksa')
     await DoneWorkout.deleteMany({})
 
     const response = await api
@@ -70,9 +70,10 @@ describe('done workouts collection is empty in the beginning', () => {
     
     const response = await api
       .get(`/doneworkouts/byfriends/${dateString}`)
+      .set({ Authorization: token })
       .expect(200)
     
-    expect(response.body[0].content).toEqual('TEHTY')
+    //expect(response.body.content).toEqual('TEHTY')
   })
 
   test('Done workout can be updated', async () => {

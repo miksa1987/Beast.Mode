@@ -207,6 +207,7 @@ userRouter.post('/addfriend', async (request, response, next) => {
     activityHelper.setActivity(decodedToken.id, 'addfriend', newFriend.id)
     return response.status(200).json(updatedUser)
   } catch(error) {
+    console.log(error.message)
     return response.status(400).json({ error: error.message })
   }
 })

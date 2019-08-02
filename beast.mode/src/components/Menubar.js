@@ -25,7 +25,8 @@ const Menubar = (props) => {
     position: 'fixed',
     top: '0px',
     left: '0px',
-    backgroundColor: '#dd0000'
+    backgroundColor: '#dd0000',
+    zIndex: 1000
   }
 
   const itemStyle = {

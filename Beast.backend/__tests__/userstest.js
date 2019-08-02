@@ -1,6 +1,5 @@
 const supertest = require('supertest')
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const app = require('../app')
 const config = require('../util/config')
@@ -13,7 +12,7 @@ let token = null
 
 describe('Initially there is one user in DB', () => {
   beforeAll(async () => {
-    await helper.createOneUser()
+    await helper.createOneUser('Miksa')
   })
 
   test('One user will return', async () => {

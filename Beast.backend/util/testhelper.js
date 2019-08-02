@@ -2,12 +2,12 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
 
-const createOneUser = async () => {
+const createOneUser = async (username) => {
   await User.deleteMany({})
     
   const pwHash = await bcrypt.hash('secret', 10)
   const user = new User({
-    username: 'Miksa',
+    username,
     passwordHash: pwHash,
     picture: 'NOPICTURE',
     pictures: [],
@@ -23,7 +23,8 @@ const createOneUser = async () => {
     doneWorkouts: []
   })
 
-  await user.save() 
+  const savedUser = await user.save() 
+  return savedUser.id
 }
 
 module.exports = { createOneUser }
