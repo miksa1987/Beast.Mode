@@ -13,9 +13,9 @@
 
 .base {
   border-radius: 50%;
-  background-color: rgba(230, 0, 0, 0.5);
-  color: rgba(230, 0, 0, 0.5);
-  border: 25px solid rgba(230, 0, 0, 0.5);
+  background-color: rgba(230, 0, 0, 0.35);
+  color: rgba(230, 0, 0, 0.35);
+  border: 25px solid rgba(230, 0, 0, 0.35);
 }
 
 .spinner-sector {
@@ -27,26 +27,26 @@
 
 .spinner-sector-red0 {
   animation: rotate 2s ease-out infinite;
-  border-top: 20px solid rgba(250, 0, 0, 0.5);
+  border-top: 20px solid rgba(250, 0, 0, 0.35);
 }
 
 .spinner-sector-red1 {
   animation: rotate 1s ease-out infinite;
-  border-top: 20px solid rgba(190, 0, 0, 0.5);
+  border-top: 20px solid rgba(190, 0, 0, 0.35);
 }
 
 .spinner-sector-red2 {
   animation: rotate 1.5s ease-out infinite;
-  border-top: 20px solid rgba(120, 0, 0, 0.5);
+  border-top: 20px solid rgba(120, 0, 0, 0.35);
 }
 .spinner-sector-red3 {
   animation: rotate 5s ease-out infinite;
-  border-top: 20px solid rgba(80, 0, 0, 0.5);;
+  border-top: 20px solid rgba(80, 0, 0, 0.35);
 }
 
 .spinner-sector-red4 {
   animation: rotate 4s ease-out infinite;
-  border-top: 20px solid rgba(0, 0, 0, 0.5);
+  border-top: 20px solid rgba(0, 0, 0, 0.35);
 }
 
 @keyframes rotate {

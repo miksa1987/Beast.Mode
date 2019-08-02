@@ -1,13 +1,24 @@
 import React from 'react'
 import { Image, Input, Button, Icon } from 'semantic-ui-react'
+import { connect } from 'react-redux'
 import './Preview.css'
 import Comments from '../../post/Comments'
+import LikeButton from '../../universal/LikeButton'
 import useOrientation from '../../../hooks/useOrientation'
+import useField from '../../../hooks/useField'
+import { likeWorkout, commentWorkout } from '../../../reducers/currentWorkout'
 
 const Preview = (props) => {
   const orientation = useOrientation()
+  const [comment, resetComment] = useField('text')
 
   console.log(props.workout)
+
+  const addComment = (event) => {
+    event.preventDefault()
+    props.commentWorkout(comment.value, props.workout.id)
+    resetComment()
+  }
   
   if (orientation === 'portrait') {
     return ( <div className='preview-component'>
@@ -40,13 +51,11 @@ const Preview = (props) => {
       <tbody>
         <tr>
           <td>
-            <Button size='small' color='green' icon onClick={() => props.like(props.post.type, props.post._id)}>
-              <Icon name='like' />
-            </Button>
+            <LikeButton likes={props.workout.likes.length} like={props.likeWorkout} id={props.workout.id} type='workout' />
           </td>
           <td>
-            <form onSubmit={(event) => event.preventDefault()}>
-              <Input fluid size='small' icon={{ name: 'comment' }} placeholder='Comment' />
+            <form onSubmit={addComment}>
+              <Input fluid size='small' icon={{ name: 'comment' }} placeholder='Comment' {...comment} />
             </form>
           </td>
         </tr>
@@ -55,4 +64,4 @@ const Preview = (props) => {
   </div>)
 }
 
-export default Preview
+export default connect(null, { likeWorkout, commentWorkout })(Preview)

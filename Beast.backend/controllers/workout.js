@@ -195,6 +195,7 @@ workoutRouter.post('/:id/comment', async (request, response) => {
     activityHelper.setActivity(decodedToken.id, 'comment', workout._id)
     return response.status(200).json(updatedWorkout)
   } catch(error) {
+    console.log(error.message)
     return response.status(400).send({ error: error.message })
   }
 })

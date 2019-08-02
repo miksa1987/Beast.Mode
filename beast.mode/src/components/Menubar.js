@@ -39,7 +39,7 @@ const Menubar = (props) => {
   }
 
   const barStyle = {
-    width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 6*55 - 40)
+    width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 6*60 - 40)
   }
 
   const home = () => {
@@ -85,7 +85,7 @@ const Menubar = (props) => {
 
   if (orientation === 'portrait') {
     return ( <div style={menuStyle}>
-      <Menu style={itemStyle} inverted color='red'>
+      <Menu style={itemStyle} secondary inverted color='red'>
         <Menu.Item onClick={home}>
           <Icon name='home' />
         </Menu.Item>
@@ -117,7 +117,7 @@ const Menubar = (props) => {
   }
 
   return ( <div style={menuStyle}>
-    <Menu style={itemStyle} inverted color='red'>
+    <Menu style={itemStyle} inverted secondary color='red'>
       <Menu.Item onClick={home}>
         <Icon name='home' />
       </Menu.Item>

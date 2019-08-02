@@ -171,7 +171,8 @@ doneWorkoutRouter.post('/:id/like', async (request, response) => {
 
     const doneWorkoutToUpdate = {
       ...doneWorkout.toObject(),
-      comments: post.comments
+      likes: newLikes,
+      likesLength: newLikes.length
     }
     
     const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true }).populate('user')

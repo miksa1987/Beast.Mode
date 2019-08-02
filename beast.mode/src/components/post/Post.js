@@ -54,7 +54,7 @@ const Post = (props) => {
     <table><tbody>
       <tr>
         <td>        
-          <LikeButton like={props.like} likes={props.post.likes.length} />
+          <LikeButton like={props.like} likes={props.post.likes.length} type={props.post.type} id={props.post._id} />
         </td>
         <td width='100%'>
           <form onSubmit={sendComment}>

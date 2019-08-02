@@ -26,6 +26,10 @@ const currentWorkoutReducer = (state = emptyWorkout, action) => {
       return { ...state, time: { time: action.data.time, visible: action.data.visible }}
     case 'SET_CURRENT_WORKOUT_DONE':
       return { ...state, done: true, posted: true }
+      case 'COMMENT_WORKOUT':
+        return action.data
+      case 'LIKE_WORKOUT':
+        return action.data
     default:
       return state
   }
@@ -85,6 +89,34 @@ export const setCurrentWorkoutDone = (doneWorkout) => {
   return async dispatch => {
     await communicationService.post('/doneworkouts/new', doneWorkout)
     dispatch({ type: 'SET_CURRENT_WORKOUT_DONE' })
+  }
+}
+
+export const commentWorkout = (comment, id) => {
+  return async dispatch => {
+    const updatedWorkout = await communicationService.post(`/workouts/${id}/comment`, { comment })
+    const workout = parser.doWorkout(updatedWorkout.content)
+    dispatch({ type: 'COMMENT_WORKOUT', data: {
+      ...workout, 
+      id: updatedWorkout._id,
+      picture: updatedWorkout.picture, 
+      comments: updatedWorkout.comments,
+      likes: updatedWorkout.likes
+    } })
+  }
+}
+
+export const likeWorkout = (placeholder, id) => {
+  return async dispatch => {
+    const updatedWorkout = await communicationService.post(`/workouts/${id}/like`, { wee: 'wee' })
+    const workout = parser.doWorkout(updatedWorkout.content)
+    dispatch({ type: 'LIKE_WORKOUT', data: {
+      ...workout, 
+      id: updatedWorkout._id,
+      picture: updatedWorkout.picture, 
+      comments: updatedWorkout.comments,
+      likes: updatedWorkout.likes
+    } })
   }
 }
 

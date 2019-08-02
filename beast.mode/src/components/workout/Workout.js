@@ -73,7 +73,6 @@ const Workout = (props) => {
             <Button onClick={() => props.history.push(`/doworkout/${props.workout._id}`)}>
               View this workout
             </Button>
-            <Button>LIKE</Button>
           </td>
         </tr>
       </tbody>

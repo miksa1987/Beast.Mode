@@ -205,7 +205,8 @@ postRouter.post('/:id/like', async (request, response) => {
 
     const postToUpdate = {
       ...post.toObject(),
-      comments: post.comments
+      likes: newLikes,
+      likesLength: newLikes.length
     }
     
     const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true }).populate('user')
