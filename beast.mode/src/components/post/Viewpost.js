@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 import useField from '../../hooks/useField'
 import Comments from './Comments'
 import useOrientation from '../../hooks/useOrientation'
-import { initCurrentPost } from '../../reducers/currentPost'
-import { addComment, like } from '../../reducers/feedReducer'
+import { initCurrentPost, commentCurrentPost, likeCurrentPost } from '../../reducers/currentPost'
 import MobileViewpost from './MobileViewpost'
+import ViewpostNophoto from './ViewpostNophoto'
 import LikeButton from '../universal/LikeButton'
 import './Viewpost.css'
 import '../Animation.css'
@@ -16,6 +16,7 @@ const Viewpost = (props) => {
 
   const [comment, resetComment] = useField('text')
 
+  console.log(props.post)
   const sendComment = (event) => {
     event.preventDefault()
     props.addComment(props.post.type, props.post._id, comment.value)
@@ -28,6 +29,10 @@ const Viewpost = (props) => {
 
   if (!props.post.content) {
     return ( <div></div> )
+  }
+
+  if(props.post.picture === '') {
+    return ( <div><ViewpostNophoto post={props.post} like={props.likeCurrentPost} comment={props.commentCurrentPost} /></div>)
   }
 
   if (orientation === 'portrait') {
@@ -110,4 +115,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { initCurrentPost, addComment, like })(Viewpost)
+export default connect(mapStateToProps, { initCurrentPost, commentCurrentPost, likeCurrentPost })(Viewpost)

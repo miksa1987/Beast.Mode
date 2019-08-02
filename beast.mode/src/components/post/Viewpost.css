@@ -1,6 +1,6 @@
 @media (max-width: 800) {
   .component-width {
-    width: 95%;
+    width: 100%;
     margin: auto;
   }
 }
@@ -8,6 +8,26 @@
 @media (min-width: 800) {
   .component-width {
     width: 80%;
+    margin: auto;
+  }
+}
+
+@media (max-width: 800) {
+  .viewpost-nophoto-component {
+    border: #dddddd;
+    border-radius: 4px;
+    background-color: white;
+    width: 100%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 800) {
+  .viewpost-nophoto-component {
+    border: #dddddd;
+    border-radius: 4px;
+    background-color: white;
+    width: 70%;
     margin: auto;
   }
 }
