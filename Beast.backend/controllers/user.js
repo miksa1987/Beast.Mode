@@ -124,6 +124,41 @@ userRouter.get('/:id/posts/:date', async (request, response) => {
   }
 })
 
+userRouter.get('/:id/workouts/:date', async (request, response) => {
+  if (!request.token) {
+    return response.status(401).end()
+  }
+  
+  const decodedToken = await jwt.verify(request.token, config.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).end()
+  }
+  const user = await User.findById(decodedToken.id)
+
+  try {
+    let [startdate, enddate] = dates.getFetchDates(request.params.date)
+
+    let workouts = await Workout.find({
+      $and: [
+        { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
+        { user: decodedToken.id }
+      ]}
+    ]
+    }).sort({ _id: 1 }).populate('user')
+
+    const responsedata = {
+      workouts,
+      startdate: dates.getDateString(startdate),
+      enddate: dates.getDateString(enddate),
+      end: false
+    }
+
+    return response.json(responsedata)
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
+  }
+})
+
 userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
   if (!request.token) {
     return response.status(401).end()
