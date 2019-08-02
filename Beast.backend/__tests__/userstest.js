@@ -12,6 +12,7 @@ let token = null
 
 describe('Initially there is one user in DB', () => {
   beforeAll(async () => {
+    await helper.deleteUsers()
     await helper.createOneUser('Miksa')
   })
 
@@ -80,22 +81,6 @@ describe('Initially there is one user in DB', () => {
     await api
       .get('/users/5d27680b7f9f802870dbaf51t/posts')
       .expect(404)
-  })
-
-  test('User can add another user as friend', async () => {
-    let users = await api.get('/users/all')
-    const newFriendId = users.body[1].id
-
-    await api
-      .post('/users/addfriend')
-      .send({ newfriend: newFriendId })
-      .set({ Authorization: token })
-      .expect(200)
-    
-      users = await api.get('/users/all')
-
-      expect(users.body[0].friends[0].id).toEqual(users.body[1].id)
-      expect(users.body[1].friends[0].id).toEqual(users.body[0].id)
   })
 
   test('User can update his/her settings', async () => {

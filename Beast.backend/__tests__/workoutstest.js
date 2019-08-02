@@ -11,6 +11,7 @@ let token = null
 
 describe('workouts collection is empty in the beginning', () => {
   beforeAll(async () => {
+    await helper.deleteUsers()
     await helper.createOneUser('Miksa')
     await Workout.deleteMany({})
 
@@ -65,18 +66,6 @@ describe('workouts collection is empty in the beginning', () => {
 
     expect(response.body.content).toEqual('POST')
   })
-  
-  test('Workout can be returned with date', async () => {
-    const dateString = dates.getDateString(new Date())
-    
-    const response = await api
-      .get(`/workouts/byfriends/${dateString}`)
-      .set({ Authorization: token })
-      .expect(200)
-    
-    
-    //expect(response.body.content).toEqual('TEHTY')
-  })
 
   test('Workout can be updated', async () => {
     let response = await api.get('/workouts/all')
@@ -93,4 +82,8 @@ describe('workouts collection is empty in the beginning', () => {
 
     expect(response.body[0].content).toEqual('MODDED')
   })
+})
+
+afterAll(() => {
+  mongoose.connection.close()
 })

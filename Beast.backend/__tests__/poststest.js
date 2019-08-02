@@ -2,7 +2,7 @@ const supertest = require('supertest')
 const mongoose = require('mongoose')
 const app = require('../app')
 const config = require('../util/config')
-const dates       = require('../util/dates')
+const moment = require('moment')
 const Post = require('../models/Post')
 const helper = require('../util/testhelper')
 const api = supertest(app)
@@ -11,6 +11,7 @@ let token = null
 
 describe('Posts collection is empty in the beginning', () => {
   beforeAll(async () => {
+    await helper.deleteUsers()
     await helper.createOneUser('Miksa')
     await Post.deleteMany({})
 
@@ -63,18 +64,6 @@ describe('Posts collection is empty in the beginning', () => {
 
     expect(response.body.content).toEqual('POST')
   })
-  
-  test('Post can be returned with date', async () => {
-    const dateString = dates.getDateString(new Date())
-    
-    const response = await api
-      .get(`/posts/byfriends/${dateString}`)
-      .set({ Authorization: token })
-      .expect(200)
-    
-    
-    //expect(response.body.content).toEqual('POST')
-  })
 
   test('Post can be updated', async () => {
     let response = await api.get('/posts/all')
@@ -91,4 +80,8 @@ describe('Posts collection is empty in the beginning', () => {
 
     expect(response.body[0].content).toEqual('MODDED')
   })
+})
+
+afterAll(() => {
+  mongoose.connection.close()
 })
