@@ -39,9 +39,9 @@ export const initRandomWorkouts = () => {
   }
 }
 
-export const initFriendWorkouts = (currentUser) => {
+export const initFriendWorkouts = () => {
   return async dispatch => {
-    const workouts = await communicationService.get(`/users/${currentUser}/friendworkouts`)
+    const workouts = await communicationService.get(`/workouts/byfriends`)
     return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
   }
 }

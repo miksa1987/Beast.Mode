@@ -57,12 +57,25 @@ workoutRouter.get('/mostliked', async (request, response) => {
   }
 })
 
-workoutRouter.get('/:id', async (request, response) => {
+workoutRouter.get('/byfriends', async (request, response) => {
+  if (!request.token) {
+    return response.status(401).end()
+  }
+  
+  const decodedToken = await jwt.verify(request.token, config.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).end()
+  }
+  const user = await User.findById(decodedToken.id)
+
   try {
-    const workout = await Workout.findById(request.params.id).populate('user')
-    return response.json(workout)
-  } catch(error) {
-    return response.status(404).send('Workout not found!')
+    const workouts = await Workout.find({ user: { $in: user.friends }})
+      .sort({ _id: 1 }).populate('user')
+
+    return response.json(workouts)
+  } catch (error) {
+    console.log(error.message)
+    return response.status(400).json({ error: error.message })
   }
 })
 
@@ -98,6 +111,15 @@ workoutRouter.get('/byfriends/:date', async (request, response) => {
     return response.json(responsedata)
   } catch (error) {
     return response.status(400).json({ error: error.message })
+  }
+})
+
+workoutRouter.get('/:id', async (request, response) => {
+  try {
+    const workout = await Workout.findById(request.params.id).populate('user')
+    return response.json(workout)
+  } catch(error) {
+    return response.status(404).send('Workout not found!')
   }
 })
 
