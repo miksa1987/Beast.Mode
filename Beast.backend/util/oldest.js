@@ -1,3 +1,5 @@
+const moment            = require('moment')
+const dates             = require('./dates')
 const Post              = require('../models/Post')
 const DoneWorkout       = require('../models/DoneWorkout')
 const Workout           = require('../models/Workout')
@@ -14,15 +16,28 @@ const setOldest = async () => {
   oldestPost = post.date
   oldestWorkout = workout.date
   oldestDoneWorkout = doneworkout.date
-
-  console.log(typeof oldestPost)
-  console.log(oldestPost.getFullYear())
-  console.log(oldestDoneWorkout)
-  console.log(oldestWorkout)
 }
 
 const getOldestPost = () => oldestPost
 const getOldestWorkout = () => oldestWorkout
 const getOldestDoneWorkout = () => oldestDoneWorkout
 
-module.exports = { setOldest, getOldestPost, getOldestWorkout, getOldestDoneWorkout }
+const getOldest = () => {
+  const post = dates.getDateString(oldestPost)
+  const workout = dates.getDateString(oldestWorkout)
+  const doneworkout = dates.getDateString(oldestDoneWorkout)
+
+  if (moment(post, 'YYYY-M-D-H-m').isBefore(moment(workout, 'YYYY-M-D-H-m')) &&
+  moment(post, 'YYYY-M-D-H-m').isBefore(moment(doneworkout, 'YYYY-M-D-H-m'))) {
+    return oldestPost
+  }
+
+  if (moment(workout, 'YYYY-M-D-H-m').isBefore(moment(post, 'YYYY-M-D-H-m')) &&
+  moment(workout, 'YYYY-M-D-H-m').isBefore(moment(doneworkout, 'YYYY-M-D-H-m'))) {
+    return oldestWorkout
+  }
+
+  return oldestDoneWorkout
+}
+
+module.exports = { setOldest, getOldestPost, getOldestWorkout, getOldestDoneWorkout, getOldest }

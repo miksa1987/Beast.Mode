@@ -1,6 +1,6 @@
 @media (max-width: 600px) {
   .notification-style {
-    background-color: #444444;
+    background-color: rgba(45, 45, 45, 0.7);
     position: fixed;
     bottom: 10%;
     left: 50%;
@@ -17,17 +17,19 @@
 
 @media (min-width: 620px) {
   .notification-style {
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(45, 45, 45, 0.7);
     border: 1px solid #dddddd;
+    border-radius: 7px;
     padding: 10px 10px 10px 10px;
     position: fixed;
     top: 85px;
-    right: 20px;
+    left: 50%;
+    margin-left: -20%;
     text-align: center;
     vertical-align: middle;
     word-wrap: break-word;
     line-height: 2em;
-    color: black;
+    color: white;
     width: 40%;
     height: 4em;
   }

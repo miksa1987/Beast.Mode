@@ -1,11 +1,22 @@
 import communicationService from '../service/communication'
 
-const searchResultReducer = (state = [], action) => {
+const initialState = {
+  results: [],
+  loadedUntil: 0,
+  loading: false,
+  end: false
+}
+
+const searchResultReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_SEARCH_ITEMS':
-      return action.data
-    case 'EMPTY_SEARCH_ITEMS':
-      return []
+    case 'SET_SEARCH_RESULTS':
+      return { ...state, results: action.data }
+    case 'EMPTY_SEARCH_RESULTS':
+      return { ...state, results: [] }
+    case 'SET_SEARCH_LOADED_UNTIL':
+      return { ...state, loadedUntil: action.data }
+    case 'SET_SEARCH_END':
+      return { ...state, end: action.data }
     default:
       return state
   }
@@ -13,14 +24,26 @@ const searchResultReducer = (state = [], action) => {
 
 export const emptySearchItems = () => {
   return dispatch => {
-    dispatch({ type: 'EMPTY_SEARCH_ITEMS' })
+    dispatch({ type: 'EMPTY_SEARCH_RESULTS' })
   }
 }
 
 export const setSearchItems = (searchterm, type) => {
   return async dispatch => {
     const searchResult = await communicationService.post('/search', { search: searchterm, type })
-    dispatch({ type: 'SET_SEARCH_ITEMS', data: searchResult })
+    dispatch({ type: 'SET_SEARCH_RESULTS', data: searchResult })
+  }
+}
+
+export const setSearchLoadedUntil = (date) => {
+  return dispatch => {
+    dispatch({ type: 'SET_SEARCH_LOADED_UNTIL', data: date })
+  }
+}
+
+export const setSearchEnd = (end) => {
+  return dispatch => {
+    dispatch({ type: 'SET_SEARCH_END', data: end })
   }
 }
 

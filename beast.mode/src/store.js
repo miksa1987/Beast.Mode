@@ -24,7 +24,7 @@ const reducer = combineReducers({
   workouts: workoutsReducer,
   doneWorkouts: doneWorkoutsReducer,
   notification: notificationReducer,
-  searchResults: searchResultsReducer
+  search: searchResultsReducer
 })
 
 const store = createStore(reducer, applyMiddleware(thunk))

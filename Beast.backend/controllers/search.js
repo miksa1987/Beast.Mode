@@ -6,6 +6,7 @@ const Post          = require('../models/Post')
 const Workout       = require('../models/Workout')
 const DoneWorkout   = require('../models/DoneWorkout')
 const dates         = require('../util/dates')
+const oldest        = require('../util/oldest')
 
 // Very simple search feature for now
 
@@ -88,24 +89,90 @@ searchRouter.post('/bydate/:date', async (request, response) => {
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ]})
         break
+
       case 'post':
+        if (oldest.getOldestPost() !== '') {
+          const all = await Post.find({
+            $and: [ { date: { $gte: oldest.getOldestPost() }}, { date: { $lte: enddate }} ]
+          })  
+          if (all.length === 0) {
+            console.log('ENDDDD')
+            return response.json({
+              results: [],
+              startdate: dates.getDateString(oldest.getOldestPost()),
+              enddate: dates.getDateString(enddate),
+              end: true
+            })
+          }
+        }
         results = await Post.find({ $and: [ { content: {
           '$regex': request.body.search,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ]})
+
       case 'workout':
+        if (oldest.getOldestWorkout() !== '') {
+          const all = await Workout.find({
+            $and: [ { date: { $gte: oldest.getOldestWorkout() }}, { date: { $lte: enddate }} ]
+          })  
+          if (all.length === 0) {
+            console.log('ENDDDD')
+            return response.json({
+              results: [],
+              startdate: dates.getDateString(oldest.getOldestWorkout()),
+              enddate: dates.getDateString(enddate),
+              end: true
+            })
+          }
+        }
         results = await Workout.find({ $and: [ { content: {
           '$regex': request.body.search,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ] })
-        break  
+        break
+        
       case 'doneworkout':
+        if (oldest.getOldestDoneWorkout() !== '') {
+          const all = await DoneWorkout.find({
+            $and: [ { date: { $gte: oldest.getOldestDoneWorkout() }}, { date: { $lte: enddate }} ]
+          })  
+          if (all.length === 0) {
+            console.log('ENDDDD')
+            return response.json({
+              results: [],
+              startdate: dates.getDateString(oldest.getOldestDoneWorkout()),
+              enddate: dates.getDateString(enddate),
+              end: true
+            })
+          }
+        }
         results = await DoneWorkout.find({ $and: [ { content: {
           '$regex': request.body.search,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ] })
         break
       default:
+        if (oldest.getOldestPost() !== '' || oldest.getOldestWorkout() !== '' || oldest.getOldestDoneWorkout() !== '') {
+          let all = await Post.find({
+            $and: [ { date: { $gte: oldest.getOldestPost() }}, { date: { $lte: enddate }} ]
+          })
+          all = all.concat(await Workout.find({
+            $and: [ { date: { $gte: oldest.getOldestWorkout() }}, { date: { $lte: enddate }} ]
+          }))
+          all = all.concat(await DoneWorkout.find({
+            $and: [ { date: { $gte: oldest.getOldestDoneWorkout() }}, { date: { $lte: enddate }} ]
+          }))
+          if (all.length === 0) {
+            console.log('ENDDDD')
+            return response.json({
+              results: [],
+              startdate: dates.getDateString(oldest.getOldest()),
+              enddate: dates.getDateString(enddate),
+              end: true
+            })
+          }
+        }
+
         results = await User.find({ $and: [ { username: {
           '$regex': request.body.search,
           '$options': 'i'
@@ -124,7 +191,12 @@ searchRouter.post('/bydate/:date', async (request, response) => {
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ] }))
     }
 
-    return response.status(200).json(results)
+    return response.status(200).json({
+      results,
+      startdate: dates.getDateString(startdate),
+      enddate: dates.getDateString(enddate),
+      end: false
+    })
   } catch (error) {
     return response.status(400).json({ error: error.message })
   }

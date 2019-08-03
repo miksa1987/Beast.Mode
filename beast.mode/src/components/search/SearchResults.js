@@ -4,7 +4,7 @@ import SearchResultUser from './SearchResultUser'
 import SearchResultPost from './SearchResultPost'
 
 const SearchResults = (props) => {
-  if(props.searchResults.length === 0) {
+  if(props.search.results.length === 0 || !props.search.end) {
     return ( <div>Search did not find anything.</div> )
   }
 
@@ -16,7 +16,7 @@ const SearchResults = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    searchResults: state.searchResults
+    search: state.search
   }
 }
 

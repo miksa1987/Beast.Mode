@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { setSearchItems } from '../../reducers/searchResultsReducer'
+import { setSearchResults, loadMoreResults } from '../../reducers/searchResultsReducer'
 import useWindowSize from '../../hooks/useWindowSize'
 import useOrientation from '../../hooks/useOrientation'
 
@@ -28,7 +28,7 @@ const SearchPopup = (props) => {
   }
 
   const search = (type) => {
-    props.setSearchItems(props.searchterm, type)
+    props.setSearchResults(props.searchterm, type)
     props.resetSearch()
     window.scrollTo(0, 0)
   }
@@ -73,4 +73,4 @@ const SearchPopup = (props) => {
   </div> )
 }
 
-export default connect(null, { setSearchItems })(SearchPopup)
+export default connect(null, { setSearchResults, loadMoreResults })(SearchPopup)
