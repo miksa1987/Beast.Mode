@@ -10,7 +10,6 @@ import useScrollPercentage from '../hooks/useScrollPercentage'
 import './Feed.css'
 
 const Feed = (props) => {
-  const [showNewpost, setShowNewpost] = useState(false)
   const orientation = useOrientation()
   const scrollPercentage = useScrollPercentage()
   const feedLength = props.feed.feed.length
@@ -23,15 +22,14 @@ const Feed = (props) => {
   }
 
   useEffect(() => {
-    if (props.feed.feed.length === 0) {
-      console.log(props.feed.feed)
+    if (props.feed.feed.length === 0 && !props.feed.end) {
       props.setEndDate()
       props.initFeed()
     }
   }, [])
 
   useEffect(() => {
-    if (feedLength > 0 && feedLength < 20) {
+    if (feedLength > 0 && feedLength < 20 && !props.feed.end) {
       props.loadMorePosts()
     }
   }, [feedLength])
@@ -45,7 +43,7 @@ const Feed = (props) => {
 
   if (props.feed.feed.length === 0) {
     console.log('spinner')
-    return ( <div><Newpost /><Spinner /></div> )
+    return ( <div><Newpost /></div> )
   }
   // This could maybe work ?
   const items = []

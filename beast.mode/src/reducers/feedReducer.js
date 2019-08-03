@@ -6,7 +6,8 @@ const initialState = {
   feed: [],
   loadedUntil: 0,
   loading: false,
-  endDate: 0
+  endDate: 0,
+  end: false
 }
 
 const feedReducer = (state = initialState, action) => {
@@ -30,6 +31,8 @@ const feedReducer = (state = initialState, action) => {
       return { ...state, loadedUntil: action.data }
     case 'SET_FEED_END_DATE':
       return { ...state, endDate: action.data }
+    case 'SET_FEED_END':
+      return { ...state, end: action.data }
     default:
       return state
   }
@@ -44,15 +47,23 @@ export const emptyFeed = () => {
 export const initFeed = () => {
   return async (dispatch, getState) => {
     let dateString = moment().add(15, 'minutes').format('YYYY-M-D-H-m')
-    const user = getState().currentUser.id
+    
+    const user = getState().currentUser
+    console.log(user)
+    if (user.friends.length === 0 && user.posts.length === 0 && user.doneworkouts.length === 0) {
+      dispatch({ type: 'SET_LOADED_UNTIL_TO', data: getState().feed.endDate})
+      return
+    }
+
     let feedPosts = []
     let startdate = 0
 
+    dispatch({ type: 'SET_LOADING_TO', data: true })
     while (feedPosts.length === 0) {
       const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
       const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
-      const myPosts = await communicationService.get(`/users/${user}/posts/${dateString}`)
-      const myDoneworkouts = await communicationService.get(`/users/${user}/doneworkouts/${dateString}`)
+      const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
+      const myDoneworkouts = await communicationService.get(`/users/${user.id}/doneworkouts/${dateString}`)
 
       feedPosts = feedPosts
       .concat(friendPosts.posts)
@@ -64,8 +75,15 @@ export const initFeed = () => {
       dateString = moment(dateString, 'YYYY-M-D-H-m').add(-12, 'hours').format('YYYY-M-D-H-m')
 
       startdate = myPosts.startdate
+
+      if (friendPosts.end && friendDoneworkouts.end && myPosts.end && myDoneworkouts.end) {
+        dispatch({ type: 'SET_FEED_END', data: true })
+        console.log('feed end')
+        break
+      }
     }   
 
+    dispatch({ type: 'SET_LOADING_TO', data: false })
     dispatch({ type: 'SET_LOADED_UNTIL_TO', data: startdate})
     dispatch({ type: 'INIT_FEED', data: feedPosts })
   }
@@ -75,7 +93,13 @@ export const loadMorePosts = () => {
   return async (dispatch, getState) => {
     let dateString = getState().feed.loadedUntil
     
-    const user = getState().currentUser.id
+    const user = getState().currentUser
+    
+    if (user.friends.length === 0 && user.posts.length === 0 && user.doneworkouts.length === 0) {
+      dispatch({ type: 'SET_LOADED_UNTIL_TO', data: getState().feed.endDate})
+      return
+    }
+
     let startdate = 0
 
     let feedPosts = []
@@ -86,8 +110,8 @@ export const loadMorePosts = () => {
 
       const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
       const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
-      const myPosts = await communicationService.get(`/users/${user}/posts/${dateString}`)
-      const myDoneworkouts = await communicationService.get(`/users/${user}/doneworkouts/${dateString}`)
+      const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
+      const myDoneworkouts = await communicationService.get(`/users/${user.id}/doneworkouts/${dateString}`)
 
       feedPosts = feedPosts
       .concat(friendPosts.posts)
@@ -96,9 +120,14 @@ export const loadMorePosts = () => {
       .concat(myDoneworkouts.doneworkouts)
       .sort(sorterService.comparePostDates)
 
-      
       dateString = moment(dateString, 'YYYY-M-D-H-m').add(-12, 'hours').format('YYYY-M-D-H-m')
       startdate = myPosts.startdate
+
+      if (friendPosts.end && friendDoneworkouts.end && myPosts.end && myDoneworkouts.end) {
+        dispatch({ type: 'SET_FEED_END', data: true })
+        console.log('feed end')
+        break
+      }
     } 
 
     dispatch({ type: 'SET_LOADING_TO', data: false })

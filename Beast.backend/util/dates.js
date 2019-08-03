@@ -11,6 +11,11 @@ const getFetchDates = (dateString) => {
   return [ startdate, enddate ]
 }
 
+const getDate = (dateString) => {
+  const date = moment(dateString, 'YYYY-M-D-H-m')
+  return new Date(date.format('MMMM D, YYYY HH:mm:ss'))
+}
+
 const getDateString = (date) => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -21,4 +26,12 @@ const getDateString = (date) => {
   return `${year}-${month}-${day}-${hours}-${minutes}`
 }
 
-module.exports = { getFetchDates, getDateString }
+// Returns true if first date is older
+const isOlder = (date0, date1) => {
+  const first = getDateString(date0)
+  const second = getDateString(date1)
+
+  return moment(first, 'YYYY-M-D-H-m').isBefore(moment(second, 'YYYY-M-D-H-m'))
+}
+
+module.exports = { getFetchDates, getDateString, isOlder, getDate }

@@ -87,6 +87,7 @@ export const setCurrentWorkoutTime = (time, visible) => {
 
 export const setCurrentWorkoutDone = (doneWorkout) => {
   return async dispatch => {
+    console.log('send done workout')
     await communicationService.post('/doneworkouts/new', doneWorkout)
     dispatch({ type: 'SET_CURRENT_WORKOUT_DONE' })
   }

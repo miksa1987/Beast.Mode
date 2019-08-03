@@ -6,6 +6,7 @@ const User              = require('../models/User')
 const userUpdater       = require('../util/userUpdater')
 const activityHelper    = require('../util/activity')
 const dates             = require('../util/dates')
+const oldest            = require('../util/oldest')
 
 workoutRouter.get('/all', async (request, response) => {
   try {
@@ -57,6 +58,26 @@ workoutRouter.get('/mostliked', async (request, response) => {
   }
 })
 
+workoutRouter.get('/oldest', async (request, response) => {
+  if(!request.token) {
+    return response.status(401).end()
+  }
+
+  try {
+    const decodedToken = await jwt.verify(request.token, config.SECRET)
+    if(!decodedToken.id) {
+      return response.status(401).end()
+    }
+
+    const date = moment(oldest.getOldestWorkout()).format('YYYY-M-D-H-m')
+    console.log(`oldest ${date}`)
+
+    return response.json({ oldest: date })
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
+  }
+})
+
 workoutRouter.get('/byfriends', async (request, response) => {
   if (!request.token) {
     return response.status(401).end()
@@ -93,7 +114,27 @@ workoutRouter.get('/byfriends/:date', async (request, response) => {
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
-    let workouts = await Workout.find({
+    if (oldest.getOldestWorkout() !== '') {
+      const all = await Workout.find({
+        $and: [
+            { $and: [ { date: { $gte: oldest.getOldestWorkout() }}, { date: { $lte: enddate }},
+            { user: { $in: user.friends }}
+          ]}
+        ]
+      })
+
+      if (all.length === 0) {
+        console.log('ENDDDD')
+        return response.json({
+          workouts: [],
+          startdate: dates.getDateString(oldest.getOldestWorkout()),
+          enddate: dates.getDateString(enddate),
+          end: true
+        })
+      }
+    }
+    
+    const workouts = await Workout.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: { $in: user.friends }}

@@ -36,6 +36,7 @@ const WorkoutOfSetsDone = (props) => {
       additional: props.workout.additional || '',
       time: props.time || 0
     }
+    console.log(workout)
 
     props.setDone(workout)
   }

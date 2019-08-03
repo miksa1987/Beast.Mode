@@ -27,7 +27,7 @@ const LoginForm = (props) => {
     return ( <div><NewUser setView={setView} /></div>)
   }
 
-  return ( <div className='background fade-in-with-blur-slow'>
+  return ( <div className='background fade-in-fast'>
     <div className='login'>
       <p className='bottom'>About Beast.MODE</p>
       <Form onSubmit={login}>

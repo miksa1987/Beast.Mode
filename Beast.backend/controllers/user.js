@@ -1,14 +1,15 @@
-const config = require('../util/config')
-const userRouter = require('express').Router()
-const User = require('../models/User')
-const Post = require('../models/Post')
-const Workout = require('../models/Workout')
-const DoneWorkout = require('../models/DoneWorkout')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const { cloudinary, imgparser } = require('../util/imageupload')
-const activityHelper = require('../util/activity')
-const dates = require('../util/dates')
+const config                      = require('../util/config')
+const userRouter                  = require('express').Router()
+const User                        = require('../models/User')
+const Post                        = require('../models/Post')
+const Workout                     = require('../models/Workout')
+const DoneWorkout                 = require('../models/DoneWorkout')
+const bcrypt                      = require('bcrypt')
+const jwt                         = require('jsonwebtoken')
+const { cloudinary, imgparser }   = require('../util/imageupload')
+const activityHelper              = require('../util/activity')
+const dates                       = require('../util/dates')
+const oldest                      = require('../util/oldest')
 
 userRouter.get('/all', async (request, response) => {
   try {
@@ -103,6 +104,26 @@ userRouter.get('/:id/posts/:date', async (request, response) => {
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
+    if (oldest.getOldestPost() !== '') {
+      const all = await Post.find({
+        $and: [
+            { $and: [ { date: { $gte: oldest.getOldestPost() }}, { date: { $lte: enddate }},
+            { user: decodedToken.id }
+          ]}
+        ]
+      })
+      
+      if (all.length === 0) {
+        console.log('ENDDDD')
+        return response.json({
+          posts: [],
+          startdate: dates.getDateString(oldest.getOldestPost()),
+          enddate: dates.getDateString(enddate),
+          end: true
+        })
+      }
+    }
+
     let posts = await Post.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
@@ -138,6 +159,26 @@ userRouter.get('/:id/workouts/:date', async (request, response) => {
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
+    if (oldest.getOldestPost() !== '') {
+      const all = await Workout.find({
+        $and: [
+            { $and: [ { date: { $gte: oldest.getOldestPost() }}, { date: { $lte: enddate }},
+            { user: decodedToken.id }
+          ]}
+        ]
+      })
+      
+      if (all.length === 0) {
+        console.log('ENDDDD')
+        return response.json({
+          workouts: [],
+          startdate: dates.getDateString(oldest.getOldestWorkout()),
+          enddate: dates.getDateString(enddate),
+          end: true
+        })
+      }
+    }
+
     let workouts = await Workout.find({
       $and: [
         { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
@@ -172,6 +213,26 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
+
+    if (oldest.getOldestDoneWorkout() !== '') {
+      const all = await DoneWorkout.find({
+        $and: [
+            { $and: [ { date: { $gte: oldest.getOldestPost() }}, { date: { $lte: enddate }},
+            { user: decodedToken.id }
+          ]}
+        ]
+      })
+      
+      if (all.length === 0) {
+        console.log('ENDDDD')
+        return response.json({
+          doneworkouts: [],
+          startdate: dates.getDateString(oldest.getOldestDoneWorkout()),
+          enddate: dates.getDateString(enddate),
+          end: true
+        })
+      }
+    }
 
     let doneworkouts = await DoneWorkout.find({
       $and: [

@@ -7,6 +7,7 @@ const config              = require('../util/config')
 const activityHelper      = require('../util/activity')
 const userUpdater         = require('../util/userUpdater')
 const dates               = require('../util/dates')
+const oldest              = require('../util/oldest')
 
 doneWorkoutRouter.get('/all', async (request, response) => {
   try {
@@ -28,9 +29,8 @@ doneWorkoutRouter.get('/oldest', async (request, response) => {
       return response.status(401).end()
     }
 
-    const doneWorkout = await DoneWorkout.findOne().sort({ _id: 1 }).limit(1)
-    const date = moment(doneWorkout.date).format('YYYY-M-D-H-m')
-    console.log(date)
+    const date = moment(oldest.getOldestDoneWorkout()).format('YYYY-M-D-H-m')
+    console.log(`oldest ${date}`)
 
     return response.json({ oldest: date })
   } catch (error) {
@@ -61,7 +61,27 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
-    let doneworkouts = await DoneWorkout.find({
+    if (oldest.getOldestDoneWorkout() !== '') {
+      const all = await DoneWorkout.find({
+        $and: [
+            { $and: [ { date: { $gte: oldest.getOldestDoneWorkout() }}, { date: { $lte: enddate }},
+            { user: { $in: user.friends }}
+          ]}
+        ]
+      })
+      
+      if (all.length === 0) {
+        console.log('ENDDDD')
+        return response.json({
+          doneworkouts: [],
+          startdate: dates.getDateString(oldest.getOldestDoneWorkout()),
+          enddate: dates.getDateString(enddate),
+          end: true
+        })
+      }
+    }
+
+    const doneworkouts = await DoneWorkout.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: { $in: user.friends }}
@@ -78,6 +98,7 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
 
     return response.json(responsedata)
   } catch (error) {
+    console.log(error.message)
     return response.status(400).json({ error: error.message })
   }
 })

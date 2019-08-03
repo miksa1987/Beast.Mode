@@ -3,6 +3,7 @@ const bodyParser          = require('body-parser')
 const cors                = require('cors')
 const morgan              = require('morgan')
 const config              = require('./util/config')
+const oldest              = require('./util/oldest')
 
 const express             = require('express')
 const app                 = express()
@@ -48,6 +49,8 @@ app.use('/image', imageRouter)
 app.use('/resetonlyifyouarecompletelysureaboutthis', resetRouter) // This has to be changed to TEST env variable only and different collection
 
 app.use(middleware.errorHandler) // This might cause the whole shit to crash and burn....
+
+oldest.setOldest()
 
 http.listen(config.PORT, () => {
   console.log(`Server running on port ${config.PORT}`)

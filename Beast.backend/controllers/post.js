@@ -4,6 +4,7 @@ const Post            = require('../models/Post')
 const User            = require('../models/User')
 const userUpdater     = require('../util/userUpdater')
 const dates           = require('../util/dates')
+const oldest          = require('../util/oldest')
 const jwt             = require('jsonwebtoken')
 const moment          = require('moment')
 const activityHelper  = require('../util/activity')
@@ -28,12 +29,11 @@ postRouter.get('/oldest', async (request, response) => {
       return response.status(401).end()
     }
 
-    const post = await Post.findOne().sort({ _id: 1 }).limit(1)
-    const date = moment(post.date).format('YYYY-M-D-H-m')
-    console.log(date)
-
+    const date = moment(oldest.getOldestPost()).format('YYYY-M-D-H-m')
+    console.log(`oldest ${date}`)
     return response.json({ oldest: date })
   } catch (error) {
+    console.log(error.message)
     return response.status(400).json({ error: error.message })
   }
 })
@@ -62,9 +62,28 @@ postRouter.get('/byfriends/:date', async (request, response) => {
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
-    console.log(startdate)
-    console.log(enddate)
-    let posts = await Post.find({
+    
+    if (oldest.getOldestPost() !== '') {
+      const all = await Post.find({
+        $and: [
+            { $and: [ { date: { $gte: oldest.getOldestPost() }}, { date: { $lte: enddate }},
+            { user: { $in: user.friends }}
+          ]}
+        ]
+      })
+      
+      if (all.length === 0) {
+        console.log('ENDDDD')
+        return response.json({
+          posts: [],
+          startdate: dates.getDateString(oldest.getOldestPost()),
+          enddate: dates.getDateString(enddate),
+          end: true
+        })
+      }
+    }
+    
+    const posts = await Post.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: { $in: user.friends }}

@@ -29,7 +29,8 @@ loginRouter.post('/', async (request, response) => {
       id: user.id,
       friends: user.friends,
       posts: user.posts,
-      workouts: user.workouts
+      workouts: user.workouts,
+      doneworkouts: user.doneWorkouts
     }
 
     return response.status(200).json(data)

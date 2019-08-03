@@ -18,6 +18,7 @@ export const loginUser = (user) => {
   return async dispatch => {
     const result = await axios.post('/login', user)
     const loggedUser = result.data
+    console.log(loggedUser)
     communicationService.setToken(loggedUser.token)
     window.localStorage.setItem('currentUser', JSON.stringify(loggedUser))
     
