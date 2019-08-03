@@ -2,12 +2,14 @@ import React from 'react'
 import { Button, Input, Image, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import Comment from './Comment'
+import LikeButton from '../universal/LikeButton'
 import './MobileViewpost.css'
 
 const MobileViewpost = (props) => {
   if(!props.post.content) {
     return ( <div></div> )
   }
+  console.log(props.post._id)
 
   return ( <div className='viewpost-element'>     
     <table>
@@ -37,10 +39,8 @@ const MobileViewpost = (props) => {
     </div>
     <table><tbody>
       <tr>
-        <td>        
-          <Button size='small' color='green' icon onClick={() => props.like(props.post.type, props.post._id)}>
-            <Icon name='like' />
-          </Button>
+        <td>
+          <LikeButton like={props.like} likes={props.post.likes.length} id={props.post._id} type={props.post.type} />
         </td>
         <td width='100%'>
           <form onSubmit={props.sendComment}>

@@ -15,8 +15,9 @@ const ViewpostNophoto = (props) => {
     resetComment()
   }
 
+  console.log(props.post._id)
   return (
-    <div className='viewpost-nophoto-component fade-in-fast'>
+    <div className='viewpost-component component-width fade-in-fast'>
     <table className='table-style'>
       <tbody>
         <tr>
@@ -60,7 +61,7 @@ const ViewpostNophoto = (props) => {
                     </form>
                   </td>
                   <td>       
-                    <LikeButton like={props.like} likes={props.post.likes.length} />
+                    <LikeButton like={props.like} likes={props.post.likes.length} id={props.post._id} type={props.post.type} />
                   </td>
                 </tr>
               </tbody>

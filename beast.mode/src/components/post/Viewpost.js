@@ -19,7 +19,7 @@ const Viewpost = (props) => {
   console.log(props.post)
   const sendComment = (event) => {
     event.preventDefault()
-    props.addComment(props.post.type, props.post._id, comment.value)
+    props.commentCurrentPost(props.post.type, props.post._id, comment.value)
     resetComment()
   }
 
@@ -36,7 +36,7 @@ const Viewpost = (props) => {
   }
 
   if (orientation === 'portrait') {
-    return ( <MobileViewpost post={props.post} sendComment={sendComment} comment={comment} like={props.like} /> )
+    return ( <MobileViewpost post={props.post} sendComment={sendComment} comment={comment} like={props.likeCurrentPost} /> )
   }
 
   return ( <div className='viewpost-component component-width fade-in-fast'>
@@ -92,7 +92,7 @@ const Viewpost = (props) => {
                           </form>
                         </td>
                         <td>       
-                          <LikeButton like={props.like} likes={props.post.likes.length} />
+                          <LikeButton like={props.likeCurrentPost} likes={props.post.likes.length} id={props.post._id} type={props.post.type} />
                         </td>
                       </tr>
                     </tbody>
