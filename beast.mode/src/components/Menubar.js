@@ -3,7 +3,7 @@ import { Input, Menu, Icon, Select } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'
-import { setSearchItems } from '../reducers/searchResultsReducer'
+import { setSearchResults } from '../reducers/searchResultsReducer'
 import { emptyFeed } from '../reducers/feedReducer'
 import useWindowSize from '../hooks/useWindowSize'
 import useOrientation from '../hooks/useOrientation'
@@ -76,8 +76,7 @@ const Menubar = (props) => {
 
   const doSearch = (event) => {
     event.preventDefault()
-    console.log(searchType)
-    props.setSearchItems(search.value, 'all')
+    props.setSearchResults(search.value, 'all')
     props.history.push('/search')
     window.scrollTo(0, 0)
     resetSearch()
@@ -112,7 +111,7 @@ const Menubar = (props) => {
           </form>
         </Menu.Item>
       </Menu>
-      <SearchPopup searchterm={search.value} setSearchItems={setSearchItems} resetSearch={resetSearch} />
+      <SearchPopup searchterm={search.value} setSearchItems={setSearchResults} resetSearch={resetSearch} />
     </div>)
   }
 
@@ -142,8 +141,8 @@ const Menubar = (props) => {
         <Icon name='log out' />
       </Menu.Item>
     </Menu>
-    <SearchPopup searchterm={search.value} setSearchItems={setSearchItems} resetSearch={resetSearch} />
+    <SearchPopup searchterm={search.value} setSearchItems={setSearchResults} resetSearch={resetSearch} />
   </div>)
 }
 
-export default connect(null, { logoutUser, setSearchItems, emptyFeed })(withRouter(Menubar))
+export default connect(null, { logoutUser, setSearchResults, emptyFeed })(withRouter(Menubar))

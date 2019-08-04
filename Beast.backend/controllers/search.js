@@ -12,7 +12,7 @@ const oldest        = require('../util/oldest')
 
 searchRouter.post('/', async (request, response) => {
   if (!request.body.type) return response.status(400).json({ error: 'Search type missing'})
-  if (!request.body.search) return response.status(400).json({ error: 'Search string missing'})
+  if (!request.body.keyword) return response.status(400).json({ error: 'Keyword string missing'})
   if (!request.token) return response.status(401).json({ error: 'Not authorized'})
 
   try {
@@ -24,42 +24,42 @@ searchRouter.post('/', async (request, response) => {
     switch (request.body.type) {
       case 'user':
         results = await User.find({ username: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }})
         break
       case 'post':
         results = await Post.find({ content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }})
       case 'workout':
         results = await Workout.find({ content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }})
         break  
       case 'doneworkout':
         results = await DoneWorkout.find({ content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }})
         break
       default:
         results = await User.find({ username: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }})
         results = results.concat(await Post.find({ content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}))
         results = results.concat(await Workout.find({ content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}))
         results = results.concat(await DoneWorkout.find({ content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}))
     }
@@ -70,9 +70,10 @@ searchRouter.post('/', async (request, response) => {
   }
 })
 
-searchRouter.post('/bydate/:date', async (request, response) => {
+searchRouter.post('/:date', async (request, response) => {
+  console.log(request.body)
   if (!request.body.type) return response.status(400).json({ error: 'Search type missing'})
-  if (!request.body.search) return response.status(400).json({ error: 'Search string missing'})
+  if (!request.body.keyword) return response.status(400).json({ error: 'Keyword string missing'})
   if (!request.token) return response.status(401).json({ error: 'Not authorized'})
 
   try {
@@ -85,7 +86,7 @@ searchRouter.post('/bydate/:date', async (request, response) => {
     switch (request.body.type) {
       case 'user':
         results = await User.find({ $and: [ { username: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ]})
         break
@@ -106,7 +107,7 @@ searchRouter.post('/bydate/:date', async (request, response) => {
           }
         }
         results = await Post.find({ $and: [ { content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ]})
 
@@ -126,7 +127,7 @@ searchRouter.post('/bydate/:date', async (request, response) => {
           }
         }
         results = await Workout.find({ $and: [ { content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ] })
         break
@@ -147,7 +148,7 @@ searchRouter.post('/bydate/:date', async (request, response) => {
           }
         }
         results = await DoneWorkout.find({ $and: [ { content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ] })
         break
@@ -174,19 +175,19 @@ searchRouter.post('/bydate/:date', async (request, response) => {
         }
 
         results = await User.find({ $and: [ { username: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ] })
         results = results.concat(await Post.find({ content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}))
         results = results.concat(await Workout.find({ $and: [ { content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ] }))
         results = results.concat(await DoneWorkout.find({ $and: [ { content: {
-          '$regex': request.body.search,
+          '$regex': request.body.keyword,
           '$options': 'i'
         }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ] }))
     }
@@ -198,6 +199,7 @@ searchRouter.post('/bydate/:date', async (request, response) => {
       end: false
     })
   } catch (error) {
+    console.log(error.message)
     return response.status(400).json({ error: error.message })
   }
 })

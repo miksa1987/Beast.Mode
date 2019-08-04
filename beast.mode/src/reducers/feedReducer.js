@@ -120,7 +120,7 @@ export const loadMorePosts = () => {
       .concat(myDoneworkouts.doneworkouts)
       .sort(sorterService.comparePostDates)
 
-      dateString = moment(dateString, 'YYYY-M-D-H-m').add(-12, 'hours').format('YYYY-M-D-H-m')
+      dateString = moment(dateString, 'YYYY-M-D-H-m').add(-24, 'hours').format('YYYY-M-D-H-m')
       startdate = myPosts.startdate
 
       if (friendPosts.end && friendDoneworkouts.end && myPosts.end && myDoneworkouts.end) {

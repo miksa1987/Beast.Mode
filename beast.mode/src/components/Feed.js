@@ -23,6 +23,7 @@ const Feed = (props) => {
 
   useEffect(() => {
     if (props.feed.feed.length === 0 && !props.feed.end) {
+      console.log('init')
       props.setEndDate()
       props.initFeed()
     }
@@ -41,9 +42,9 @@ const Feed = (props) => {
     }
   }, [scrollPercentage])
 
-  if (props.feed.feed.length === 0) {
+  if (props.feed.feed.length === 0 && props.feed.loading) {
     console.log('spinner')
-    return ( <div><Newpost /></div> )
+    return ( <div><Newpost /><Spinner /></div> )
   }
   // This could maybe work ?
   const items = []
