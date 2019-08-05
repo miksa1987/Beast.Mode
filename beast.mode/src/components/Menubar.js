@@ -9,38 +9,12 @@ import useWindowSize from '../hooks/useWindowSize'
 import useOrientation from '../hooks/useOrientation'
 import useField from '../hooks/useField'
 import SearchPopup from './search/SearchPopup'
+import './Menubar.css'
 
 const Menubar = (props) => {
   const windowSize = useWindowSize()
   const orientation = useOrientation()
   const [search, resetSearch] = useField('text')
-  const [searchType, setSearchType] = useState('')
-
-  const menuStyle = {
-    width: '100%',
-    height: '55px',
-    minWidth: '100%',
-    maxWidth: '100%',
-    padding: '0px 0px 0px 0px',
-    position: 'fixed',
-    top: '0px',
-    left: '0px',
-    backgroundColor: '#dd0000',
-    zIndex: 1000
-  }
-
-  const itemStyle = {
-    width: '100%',
-    height: '55px',
-    margin: '0px 0px 0px 0px',
-    minWidth: '100%',
-    maxWidth: '100%',
-    padding: '0px 0px 0px 0px'
-  }
-
-  const mobileStyle = {
-    height: '110px'
-  }
 
   const barStyle = {
     width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 6*60 - 40)
@@ -87,8 +61,8 @@ const Menubar = (props) => {
   }
 
   if (orientation === 'portrait') {
-    return ( <div style={Object.assign(menuStyle, mobileStyle)}>
-      <Menu style={itemStyle} secondary inverted color='red'>
+    return ( <div className='menubar-component menubar-component-device'>
+      <Menu className='full-width' secondary inverted color='red'>
         <Menu.Item onClick={home}>
           <Icon name='home' />
         </Menu.Item>
@@ -108,7 +82,7 @@ const Menubar = (props) => {
           <Icon name='log out' />
         </Menu.Item>
       </Menu>
-      <Menu style={itemStyle} inverted color='red'>
+      <Menu className='full-width' inverted color='red'>
         <Menu.Item >
           <form onSubmit={doSearch}>
             <Input size='mini' style={barStyle} {...search} placeholder='Search' />
@@ -119,8 +93,8 @@ const Menubar = (props) => {
     </div>)
   }
 
-  return ( <div style={menuStyle}>
-    <Menu style={itemStyle} inverted secondary color='red'>
+  return ( <div className='menubar-component menubar-component-device'>
+    <Menu className='full-width' inverted secondary color='red'>
       <Menu.Item onClick={home}>
         <Icon name='home' />
       </Menu.Item>

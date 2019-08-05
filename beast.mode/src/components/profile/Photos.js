@@ -21,8 +21,8 @@ const Photos = (props) => {
 
   return ( <div>
     <div style={picContainer}>
-      {props.currentProfile.pictures.map(pic => 
-        <Image key={pic} style={picStyle} size='small' src={pic} />)}
+      {props.currentProfile.pictures.map((pic, i) => 
+        <Image key={i} style={picStyle} size='small' src={pic} />)}
     </div>
   </div> )
 }

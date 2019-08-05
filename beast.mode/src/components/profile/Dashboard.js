@@ -43,21 +43,23 @@ const Dashboard  = (props) => {
   }
 
   return ( <div className='fade-in-fast'>
-    <table>
-      <tbody>
-        <tr>
-          <td>
-            <Image height='150px' width='150px' circular src={props.currentProfile.picture && props.currentProfile.picture !== '' ? 
-              props.currentProfile.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} 
-              className='fade-in-with-blur-slow' />
-          </td>
-          <td className='info'>
-            <h2>{props.currentProfile.username}</h2>
-            <p>{props.currentProfile.info}</p>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div className='element'>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <Image height='150px' width='150px' circular src={props.currentProfile.picture && props.currentProfile.picture !== '' ? 
+                props.currentProfile.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} 
+                className='fade-in-fast' />
+            </td>
+            <td className='info'>
+              <h2>{props.currentProfile.username}</h2>
+              <p>{props.currentProfile.info}</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     {props.currentUser.friends.indexOf(props.currentProfile.id) > -1 
     ? <Button className='add-button' color='red' onClick={() => props.removeFriend(props.currentProfile.id)} >
@@ -78,10 +80,6 @@ const Dashboard  = (props) => {
         <Icon name='trophy' />
         Done workouts
       </Menu.Item>
-      <Menu.Item onClick={() => setView('photos')} active={view === 'photos'}>
-        <Icon name='images' />
-        Photos
-      </Menu.Item>
       <Menu.Item onClick={() => setView('friends')} active={view === 'friends'}>
         <Icon name='users' />
         Friends
@@ -92,7 +90,7 @@ const Dashboard  = (props) => {
       </Menu.Item>
     </Menu>
 
-    {view === 'photos' && <Photos />}
+    { /* view === 'photos' && <Photos /> Disabled for now as I see no real use for this */ }
     {view === 'posts' && 
       <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
         {props.currentUserPosts.map(post => 

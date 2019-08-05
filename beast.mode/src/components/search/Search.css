@@ -28,7 +28,7 @@ a {
 
 a:hover, a:active {
   animation: fade 0.4s;
-  color: white;
+  color: #ff4444;
 }
 
 .full-width {
@@ -44,7 +44,7 @@ a:hover, a:active {
 .popup-menu-item:hover, .popup-menu-item:active {
   animation: fade 0.4s;
   border-radius: 5px;
-  background-color: #cc0000;
+  background-color: #000000;
   color: white;
 }
 

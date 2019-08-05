@@ -1,6 +1,7 @@
 @media (max-width: 600px) {
   .menubar-component-device {
-    height: 100px;
+    height: 9
+    110px;
   }
 
   .menu-searchbar {
@@ -14,7 +15,7 @@
   }
 
   .menu-searchbar {
-    width: calc(100% - 6*60px - 40px);
+    width: 100%;
   }
 }
 
@@ -24,7 +25,7 @@
   left: 0px;
   width: 100%;
   padding: 0px;
-  background-color: #dd0000;
+  background-color: #dd2525;
   z-index: 1000;
 }
 
