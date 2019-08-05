@@ -1,23 +1,21 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Image, Divider } from 'semantic-ui-react'
+import './Search.css'
+
 
 const SearchResult = (props) => {
-  const divStyle = {
-    width: '95%'
-  }
-
   if(!props.result.username) {
     return ( <div></div> )
   }
 
-  return ( <div style={divStyle}>
+  return ( <div className='search-result'>
     <Link to={`/profile/${props.result.id}`}>
       <table>
         <tbody>
           <tr>
             <td>
-              <Image size='small' src={props.result.picture !== '' ? props.result.picture
+              <Image size='tiny' src={props.result.picture !== '' ? props.result.picture
                 : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
             </td>
             <td>
@@ -40,7 +38,6 @@ const SearchResult = (props) => {
         </tbody>
       </table>
     </Link>
-    <Divider />
   </div> )
 }
 

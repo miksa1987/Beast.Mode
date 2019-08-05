@@ -85,10 +85,11 @@ searchRouter.post('/:date', async (request, response) => {
     let results = []
     switch (request.body.type) {
       case 'user':
-        results = await User.find({ $and: [ { username: {
+        console.log('user')
+        results = await User.find({ username: {
           '$regex': request.body.keyword,
           '$options': 'i'
-        }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ]})
+        }})
         break
 
       case 'post':
@@ -174,10 +175,10 @@ searchRouter.post('/:date', async (request, response) => {
           }
         }
 
-        results = await User.find({ $and: [ { username: {
+        results = await User.find({ username: {
           '$regex': request.body.keyword,
           '$options': 'i'
-        }}, { date: { $gte: startdate }}, { date: { $lte: enddate }} ] })
+        }})
         results = results.concat(await Post.find({ content: {
           '$regex': request.body.keyword,
           '$options': 'i'

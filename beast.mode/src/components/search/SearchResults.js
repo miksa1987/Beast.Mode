@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
-import { loadMoreResults } from '../../reducers/searchResultsReducer'
 import SearchResultUser from './SearchResultUser'
 import SearchResultPost from './SearchResultPost'
 import Spinner from '../Spinner'
 
 const SearchResults = (props) => {
-  if(props.search.results.length === 0 || props.search.end) {
+  if (props.search.results.length === 0) {
     return ( <div>Search did not find anything.</div> )
   }
+
+  console.log(props.search)
 
   return ( <div>
     {props.search.results.map((result, i) => result.type 
@@ -23,4 +24,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { loadMoreResults })(SearchResults)
+export default connect(mapStateToProps)(SearchResults)

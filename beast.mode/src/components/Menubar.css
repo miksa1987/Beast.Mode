@@ -1,12 +1,37 @@
-.Menubar {
-  position: absolute;
-  z-index: 1000;
-  top: 0px;
-  left: 0px;
-  min-width: 100%;
-  background-color: white;
+@media (max-width: 600px) {
+  .menubar-component-device {
+    height: 100px;
+  }
+
+  .menu-searchbar {
+    width: calc(100% - 30px);
+  }
 }
 
-.Search {
-  min-width: 100%;
+@media (min-width: 620px) {
+  .menubar-component-device {
+    height: 55px;
+  }
+
+  .menu-searchbar {
+    width: calc(100% - 6*60px - 40px);
+  }
+}
+
+.menubar-component {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  padding: 0px;
+  background-color: #dd0000;
+  z-index: 1000;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+.full-width {
+  width: 100%;
 }

@@ -5,7 +5,7 @@ import moment from 'moment'
 const initialState = {
   feed: [],
   loadedUntil: 0,
-  loading: false,
+  loading: true,
   endDate: 0,
   end: false
 }
@@ -52,6 +52,8 @@ export const initFeed = () => {
     console.log(user)
     if (user.friends.length === 0 && user.posts.length === 0 && user.doneworkouts.length === 0) {
       dispatch({ type: 'SET_LOADED_UNTIL_TO', data: getState().feed.endDate})
+      dispatch({ type: 'SET_FEED_END', data: true })
+      dispatch({ type: 'SET_LOADING_TO', data: false })
       return
     }
 

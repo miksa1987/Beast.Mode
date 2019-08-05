@@ -38,6 +38,10 @@ const Menubar = (props) => {
     padding: '0px 0px 0px 0px'
   }
 
+  const mobileStyle = {
+    height: '110px'
+  }
+
   const barStyle = {
     width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 6*60 - 40)
   }
@@ -83,7 +87,7 @@ const Menubar = (props) => {
   }
 
   if (orientation === 'portrait') {
-    return ( <div style={menuStyle}>
+    return ( <div style={Object.assign(menuStyle, mobileStyle)}>
       <Menu style={itemStyle} secondary inverted color='red'>
         <Menu.Item onClick={home}>
           <Icon name='home' />
