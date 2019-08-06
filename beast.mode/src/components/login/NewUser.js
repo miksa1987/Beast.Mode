@@ -1,6 +1,9 @@
 import React from 'react'
+import Notification from '../Notification'
 import communicationService from '../../service/communication'
 import { Input, TextArea, Button, Form } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { setNotification } from '../../reducers/notificationReducer'
 import useField from '../../hooks/useField'
 import './NewUser.css'
 
@@ -13,22 +16,36 @@ const NewUser = (props) => {
 
   const create = async (event) => {
     event.preventDefault()
-    const user = {
-      username: username.value,
-      password: password.value,
-      email: email.value,
-      info: info.value
+
+    if (password.value !== rPassword.value) {
+      console.log(password)
+      console.log(rPassword)
+      props.setNotification('Passwords do not match. Please re-enter passwords.', 3)
+      resetPassword()
+      resetRPassword()
+      return
     }
+    try {
+      const user = {
+        username: username.value,
+        password: password.value,
+        email: email.value,
+        info: info.value
+      }
  
-    const response = await communicationService.post('/users/new', user)
+      await communicationService.post('/users/new', user)
 
-    resetUsername()
-    resetEmail()
-    resetInfo()
-    resetPassword()
-    resetRPassword()
+      resetUsername()
+      resetEmail()
+      resetInfo()
+      resetPassword()
+      resetRPassword()
 
-    props.setView('login')
+      props.setNotification(`User ${user.username} created. You may now log in.`, 3)
+      props.setView('login')
+    } catch (error) {
+      console.log(error.message)
+    }
   }
 
   return ( <div className='style block'>
@@ -44,13 +61,6 @@ const NewUser = (props) => {
           <tr>
             <td>
               <Input placeholder='Your email' {...email} size='small' fluid id='email' />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <Input name='birthday' placeholder='Birth day' type='number' size='small' fluid />
-              <Input name='birthmonth' placeholder='Birth month' type='number' size='small' fluid />
-              <Input name='birthyear' placeholder='Birth year' type='number' size='small' fluid/>
             </td>
           </tr>
           <tr>
@@ -72,7 +82,8 @@ const NewUser = (props) => {
       </table>
       <Button fluid type='submit' id='submit'>Create your account</Button>
     </Form>
+    <Notification />
   </div> )
 }
 
-export default NewUser
+export default connect(null, { setNotification})(NewUser)

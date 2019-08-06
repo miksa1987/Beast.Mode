@@ -258,6 +258,16 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
 
 
 userRouter.post('/new', async (request, response) => {
+  // This solution for now till I figure out why uniqueIgnoreCase on User model doesn't work
+  const userCheck = await User.findOne({ username: {
+    '$regex': `^${request.body.username}$`,
+    '$options': 'i'
+  }})
+  console.log(userCheck)
+  if (userCheck.id) {
+    return response.status(400).json({ error: 'Username taken!' })
+  }
+
   const saltRounds = 10
   const pwHash = await bcrypt.hash(request.body.password, saltRounds)
   const user = new User({

@@ -33,6 +33,7 @@ const App = (props) => {
   if (props.currentUser === null) {
     return ( <div>
       <LoginForm />
+      <Notification />
     </div>)
   }
 

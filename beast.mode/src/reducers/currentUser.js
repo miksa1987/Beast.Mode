@@ -16,13 +16,24 @@ const currentUserReducer = (state = null, action) => {
 
 export const loginUser = (user) => {
   return async dispatch => {
-    const result = await axios.post('/login', user)
-    const loggedUser = result.data
-    console.log(loggedUser)
-    communicationService.setToken(loggedUser.token)
-    window.localStorage.setItem('currentUser', JSON.stringify(loggedUser))
+    try {
+      const result = await axios.post('/login', user)
+      const loggedUser = result.data
+      communicationService.setToken(loggedUser.token)
+      window.localStorage.setItem('currentUser', JSON.stringify(loggedUser))
     
-    dispatch({ type: 'LOGIN_USER', data: loggedUser })
+      dispatch({ type: 'LOGIN_USER', data: loggedUser })
+      dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: `${loggedUser.username} logged in`})
+      setTimeout(() => {
+        dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: ''})
+      }, 3000)
+    } catch (error) {
+      dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: 'Username or password incorrect'})
+      setTimeout(() => {
+        dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: ''})
+      }, 3000)
+      console.log(error.message)
+    }
   }
 }
 

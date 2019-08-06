@@ -20,7 +20,6 @@ const LoginForm = (props) => {
     const username = event.target.username.value
     const password = event.target.password.value
     props.loginUser({ username, password })
-    props.setNotification(`${username} logged in `, 3)
   }
 
   if (view === 'newuser') {
@@ -31,7 +30,7 @@ const LoginForm = (props) => {
     <div className='login'>
       <p className='bottom'>About Beast.MODE</p>
       <Form onSubmit={login}>
-        <table className='element'>
+        <table className='login-element'>
           <tbody>
             <tr>
               <td>
@@ -45,12 +44,12 @@ const LoginForm = (props) => {
             </tr>
             <tr>
               <td>
-                <Input className='element' id='username' placeholder='username' name='username' />
+                <Input className='login-element' id='username' placeholder='username' name='username' />
               </td>
             </tr>
             <tr>
               <td>
-                <Input className='element' id='passwd' placeholder='password' name='password' type='password' />
+                <Input className='login-element' id='passwd' placeholder='password' name='password' type='password' />
               </td>
             </tr>
             <tr>

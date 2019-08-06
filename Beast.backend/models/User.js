@@ -1,7 +1,8 @@
 const mongoose = require('mongoose')
 
+// For some reason uniqueCaseInsensitive doesn't work...
 const userSchema = mongoose.Schema({
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: true, unique: true, uniqueCaseInsensitive: true, trim: true },
   passwordHash: { type: String, required: true },
   info: String,
   age: Number,

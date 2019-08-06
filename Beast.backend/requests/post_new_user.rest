@@ -1,7 +1,7 @@
-POST http://localhost:3001/search
+POST http://localhost:3001/users/new
 Content-type: application/json
 
 {
-  "search": "Miksa",
+  "username": "miksa",
   "password": "Gener4lE"
 }
