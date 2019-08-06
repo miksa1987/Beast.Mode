@@ -29,7 +29,7 @@ const Dashboard  = (props) => {
     950: 2,
     500: 1
   }
-
+  console.log(`currentuser is profile ${props.currentUser.id !== props.currentProfile.id}`)
   useEffect(() => {
       props.initCurrentProfile(props.user)
       console.log(props.currentUser)
@@ -50,7 +50,7 @@ const Dashboard  = (props) => {
             <td>
               <Image height='150px' width='150px' circular src={props.currentProfile.picture && props.currentProfile.picture !== '' ? 
                 props.currentProfile.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} 
-                className='fade-in-fast' />
+                className='profileview-image' />
             </td>
             <td className='info'>
               <h2>{props.currentProfile.username}</h2>
@@ -61,11 +61,11 @@ const Dashboard  = (props) => {
       </table>
     </div>
 
-    {props.currentUser.friends.indexOf(props.currentProfile.id) > -1 
+    {props.currentUser.id !== props.currentProfile.id ? props.currentUser.friends.indexOf(props.currentProfile.id) > -1 
     ? <Button className='add-button' color='red' onClick={() => props.removeFriend(props.currentProfile.id)} >
         Remove friend</Button>
     : <Button className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >
-        Add friend</Button> }
+        Add friend</Button> : null}
 
     <Menu pointing secondary stackable>
       <Menu.Item onClick={() => setView('posts')} active={view === 'posts'}>
