@@ -17,7 +17,7 @@ const Menubar = (props) => {
   const [search, resetSearch] = useField('text')
 
   const barStyle = {
-    width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 6*60 - 40)
+    width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 5*60 - 40)
   }
 
   const home = () => {
@@ -78,7 +78,7 @@ const Menubar = (props) => {
         <Menu.Item onClick={settings}>
           <Icon name='settings' />
         </Menu.Item>
-        <Menu.Item onClick={logout}>
+        <Menu.Item position='right' onClick={logout}>
           <Icon name='log out' />
         </Menu.Item>
       </Menu>
@@ -111,9 +111,6 @@ const Menubar = (props) => {
       </Menu.Item>
       <Menu.Item onClick={dash}>
         <Icon name='id card' />
-      </Menu.Item>
-      <Menu.Item onClick={settings}>
-        <Icon name='settings' />
       </Menu.Item>
       <Menu.Item onClick={logout}>
         <Icon name='log out' />

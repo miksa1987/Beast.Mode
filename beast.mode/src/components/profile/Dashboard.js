@@ -66,6 +66,11 @@ const Dashboard  = (props) => {
         Remove friend</Button>
     : <Button className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >
         Add friend</Button> : null}
+    
+    {props.currentUser.id === props.currentProfile.id
+      && <Button icon className='settings-button' onClick={() => props.history.push('/settings')}>
+        <Icon name='settings' />
+      </Button>}
 
     <Menu pointing secondary stackable>
       <Menu.Item onClick={() => setView('posts')} active={view === 'posts'}>

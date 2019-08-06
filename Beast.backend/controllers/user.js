@@ -340,7 +340,7 @@ userRouter.post('/removefriend', async (request, response) => {
   }
 })
 
-userRouter.put('/me', imgparser.single('image'), async (request, response) => {
+userRouter.put('/me', async (request, response) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!request.token || !decodedToken.id) {
@@ -348,31 +348,20 @@ userRouter.put('/me', imgparser.single('image'), async (request, response) => {
     }
 
     const user = await User.findById(decodedToken.id)
-    request.body.file ?
-      await cloudinary.uploader.upload_stream(request.file.buffer, { resource_type: 'raw' }).end(request.file.buffer)
-      : null
-    const splittedUri = request.file ? request.file.secure_url.split('upload') : ''
-    const imageUri = request.file ? 
-      splittedUri[0].concat('upload/w_1280').concat(splittedUri[1]) : ''
 
-    const newPwHash = request.body.password ? 
+    if (!user) {
+      return response.status(401).end()
+    }
+    
+    const newPwHash = request.body.password !== '' ? 
       await bcrypt.hash(request.body.password, 10) : null
 
     const userToUpdate = {
-      username: user.username,
-      passwordHash: request.body.password ? newPwHash : user.passwordHash,
-      picture: request.file ? imageUri : user.picture,
-      pictures: user.pictures,
+      ...user.toObject(),
+      passwordHash: request.body.password !== '' ? newPwHash : user.passwordHash,
+      picture: request.body.image ? request.body.image : user.picture,
       info: request.body.info ? request.body.info : user.info,
-      age: request.body.age ? request.body.age : user.age,
-      activity: user.activity,
-      postCount: user.postCount,
-      workoutCount: user.workoutCount,
-      doneWorkoutCount: user.doneWorkoutCount,
-      friends: user.friends,
-      posts: user.posts,
-      workouts: user.workouts,
-      doneWorkouts: user.doneWorkouts
+      email: request.body.email ? request.body.email : user.email
     }
 
     const updatedUser = await User.findByIdAndUpdate(decodedToken.id, userToUpdate, { new: true })

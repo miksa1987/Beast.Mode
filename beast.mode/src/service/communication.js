@@ -18,6 +18,20 @@ const post = async (uri, data, headers) => {
   return result.data
 }
 
+const postImage = async (imageFile) => {
+  const data = new FormData()
+  data.append('image', imageFile)
+
+  const config = { headers: {
+    Authorization: token,
+    'content-type': 'multipart/form-data'
+  }}
+
+  const response = await axios.post('/image/new', data, config)
+  console.log(response)
+  return response.data.imageuri
+}
+
 const update = async (uri, data) => {
   const config = { headers: { Authorization: token }}
   const result = await axios.put(uri, data, config)
@@ -30,4 +44,4 @@ const destroy = async (uri) => {
   return result.data
 }
 
-export default { setToken, get, post, update, destroy }
+export default { setToken, get, post, postImage, update, destroy }
