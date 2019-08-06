@@ -9,7 +9,6 @@ import useOrientation from '../../hooks/useOrientation'
 import Masonry from 'react-masonry-css'
 import Activity from './Activity'
 import Friends from './Friends'
-import Photos from './Photos'
 import UsersDoneWorkouts from './UsersDoneWorkouts'
 import UsersWorkouts from './UsersWorkouts'
 import Spinner from '../Spinner'
@@ -21,15 +20,14 @@ import Post from '../post/Post'
 
 const Dashboard  = (props) => {
   const [view, setView] = useState('posts')
-  const orientation = useOrientation()
-
+  
   const breakPoints = {
     default: 4,
     1400: 3,
     950: 2,
     500: 1
   }
-  console.log(`currentuser is profile ${props.currentUser.id !== props.currentProfile.id}`)
+
   useEffect(() => {
       props.initCurrentProfile(props.user)
       console.log(props.currentUser)
@@ -98,9 +96,9 @@ const Dashboard  = (props) => {
     { /* view === 'photos' && <Photos /> Disabled for now as I see no real use for this */ }
     {view === 'posts' && 
       <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
-        {props.currentUserPosts.map(post => 
+        {[ ...props.currentUserPosts ].reverse().map(post => 
           <Post key={post._id} post={post} />)}
-    </Masonry> }
+      </Masonry> }
     {view === 'workouts' && <UsersWorkouts />}
     {view === 'doneworkouts' && <UsersDoneWorkouts />}
     {view === 'friends' && <Friends />}

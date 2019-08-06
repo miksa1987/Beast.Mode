@@ -13,7 +13,7 @@ const UsersWorkouts = (props) => {
   }
 
   return ( <div>
-    {props.workouts.map(workout => <Workout key={workout._id} workout={workout} />)}
+    {[ ...props.workouts].reverse().map(workout => <Workout key={workout._id} workout={workout} />)}
   </div> )
 }
 

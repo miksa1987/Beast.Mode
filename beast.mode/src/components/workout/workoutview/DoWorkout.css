@@ -1,6 +1,6 @@
 .doworkout-component {
   padding: 10px 10px 10px 10px;
-  border: #dddddd;
+  border: solid 1px#dddddd;
   border-radius: 4px;
   background-color: white;
   width: 100%;
