@@ -61,7 +61,7 @@ const Menubar = (props) => {
   }
 
   if (orientation === 'portrait') {
-    return ( <div className='menubar-component menubar-component-device'>
+    return ( <div className='menubar-component menubar-component-device full-width'>
       <Menu className='full-width' secondary inverted color='red'>
         <Menu.Item onClick={home}>
           <Icon name='home' />
@@ -75,14 +75,11 @@ const Menubar = (props) => {
         <Menu.Item onClick={dash}>
           <Icon name='id card' />
         </Menu.Item>
-        <Menu.Item onClick={settings}>
-          <Icon name='settings' />
-        </Menu.Item>
         <Menu.Item position='right' onClick={logout}>
           <Icon name='log out' />
         </Menu.Item>
       </Menu>
-      <Menu className='full-width' inverted color='red'>
+      <Menu className='full-width menurow2' inverted color='red'>
         <Menu.Item >
           <form onSubmit={doSearch}>
             <Input size='mini' style={barStyle} {...search} placeholder='Search' />
@@ -106,7 +103,7 @@ const Menubar = (props) => {
       </Menu.Item>
       <Menu.Item >
         <form onSubmit={doSearch}>
-          <Input size='mini' style={barStyle} {...search} placeholder='Search' />
+          <Input className='menu-searchbar' size='mini' style={barStyle} {...search} placeholder='Search' />
         </form>
       </Menu.Item>
       <Menu.Item onClick={dash}>
