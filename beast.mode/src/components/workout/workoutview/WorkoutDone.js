@@ -28,7 +28,8 @@ const WorkoutOfSetsDone = (props) => {
     }
 
     props.setDone(workout)
-    props.history.push('/workouts')
+    // Should probably do this with localstorage for memory, to update the uri
+    props.history.goBack()
   }
 
   return ( <div className='preview-component fade-in-fast'>
@@ -38,7 +39,7 @@ const WorkoutOfSetsDone = (props) => {
     <p>Want to save a picture with the workout?</p>
     <form onSubmit={submit}>
       <input type='file' onChange={postFile} />
-      <Button color='green' type='submit'>Save done workout</Button>
+      <Button id='workoutdone-savebutton' color='green' type='submit'>Save done workout</Button>
     </form>
   </div>)
 }

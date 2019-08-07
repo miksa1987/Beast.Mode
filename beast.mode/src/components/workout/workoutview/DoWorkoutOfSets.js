@@ -66,10 +66,10 @@ const DoWorkoutOfSets = (props) => {
             <h4>Now do at least {props.currentWorkout.exercises[current.exercise][current.set].reps} {props.currentWorkout.exercises[current.exercise][current.set].exercise}</h4>
             <h4>How many reps did you do? {currentReps} reps</h4>
             <Button.Group>
-              <Button icon='left chevron' onClick={() => setCurrentReps(currentReps - 1)}></Button>
-              <Button icon='right chevron'  onClick={() => setCurrentReps(currentReps + 1)}></Button>
+              <Button id='workout-decreasebutton' icon='left chevron' onClick={() => setCurrentReps(currentReps - 1)}></Button>
+              <Button id='workout-increasebutton' icon='right chevron'  onClick={() => setCurrentReps(currentReps + 1)}></Button>
             </Button.Group>
-            <Button color='green' onClick={setDone}>Exercise done</Button>
+            <Button id='workout-exercisedonebutton' color='green' onClick={setDone}>Exercise done</Button>
           </td>
         </tr>
       </tbody>

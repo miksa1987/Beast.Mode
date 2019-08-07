@@ -14,8 +14,8 @@ const NewUser = (props) => {
   const [password, resetPassword] = useField('password')
   const [rPassword, resetRPassword] = useField('password')
 
-  const create = async (event) => {
-    event.preventDefault()
+  const create = async () => {
+    //event.preventDefault()
 
     if (password.value !== rPassword.value) {
       console.log(password)
@@ -50,7 +50,7 @@ const NewUser = (props) => {
 
   return ( <div className='style block'>
     <h2>Create new user</h2>
-    <Form onSubmit={create}>
+    {/* Try it this way */}
       <table className='element'>
         <tbody>
           <tr>
@@ -80,8 +80,8 @@ const NewUser = (props) => {
           </tr>
         </tbody>
       </table>
-      <Button fluid type='submit' id='submit'>Create your account</Button>
-    </Form>
+      <Button fluid onClick={create} id='submit'>Create your account</Button>
+    
     <Notification />
   </div> )
 }

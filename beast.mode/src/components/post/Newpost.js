@@ -53,7 +53,7 @@ const Newpost = (props) => {
   return ( <div className='newpost-component fade-in-fast'>
     <strong>Create new</strong>
     <Form onSubmit={post}>
-      <TextArea style={{ resize: 'none' }} rows={6} {...text} />
+      <TextArea id='post-textarea' style={{ resize: 'none' }} rows={6} {...text} />
       
       <table>
         <tbody>
@@ -66,17 +66,17 @@ const Newpost = (props) => {
         </tbody>
       </table>
   
-      <Button primary className='button-style' type='submit'>Post</Button>
+      <Button id='postbutton' primary className='button-style' type='submit'>Post</Button>
       {!props.isWorkout && <Button.Group>
-        <Button className='button-style' type='button' color={!isWorkout ? 'blue' : 'black'} 
+        <Button id='updatebutton' className='button-style' type='button' color={!isWorkout ? 'blue' : 'black'} 
           onClick={() => setIsWorkout(false)}>Update</Button>
-        <Button className='button-style' type='button' color={isWorkout ? 'blue' : 'black'} 
+        <Button id='workoutbutton' className='button-style' type='button' color={isWorkout ? 'blue' : 'black'} 
           onClick={() => setIsWorkout(true)}>Workout</Button>
       </Button.Group>}
       {` `}
-      {isWorkout && <Button className='button-style' type='button' color={didWorkout ? 'blue' : 'black'}
+      {isWorkout && <Button id='didworkoutbutton' className='button-style' type='button' color={didWorkout ? 'blue' : 'black'}
         onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
-      {props.setShowNewpost && <Button className='button-style' color='blue' floated='right' 
+      {props.setShowNewpost && <Button id='didworkoutbutton' className='button-style' color='blue' floated='right' 
         onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
     </Form>
   </div> )

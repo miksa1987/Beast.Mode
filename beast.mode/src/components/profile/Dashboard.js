@@ -60,34 +60,34 @@ const Dashboard  = (props) => {
     </div>
 
     {props.currentUser.id !== props.currentProfile.id ? props.currentUser.friends.indexOf(props.currentProfile.id) > -1 
-    ? <Button className='add-button' color='red' onClick={() => props.removeFriend(props.currentProfile.id)} >
+    ? <Button id='addfriend-button' className='add-button' color='red' onClick={() => props.removeFriend(props.currentProfile.id)} >
         Remove friend</Button>
-    : <Button className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >
+    : <Button id='removefriend-button' className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >
         Add friend</Button> : null}
     
     {props.currentUser.id === props.currentProfile.id
-      && <Button icon className='settings-button' onClick={() => props.history.push('/settings')}>
+      && <Button icon id='settings-button' className='settings-button' onClick={() => props.history.push('/settings')}>
         <Icon name='settings' />
       </Button>}
 
     <Menu pointing secondary stackable>
-      <Menu.Item onClick={() => setView('posts')} active={view === 'posts'}>
+      <Menu.Item id='dash-menu-posts' onClick={() => setView('posts')} active={view === 'posts'}>
         <Icon name='sticky note' />
-        Posts
+        Posts 
       </Menu.Item>
-      <Menu.Item onClick={() => setView('workouts')} active={view === 'workouts'}>
+      <Menu.Item id='dash-menu-workouts' onClick={() => setView('workouts')} active={view === 'workouts'}>
         <Icon name='hand rock' />
         Workouts
       </Menu.Item>
-      <Menu.Item onClick={() => setView('doneworkouts')} active={view === 'doneworkouts'}>
+      <Menu.Item id='dash-menu-doneworkouts' onClick={() => setView('doneworkouts')} active={view === 'doneworkouts'}>
         <Icon name='trophy' />
         Done workouts
       </Menu.Item>
-      <Menu.Item onClick={() => setView('friends')} active={view === 'friends'}>
+      <Menu.Item id='dash-menu-friends' onClick={() => setView('friends')} active={view === 'friends'}>
         <Icon name='users' />
         Friends
       </Menu.Item>
-      <Menu.Item onClick={() => setView('activity')} active={view === 'activity'}>
+      <Menu.Item id='dash-menu-activity' onClick={() => setView('activity')} active={view === 'activity'}>
         <Icon name='bars' />
         Activity
       </Menu.Item>

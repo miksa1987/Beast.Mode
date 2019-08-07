@@ -92,24 +92,24 @@ const Menubar = (props) => {
 
   return ( <div className='menubar-component menubar-component-device'>
     <Menu className='full-width' inverted secondary color='red'>
-      <Menu.Item onClick={home}>
+      <Menu.Item id='home' onClick={home}>
         <Icon name='home' />
       </Menu.Item>
-      <Menu.Item onClick={workouts}>
+      <Menu.Item id='workouts' onClick={workouts}>
         <Icon name='hand rock' />
       </Menu.Item>
-      <Menu.Item onClick={users}>
+      <Menu.Item id='users' onClick={users}>
         <Icon name='user circle' />
       </Menu.Item>
       <Menu.Item >
         <form onSubmit={doSearch}>
-          <Input className='menu-searchbar' size='mini' style={barStyle} {...search} placeholder='Search' />
+          <Input id='globalsearch' className='menu-searchbar' size='mini' style={barStyle} {...search} placeholder='Search' />
         </form>
       </Menu.Item>
-      <Menu.Item onClick={dash}>
+      <Menu.Item id='dash' onClick={dash}>
         <Icon name='id card' />
       </Menu.Item>
-      <Menu.Item onClick={logout}>
+      <Menu.Item id='logout' onClick={logout}>
         <Icon name='log out' />
       </Menu.Item>
     </Menu>

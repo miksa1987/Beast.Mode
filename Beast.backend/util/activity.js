@@ -14,7 +14,7 @@ const setActivity = async (userid, type, id) => {
     case 'workout':
       activity = {
         text: `${user.username} created a workout`,
-        uri: `/workout/${id}`
+        uri: `/doworkout/${id}`
       }
       break  
     case 'doneworkout':

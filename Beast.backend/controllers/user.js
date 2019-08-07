@@ -258,37 +258,43 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
 
 
 userRouter.post('/new', async (request, response) => {
-  // This solution for now till I figure out why uniqueIgnoreCase on User model doesn't work
-  const userCheck = await User.findOne({ username: {
-    '$regex': `^${request.body.username}$`,
-    '$options': 'i'
-  }})
-  console.log(userCheck)
-  if (userCheck.id) {
-    return response.status(400).json({ error: 'Username taken!' })
+  try {
+    // This solution for now till I figure out why uniqueIgnoreCase on User model doesn't work
+    const userCheck = await User.findOne({ username: {
+      '$regex': `^${request.body.username}$`,
+      '$options': 'i'
+    }})
+    console.log(userCheck)
+    if (userCheck) {
+      console.log('usercheck')
+      return response.status(400).json({ error: 'Username taken!' })
+    }
+
+    const saltRounds = 10
+    const pwHash = await bcrypt.hash(request.body.password, saltRounds)
+    const user = new User({
+      username: request.body.username,
+      passwordHash: pwHash,
+      picture: '',
+      pictures: [],
+      info: request.body.info || '',
+      age: request.body.age || 0,
+      activity: [],
+      postCount: 0,
+      workoutCount: 0,
+      doneWorkoutCount: 0,
+      friends: [],
+      posts: [],
+      workouts: [],
+      doneWorkouts: []
+    })
+
+    const savedUser = await user.save()
+    return response.status(201).json(savedUser)
+  } catch (error) {
+    console.log(error.message)
+    return response.status(400).json({ error: error.message })
   }
-
-  const saltRounds = 10
-  const pwHash = await bcrypt.hash(request.body.password, saltRounds)
-  const user = new User({
-    username: request.body.username,
-    passwordHash: pwHash,
-    picture: '',
-    pictures: [],
-    info: request.body.info || '',
-    age: request.body.age || 0,
-    activity: [],
-    postCount: 0,
-    workoutCount: 0,
-    doneWorkoutCount: 0,
-    friends: [],
-    posts: [],
-    workouts: [],
-    doneWorkouts: []
-  })
-
-  const savedUser = await user.save()
-  return response.status(201).json(savedUser)
 })
 
 userRouter.post('/addfriend', async (request, response, next) => {
