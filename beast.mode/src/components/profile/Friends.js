@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import Friend from './Friend'
 import './Dashboard.css'
 
@@ -9,7 +8,6 @@ const Friends = (props) => {
     return ( <div>
     </div> )
   }
-  console.log(props.currentProfile.friends)
 
   return ( <div>
     <h2>{props.currentProfile.username}'s friends</h2>

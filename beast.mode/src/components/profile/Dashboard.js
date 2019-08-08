@@ -5,10 +5,9 @@ import { Image, Menu, Icon, Button } from 'semantic-ui-react'
 import { initUserPosts } from '../../reducers/currentUserPosts'
 import { initCurrentProfile } from '../../reducers/currentProfile'
 import { addFriend, removeFriend } from '../../reducers/currentUser'
-import useOrientation from '../../hooks/useOrientation'
-import Masonry from 'react-masonry-css'
 import Activity from './Activity'
 import Friends from './Friends'
+import Posts from './Posts'
 import UsersDoneWorkouts from './UsersDoneWorkouts'
 import UsersWorkouts from './UsersWorkouts'
 import Spinner from '../Spinner'
@@ -16,27 +15,14 @@ import '../Feed.css'
 import './Dashboard.css'
 import '../Animation.css'
 
-import Post from '../post/Post'
-
 const Dashboard  = (props) => {
-  const [view, setView] = useState('posts')
-  
-  const breakPoints = {
-    default: 4,
-    1400: 3,
-    950: 2,
-    500: 1
-  }
+  const [view, setView] = useState(props.view)
 
   useEffect(() => {
       props.initCurrentProfile(props.user)
-      console.log(props.currentUser)
-      if ((props.currentProfile.id && props.currentProfile.id !== props.user) || props.currentUserPosts.length === 0) {
-        props.initUserPosts(props.user)
-      }
   }, [])
 
-  if (!props.currentProfile.id && props.currentUserPosts.length === 0) {
+  if (!props.currentProfile.id) {
     return ( <div><Spinner /></div> )
   }
 
@@ -71,34 +57,35 @@ const Dashboard  = (props) => {
       </Button>}
 
     <Menu pointing secondary stackable>
-      <Menu.Item id='dash-menu-posts' onClick={() => setView('posts')} active={view === 'posts'}>
+      <Menu.Item id='dash-menu-posts' 
+        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/posts`)} active={view === 'posts'}>
         <Icon name='sticky note' />
-        Posts 
+          Posts 
       </Menu.Item>
-      <Menu.Item id='dash-menu-workouts' onClick={() => setView('workouts')} active={view === 'workouts'}>
+      <Menu.Item id='dash-menu-workouts' 
+        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/workouts`)} active={view === 'workouts'}>
         <Icon name='hand rock' />
-        Workouts
+          Workouts
       </Menu.Item>
-      <Menu.Item id='dash-menu-doneworkouts' onClick={() => setView('doneworkouts')} active={view === 'doneworkouts'}>
+      <Menu.Item id='dash-menu-doneworkouts' 
+        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/doneworkouts`)} active={view === 'doneworkouts'}>
         <Icon name='trophy' />
-        Done workouts
+          Done workouts
       </Menu.Item>
-      <Menu.Item id='dash-menu-friends' onClick={() => setView('friends')} active={view === 'friends'}>
+      <Menu.Item id='dash-menu-friends' 
+        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/friends`)} active={view === 'friends'}>
         <Icon name='users' />
-        Friends
+          Friends
       </Menu.Item>
-      <Menu.Item id='dash-menu-activity' onClick={() => setView('activity')} active={view === 'activity'}>
+      <Menu.Item id='dash-menu-activity' 
+        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/activity`)} active={view === 'activity'}>
         <Icon name='bars' />
-        Activity
+          Activity
       </Menu.Item>
     </Menu>
 
     { /* view === 'photos' && <Photos /> Disabled for now as I see no real use for this */ }
-    {view === 'posts' && 
-      <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
-        {[ ...props.currentUserPosts ].reverse().map(post => 
-          <Post key={post._id} post={post} />)}
-      </Masonry> }
+    {view === 'posts' && <Posts />}
     {view === 'workouts' && <UsersWorkouts />}
     {view === 'doneworkouts' && <UsersDoneWorkouts />}
     {view === 'friends' && <Friends />}

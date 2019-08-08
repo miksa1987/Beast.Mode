@@ -43,23 +43,26 @@ const App = (props) => {
 
   return ( <div>
     <Router>
-    <Route exact path='/' render={() => <Feed />} />
-    <Route exact path='/workouts' render={() => <Workouts />} />
-    <Route exact path='/users' render={() => <Users />} />
-    <Route exact path='/dash' render={() => <Dashboard user={props.currentUser.id}/>} />
-    <Route exact path='/settings' render={() => <Settings />} />
-    <Route exact path='/search' render={() => <SearchResults />} />
-    <Route exact path='/profile/:id' render={ ({ match }) => <Dashboard user={match.params.id} />} />
-    <Route exact path='/profile/:id/friends' render={() => <Friends />} />
-    <Route exact path='/profile/:id/activity' render={() => <Activity />} />
-    <Route exact path='/profile/:id/photos' render={() => <Photos />} />
-    <Route exact path='/profile/:id/workouts' render={() => <UsersWorkouts />} />
-    <Route exact path='/profile/:id/doneworkouts' render={() => <UsersDoneWorkouts />} />
-    <Route exact path='/post/:id/' render={ ({ match }) => <Viewpost type='post' id={match.params.id} />} />
-    <Route exact path='/workout/:id/' render={ ({ match }) => <Viewpost type='workout' id={match.params.id} />} />
-    <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />
-    {props.currentUser ? <Menubar /> : null }
-    <Notification />
+      <Route exact path='/' render={() => <Feed />} />
+      <Route exact path='/workouts' render={() => <Workouts />} />
+      <Route exact path='/users' render={() => <Users />} />
+      <Route exact path='/dash' render={() => <Dashboard user={props.currentUser.id}/>} />
+      <Route exact path='/settings' render={() => <Settings />} />
+      <Route exact path='/search' render={() => <SearchResults />} />
+
+      <Route exact path='/profile/:id' render={ ({ match }) => <Dashboard user={match.params.id} view='posts' />} />
+      <Route exact path='/profile/:id/posts' render={ ({ match }) => <Dashboard user={match.params.id} view='posts' />} />
+      <Route exact path='/profile/:id/friends' render={({ match }) => <Dashboard user={match.params.id} view='friends' />} />
+      <Route exact path='/profile/:id/activity' render={({ match }) => <Dashboard user={match.params.id} view='activity' />} />
+      <Route exact path='/profile/:id/workouts' render={({ match }) => <Dashboard user={match.params.id} view='workouts' />} />
+      <Route exact path='/profile/:id/doneworkouts' render={({ match }) => <Dashboard user={match.params.id} view='doneworkouts' />} />
+    
+      <Route exact path='/post/:id/' render={ ({ match }) => <Viewpost type='post' id={match.params.id} />} />
+      <Route exact path='/workout/:id/' render={ ({ match }) => <Viewpost type='workout' id={match.params.id} />} />
+      <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />
+    
+      <Menubar />
+      <Notification />
     </Router> 
   </div> )
 }
