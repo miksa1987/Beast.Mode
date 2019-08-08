@@ -30,7 +30,6 @@ postRouter.get('/oldest', async (request, response) => {
     }
 
     const date = moment(oldest.getOldestPost()).format('YYYY-M-D-H-m')
-    console.log(`oldest ${date}`)
     return response.json({ oldest: date })
   } catch (error) {
     console.log(error.message)
@@ -73,7 +72,6 @@ postRouter.get('/byfriends/:date', async (request, response) => {
       })
       
       if (all.length === 0) {
-        console.log('ENDDDD')
         return response.json({
           posts: [],
           startdate: dates.getDateString(oldest.getOldestPost()),
@@ -82,7 +80,6 @@ postRouter.get('/byfriends/:date', async (request, response) => {
         })
       }
     }
-    
     const posts = await Post.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
@@ -90,7 +87,6 @@ postRouter.get('/byfriends/:date', async (request, response) => {
         ]}
       ]
     }).sort({ _id: 1 }).populate('user')
-
 
     const responsedata = {
       posts,

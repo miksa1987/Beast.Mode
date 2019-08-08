@@ -7,7 +7,7 @@ import '../../Animation.css'
 
 const WorkoutOfSetsDone = (props) => {
   const [file, setFile] = useState('')
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState('https://react.semantic-ui.com/images/wireframe/image.png')
 
   const postFile = async (event) => {
     const chosenFile = event.target.files[0]

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Masonry from 'react-masonry-css'
 import Newpost from './post/Newpost'
 import Post from './post/Post'

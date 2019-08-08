@@ -40,6 +40,7 @@ export const loginUser = (user) => {
 export const setUser = (user) => {
   return dispatch => {
     communicationService.setToken(user.token)
+    communicationService.post('/login/setfetch', { fetchInterval: user.fetchInterval })
     dispatch({ type: 'SET_USER', data: user })
   }
 }

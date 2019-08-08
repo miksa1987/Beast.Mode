@@ -1,0 +1,6 @@
+POST http://localhost:3001/login/setfetch
+Content-type: application/json
+
+{
+  "fetchInterval": "-200"
+}

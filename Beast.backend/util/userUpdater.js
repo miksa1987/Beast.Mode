@@ -48,4 +48,19 @@ const addToWorkouts = async (id, workoutid) => {
   return updatedUser
 }
 
-module.exports = { addToPictures, addToPosts, addToWorkouts }
+const addToDoneWorkouts = async (id, doneworkoutid) => {
+  const user = await User.findById(id)
+  if (user === null) return
+
+  const newDoneWorkouts = user.doneWorkouts.concat(doneworkoutid)
+
+  const userToUpdate = {
+    ...user.toObject(),
+    doneWorkouts: newDoneWorkouts
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(id, userToUpdate, { new: true })
+
+  return updatedUser
+}
+module.exports = { addToPictures, addToPosts, addToWorkouts, addToDoneWorkouts }

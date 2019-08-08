@@ -46,7 +46,6 @@ userRouter.get('/randoms', async (request, response) => {
 userRouter.get('/:id', async (request, response) => {
   try {
     const user = await User.findById(request.params.id).populate('friends')
-    console.log(user)
     return response.status(200).json(user).end()
   } catch(error) {
     return response.status(404).send('User not found!')
@@ -114,7 +113,6 @@ userRouter.get('/:id/posts/:date', async (request, response) => {
       })
       
       if (all.length === 0) {
-        console.log('ENDDDD')
         return response.json({
           posts: [],
           startdate: dates.getDateString(oldest.getOldestPost()),
@@ -169,7 +167,6 @@ userRouter.get('/:id/workouts/:date', async (request, response) => {
       })
       
       if (all.length === 0) {
-        console.log('ENDDDD')
         return response.json({
           workouts: [],
           startdate: dates.getDateString(oldest.getOldestWorkout()),
@@ -224,7 +221,6 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
       })
       
       if (all.length === 0) {
-        console.log('ENDDDD')
         return response.json({
           doneworkouts: [],
           startdate: dates.getDateString(oldest.getOldestDoneWorkout()),
@@ -241,7 +237,6 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
       ]}
     ]
     }).sort({ _id: 1 }).populate('user')
-    console.log(doneworkouts)
 
     const responsedata = {
       doneworkouts,
@@ -264,9 +259,7 @@ userRouter.post('/new', async (request, response) => {
       '$regex': `^${request.body.username}$`,
       '$options': 'i'
     }})
-    console.log(userCheck)
     if (userCheck) {
-      console.log('usercheck')
       return response.status(400).json({ error: 'Username taken!' })
     }
 

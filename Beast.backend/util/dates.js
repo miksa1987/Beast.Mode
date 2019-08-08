@@ -1,10 +1,16 @@
 const moment = require('moment')
 
+let fetchInterval = -128
+
+const setFetchInterval = (interval) => {
+  fetchInterval = Number(interval)
+  console.log(`fetchInterval set to ${fetchInterval}`)
+}
+
 const getFetchDates = (dateString) => {
-  console.log(dateString)
-  const first = moment(dateString, 'YYYY-M-D-H-m').add(-24, 'hours')
+  console.log(`fetch ${fetchInterval} hours`)
+  const first = moment(dateString, 'YYYY-M-D-H-m').add(fetchInterval, 'hours')
   const second = moment(dateString, 'YYYY-M-D-H-m')
-  console.log(first.format('MMMM D, YYYY HH:mm:ss'))
   const startdate = new Date(first.format('MMMM D, YYYY HH:mm:ss'))
   const enddate = new Date(second.format('MMMM D, YYYY HH:mm:ss'))
   
@@ -34,4 +40,4 @@ const isOlder = (date0, date1) => {
   return moment(first, 'YYYY-M-D-H-m').isBefore(moment(second, 'YYYY-M-D-H-m'))
 }
 
-module.exports = { getFetchDates, getDateString, isOlder, getDate }
+module.exports = { setFetchInterval, fetchInterval, getFetchDates, getDateString, isOlder, getDate }

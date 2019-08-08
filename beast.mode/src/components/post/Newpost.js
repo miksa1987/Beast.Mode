@@ -13,7 +13,7 @@ const Newpost = (props) => {
   const [didWorkout, setDidWorkout] = useState(false)
   const [text, resetText] = useField('text')
   const [file, setFile] = useState('')
-  const [image, setImage] = useState('')
+  const [image, setImage] = useState('https://react.semantic-ui.com/images/wireframe/image.png')
 
   const postFile = async (event) => {
     const chosenFile = event.target.files[0]
@@ -58,7 +58,7 @@ const Newpost = (props) => {
       <table>
         <tbody>
           <tr>
-            {image !== '' && <td><Image src={image} size='tiny' /></td>}
+            {image !== '' && <td><Image src={image} size='mini' /></td>}
             <td>
               <input type='file' onChange={postFile} />
             </td>

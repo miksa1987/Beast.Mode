@@ -30,8 +30,7 @@ doneWorkoutRouter.get('/oldest', async (request, response) => {
     }
 
     const date = moment(oldest.getOldestDoneWorkout()).format('YYYY-M-D-H-m')
-    console.log(`oldest ${date}`)
-
+    
     return response.json({ oldest: date })
   } catch (error) {
     return response.status(400).json({ error: error.message })
@@ -71,7 +70,6 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
       })
       
       if (all.length === 0) {
-        console.log('ENDDDD')
         return response.json({
           doneworkouts: [],
           startdate: dates.getDateString(oldest.getOldestDoneWorkout()),
@@ -104,12 +102,10 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
 })
 
 doneWorkoutRouter.post('/new', async (request, response, next) => {
-  console.log(request.body)
   if(!request.token) {
     return response.status(401).end()
   }
   if(!request.body.content) {
-    console.log('content missing')
     return response.status(400).send('Description or exercises missing')
   }
   
@@ -134,7 +130,7 @@ doneWorkoutRouter.post('/new', async (request, response, next) => {
 
     request.io.emit('user_add_doneworkout', doneWorkoutToReturn)
     activityHelper.setActivity(decodedToken.id, 'workout', doneWorkoutToReturn._id)
-    userUpdater.addToWorkouts(decodedToken.id, doneWorkoutToReturn._id)
+    userUpdater.addToDoneWorkouts(decodedToken.id, doneWorkoutToReturn._id)
     
     return response.status(201).json(doneWorkoutToReturn)
   } catch(error) {

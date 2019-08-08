@@ -46,6 +46,7 @@ export const emptyFeed = () => {
 
 export const initFeed = () => {
   return async (dispatch, getState) => {
+    const fetchInterval = getState().currentUser.fetchInterval ? getState().currentUser.fetchInterval : -24 
     let dateString = moment().add(15, 'minutes').format('YYYY-M-D-H-m')
     
     const user = getState().currentUser
@@ -74,7 +75,7 @@ export const initFeed = () => {
       .concat(myDoneworkouts.doneworkouts)
       .sort(sorterService.comparePostDates)
 
-      dateString = moment(dateString, 'YYYY-M-D-H-m').add(-12, 'hours').format('YYYY-M-D-H-m')
+      dateString = moment(dateString, 'YYYY-M-D-H-m').add(fetchInterval, 'hours').format('YYYY-M-D-H-m')
 
       startdate = myPosts.startdate
 
@@ -93,6 +94,7 @@ export const initFeed = () => {
 
 export const loadMorePosts = () => {
   return async (dispatch, getState) => {
+    const fetchInterval = getState().currentUser.fetchInterval ? getState().currentUser.fetchInterval : -24
     let dateString = getState().feed.loadedUntil
     
     const user = getState().currentUser
@@ -122,7 +124,7 @@ export const loadMorePosts = () => {
       .concat(myDoneworkouts.doneworkouts)
       .sort(sorterService.comparePostDates)
 
-      dateString = moment(dateString, 'YYYY-M-D-H-m').add(-24, 'hours').format('YYYY-M-D-H-m')
+      dateString = moment(dateString, 'YYYY-M-D-H-m').add(fetchInterval, 'hours').format('YYYY-M-D-H-m')
       startdate = myPosts.startdate
 
       if (friendPosts.end && friendDoneworkouts.end && myPosts.end && myDoneworkouts.end) {
