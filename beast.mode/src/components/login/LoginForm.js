@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { Form, Input, Button } from 'semantic-ui-react'
 
 import { loginUser } from '../../reducers/currentUser'
 import { setNotification } from '../../reducers/notificationReducer'
 import NewUser from './NewUser'
-import useOrientation from '../../hooks/useOrientation'
 import './LoginForm.css'
 import '../Animation.css'
 
@@ -15,6 +15,7 @@ const LoginForm = (props) => {
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
   const login = (event) => {
     event.preventDefault()
     const username = event.target.username.value
@@ -59,7 +60,7 @@ const LoginForm = (props) => {
             </tr>
             <tr>
               <td>
-                <Button color='blue' id='newuser' className='element' onClick={() => setView('newuser')}>New user?</Button>
+                <Button color='blue' id='newuser' className='element' onClick={() => props.history.push('/newuser')}>New user?</Button>
               </td>
             </tr>
           </tbody>
@@ -69,4 +70,4 @@ const LoginForm = (props) => {
   </div> )
 }
 
-export default connect(null, { loginUser, setNotification })(LoginForm)
+export default connect(null, { loginUser, setNotification })(withRouter(LoginForm))

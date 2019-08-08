@@ -4,6 +4,7 @@ import communicationService from '../../service/communication'
 import { Input, TextArea, Button, Form } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { setNotification } from '../../reducers/notificationReducer'
+import { withRouter } from 'react-router-dom'
 import useField from '../../hooks/useField'
 import './NewUser.css'
 
@@ -14,8 +15,8 @@ const NewUser = (props) => {
   const [password, resetPassword] = useField('password')
   const [rPassword, resetRPassword] = useField('password')
 
-  const create = async () => {
-    //event.preventDefault()
+  const create = async (event) => {
+    event.preventDefault()
 
     if (password.value !== rPassword.value) {
       console.log(password)
@@ -42,7 +43,7 @@ const NewUser = (props) => {
       resetRPassword()
 
       props.setNotification(`User ${user.username} created. You may now log in.`, 3)
-      props.setView('login')
+      props.history.push('/')
     } catch (error) {
       console.log(error.message)
     }
@@ -51,6 +52,7 @@ const NewUser = (props) => {
   return ( <div className='style block'>
     <h2>Create new user</h2>
     {/* Try it this way */}
+    <Form onSubmit={create}>
       <table className='element'>
         <tbody>
           <tr>
@@ -80,10 +82,10 @@ const NewUser = (props) => {
           </tr>
         </tbody>
       </table>
-      <Button fluid onClick={create} id='submit'>Create your account</Button>
-    
+      <Button fluid type='submit' id='create'>Create your account</Button>
+      </Form>
     <Notification />
   </div> )
 }
 
-export default connect(null, { setNotification})(NewUser)
+export default connect(null, { setNotification})(withRouter(NewUser))

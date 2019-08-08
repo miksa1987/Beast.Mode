@@ -6,9 +6,9 @@ body {
   margin: auto;
 }
 
-@media (min-width: 320px) and (max-width: 480px) {
+@media (min-width: 320px) and (max-width: 600px) {
   body {
-    margin-top: 130px;
+    margin-top: 110px;
   }
 }
 

@@ -23,7 +23,7 @@ describe('Beast.MODE general functionality', function() {
     cy.get('#info').type('TEST')
     cy.get('#passwd').type('verysekret')
     cy.get('#passwd2').type('verysekret')
-    cy.get('#submit').click()
+    cy.get('#create').click()
   })
 
   it('Can log in', function() {

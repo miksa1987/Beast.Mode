@@ -16,6 +16,7 @@ import Users from './components/Users'
 import Dashboard from './components/profile/Dashboard'
 import Settings from './components/Settings'
 import LoginForm from './components/login/LoginForm'
+import NewUser from './components/login/NewUser'
 import SearchResults from './components/search/SearchResults'
 import DoWorkout from './components/workout/workoutview/DoWorkout'
 import Friends from './components/profile/Friends'
@@ -32,8 +33,11 @@ const App = (props) => {
 
   if (props.currentUser === null) {
     return ( <div>
-      <LoginForm />
+      <Router>
+        <Route exact path='/' render={() => <LoginForm />} />
+        <Route exact path='/newuser' render={() => <NewUser />} />
       <Notification />
+      </Router>
     </div>)
   }
 

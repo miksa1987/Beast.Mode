@@ -18,14 +18,9 @@ export const initUserPosts = (userid) => {
     console.log('in the reducer')
     console.log(userid)
     const usersPosts = await communicationService.get(`/users/${userid}/posts`)
-    console.log(usersPosts)
-    const usersWorkouts = await communicationService.get(`/users/${userid}/workouts`)
-    console.log(usersWorkouts)
-    const everything = usersPosts.concat(usersWorkouts)
-    console.log(everything)
 
-    everything.sort(sorterService.comparePostDates)
-    dispatch({ type: 'INIT_USER_POSTS', data: everything })
+    usersPosts.sort(sorterService.comparePostDates)
+    dispatch({ type: 'INIT_USER_POSTS', data: usersPosts })
   }
 } 
 
