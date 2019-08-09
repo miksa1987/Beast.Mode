@@ -1,10 +1,9 @@
 const jwt           = require('jsonwebtoken')
 const bcrypt        = require('bcrypt')
 const User          = require('../models/User')
-const Post          = require('../models/Post')
-const DoneWorkout   = require('../models/DoneWorkout')
 const config        = require('../util/config')
 const dates         = require('../util/dates')
+const userUpdater   = require('../util/userUpdater')
 const loginRouter   = require('express').Router()
 
 loginRouter.post('/', async (request, response) => {
@@ -24,18 +23,13 @@ loginRouter.post('/', async (request, response) => {
     }
 
     const token = await jwt.sign(userForToken, config.SECRET)
+    dates.setFetchInterval(userUpdater.calculateFetchInterval(user))
 
-    const friendsPostCount = await Post.countDocuments({ user: { $in: user.friends }})
-    const friendsDoneworkoutCount = await DoneWorkout.countDocuments({ user: { $in: user.friends }})
-    const total = friendsPostCount + friendsDoneworkoutCount + user.posts.length + user.doneWorkouts.length
-    
-    if (total < 50) dates.setFetchInterval(-384)
-    if (total < 150 && total > 50) dates.setFetchInterval(-192)
-    if (total < 300 && total > 150) dates.setFetchInterval(-96)
-    if (total < 1000 && total > 300) dates.setFetchInterval(-24)
-    if (total < 1500 && total > 1000) dates.setFetchInterval(-12)
-    if (total < 2500 && total > 1500) dates.setFetchInterval(-6)
-    if (total > 2500) dates.setFetchInterval(-4)
+    const userWithFetchInterval = {
+      ...user.toObject(),
+      fetchInterval: dates.fetchInterval
+    }
+    User.findByIdAndUpdate(user.id, userWithFetchInterval, { new: true })
 
     const data = { 
       token: token, 
@@ -60,9 +54,21 @@ loginRouter.post('/setfetch', async (request, response) => {
   if (!request.body.fetchInterval) {
     return response.status(400).json({ error: 'no fetch interval provided'})
   }
-  dates.setFetchInterval(request.body.fetchInterval)
-  console.log(`fetch interval set to ${dates.fetchInterval}`)
-  return response.status(200).end()
+  if (!request.token) {
+    return response.status(401).end()
+  }
+
+  const decodedToken = jwt.verify(request.token, config.SECRET)
+  const user = await User.findById(decodedToken.id)
+
+  dates.setFetchInterval(userUpdater.calculateFetchInterval(user))
+  const userWithFetchInterval = {
+    ...user.toObject(),
+    fetchInterval: dates.fetchInterval
+  }
+
+  User.findByIdAndUpdate(user.id, userWithFetchInterval, { new: true })
+  return response.json({ fetchInterval: dates.fetchInterval })
 })
 
 module.exports = loginRouter

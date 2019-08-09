@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
   postCount: Number,
   workoutCount: Number,
   doneWorkoutCount: Number,
+  fetchInterval: Number,
   friends: [ { type: mongoose.Schema.Types.ObjectId, ref: 'User' } ],
   posts: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Post' } ],
   workouts: [ { type: mongoose.Schema.Types.ObjectId, ref: 'Workout' } ],

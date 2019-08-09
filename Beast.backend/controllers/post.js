@@ -58,7 +58,7 @@ postRouter.get('/byfriends/:date', async (request, response) => {
     return response.status(401).end()
   }
   const user = await User.findById(decodedToken.id)
-
+  dates.setFetchInterval(user.fetchInterval)
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
     
@@ -234,8 +234,8 @@ postRouter.post('/:id/like', async (request, response) => {
     })
 
     return response.status(200).json(updatedPost)
-  } catch(e) {
-    return response.status(400).send({ error: e.message })
+  } catch (error) {
+    return response.status(400).json({ error: error.message })
   }
 })
 

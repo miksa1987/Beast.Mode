@@ -153,6 +153,7 @@ userRouter.get('/:id/workouts/:date', async (request, response) => {
     return response.status(401).end()
   }
   const user = await User.findById(decodedToken.id)
+  dates.setFetchInterval(user.fetchInterval)
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
@@ -207,7 +208,8 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
     return response.status(401).end()
   }
   const user = await User.findById(decodedToken.id)
-
+  dates.setFetchInterval(user.fetchInterval)
+  
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
