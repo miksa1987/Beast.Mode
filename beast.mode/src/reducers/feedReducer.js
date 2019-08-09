@@ -63,8 +63,8 @@ export const initFeed = () => {
 
     dispatch({ type: 'SET_LOADING_TO', data: true })
     while (feedPosts.length === 0) {
-      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
       const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
+      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
       const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
       const myDoneworkouts = await communicationService.get(`/users/${user.id}/doneworkouts/${dateString}`)
 
@@ -112,8 +112,8 @@ export const loadMorePosts = () => {
     while (feedPosts.length === 0) {
       if(moment(dateString, 'YYYY-M-D-H-m').isBefore(moment(getState().feed.endDate, 'YYYY-M-D-H-m'))) break
 
-      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
       const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
+      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
       const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
       const myDoneworkouts = await communicationService.get(`/users/${user.id}/doneworkouts/${dateString}`)
 

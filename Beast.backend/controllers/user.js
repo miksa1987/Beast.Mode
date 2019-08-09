@@ -126,9 +126,15 @@ userRouter.get('/:id/posts/:date', async (request, response) => {
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: decodedToken.id }
-        ]}
-      ]
-    }).sort({ _id: 1 }).populate('user')
+        ]},
+      { $lookup: {
+        "from": "users",
+        "localField": "user",
+        "foreignField": "_id",
+        "as": "user"
+      }},
+      { "$unwind": "$user" }]
+    }).sort({ _id: 1 })
 
     const responsedata = {
       posts,
@@ -181,9 +187,15 @@ userRouter.get('/:id/workouts/:date', async (request, response) => {
       $and: [
         { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
         { user: decodedToken.id }
-      ]}
-    ]
-    }).sort({ _id: 1 }).populate('user')
+      ]},
+    { $lookup: {
+      "from": "users",
+      "localField": "user",
+      "foreignField": "_id",
+      "as": "user"
+    }},
+    { "$unwind": "$user" }]
+    }).sort({ _id: 1 })
 
     const responsedata = {
       workouts,
@@ -236,9 +248,15 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
       $and: [
         { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
         { user: decodedToken.id }
-      ]}
-    ]
-    }).sort({ _id: 1 }).populate('user')
+      ]},
+    { $lookup: {
+      "from": "users",
+      "localField": "user",
+      "foreignField": "_id",
+      "as": "user"
+    }},
+    { "$unwind": "$user" }]
+    }).sort({ _id: 1 })
 
     const responsedata = {
       doneworkouts,

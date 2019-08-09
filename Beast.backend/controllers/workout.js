@@ -231,31 +231,25 @@ workoutRouter.post('/new', async (request, response, next) => {
 
 workoutRouter.post('/:id/comment', async (request, response) => {
   try {
-    const workout = await Workout.findById(request.params.id)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     
     if(!decodedToken) {
       return response.status(401).end()
     }
-    if(!workout) {
-      return response.status(400).end()
-    }
     
-    const newComments = workout.comments.concat({ content: request.body.comment, user: decodedToken.username })
-    const workoutToUpdate = {
-      ...workout.toObject(),
-      comments: newComments
+    const updatedWorkout = await Workout.findOneAndUpdate(
+      { "_id": request.params.id },
+      { $push: { "comments": {
+        "content": request.body.comment,
+        "user": decodedToken.username
+      }}},
+      { new: true })
+      
+    if (updatedWorkout === null) {
+      return response.status(204).end()
     }
-    const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true })
-    
-    request.io.emit('comment_workout', { 
-      username: decodedToken.username, 
-      userid: decodedToken.id,
-      comment: request.body.comment, 
-      postid: updatedWorkout._id 
-    })
 
-    activityHelper.setActivity(decodedToken.id, 'comment', workout._id)
+    activityHelper.setActivity(decodedToken.id, 'comment', updatedWorkout._id)
     return response.status(200).json(updatedWorkout)
   } catch(error) {
     console.log(error.message)
@@ -264,30 +258,21 @@ workoutRouter.post('/:id/comment', async (request, response) => {
 })
 
 workoutRouter.post('/:id/like', async (request, response) => {
-  console.log(request.params.id)
-  console.log(request.token)
   try {
-    const workout = await Workout.findById(request.params.id)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     
     if(!decodedToken) {
       return response.status(401).end()
     }
-    if(!workout) {
-      return response.status(400).end()
+    const updatedWorkout = await Workout.findOneAndUpdate(
+      { "_id": request.params.id, "likes": { $ne: decodedToken.id } },
+      { $push: { "likes": decodedToken.id }, $inc: { "likesLength": 1 }},
+      { new: true })
+
+    if (updatedWorkout === null) {
+      return response.status(204).end()
     }
-    let newLikes = workout.likes.filter(like => like !== decodedToken.id)
-    if (newLikes.length === 0) {
-      newLikes = workout.likes.concat(decodedToken.id)
-    }
-    
-    const workoutToUpdate = {
-      ...workout.toObject(),
-      likes: newLikes,
-      likesLength: newLikes.length
-    }
-    const updatedWorkout = await Workout.findByIdAndUpdate(request.params.id, workoutToUpdate, { new: true }).populate('user')
-    
+
     activityHelper.setActivity(decodedToken.id, 'like', updatedWorkout._id)
     request.io.emit('like_workout', { 
       username: decodedToken.username, 
@@ -297,6 +282,7 @@ workoutRouter.post('/:id/like', async (request, response) => {
 
     return response.status(200).json(updatedWorkout)
   } catch(error) {
+    console.log(error.message)
     return response.status(400).send({ error: error.message })
   }
 })

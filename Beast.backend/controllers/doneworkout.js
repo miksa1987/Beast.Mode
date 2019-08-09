@@ -57,7 +57,7 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
   }
   const user = await User.findById(decodedToken.id)
   dates.setFetchInterval(user.fetchInterval)
-  
+
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
@@ -84,9 +84,15 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: { $in: user.friends }}
-        ]}
-      ]
-    }).sort({ _id: 1 }).populate('user')
+        ]},
+      { "$lookup": {
+        "from": "users",
+        "localField": "user",
+        "foreignField": "_id",
+        "as": "user"
+      }},
+      { "$unwind": "$user" }]
+    })
 
     const responsedata = {
       doneworkouts,
@@ -141,19 +147,23 @@ doneWorkoutRouter.post('/new', async (request, response, next) => {
 })
 
 doneWorkoutRouter.post('/:id/comment', async (request, response, next) => {
-  if (!request.token) return response.status(401).end()
-  
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
-    if (!decodedToken.id) return response.status(401).end()
+    if (!decodedToken.id) {
+      return response.status(401).end()
+    }
 
-    const user = await User.findById(decodedToken.id)
-    const doneWorkout = await DoneWorkout.findById(request.params.id)
+    const updatedWorkout = await DoneWorkout.findOneAndUpdate(
+      { "_id": request.params.id },
+      { $push: { "comments": {
+        "content": request.body.comment,
+        "user": decodedToken.username
+      }}},
+      { new: true })
 
-    const newComments = doneWorkout.comments.concat({ content: request.body.comment, user: decodedToken.username })
-    const doneWorkoutToUpdate = { ...doneWorkout.toObject(), comments: newComments }
-
-    const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true })
+    if (updatedWorkout === null) {
+      return response.status(204).end()
+    }
 
     request.io.emit('comment_doneworkout', { 
       username: decodedToken.username, 
@@ -172,29 +182,21 @@ doneWorkoutRouter.post('/:id/comment', async (request, response, next) => {
 
 doneWorkoutRouter.post('/:id/like', async (request, response) => {
   try {
-    const doneWorkout = await DoneWorkout.findById(request.params.id)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
 
     if(!decodedToken) {
       return response.status(401).end()
     }
-    if(!doneWorkout) {
-      return response.status(400).end()
+
+    const updatedDoneWorkout = await DoneWorkout.findOneAndUpdate(
+      { "_id": request.params.id, "likes": { $ne: decodedToken.id } },
+      { $push: { "likes": decodedToken.id }, $inc: { "likesLength": 1 }},
+      { new: true })
+
+    if (updatedDoneWorkout === null) {
+      return response.status(204).end()
     }
 
-    let newLikes = doneWorkout.likes.filter(like => like !== decodedToken.id)
-    if (newLikes.length === 0) {
-      newLikes = doneWorkout.likes.concat(decodedToken.id)
-    }
-
-    const doneWorkoutToUpdate = {
-      ...doneWorkout.toObject(),
-      likes: newLikes,
-      likesLength: newLikes.length
-    }
-    
-    const updatedDoneWorkout = await DoneWorkout.findByIdAndUpdate(request.params.id, doneWorkoutToUpdate, { new: true }).populate('user')
-    
     activityHelper.setActivity(decodedToken.id, 'like', updatedDoneWorkout._id)
     request.io.emit('like_doneworkout', { 
       username: decodedToken.username, 

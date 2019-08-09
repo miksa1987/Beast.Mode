@@ -84,9 +84,16 @@ postRouter.get('/byfriends/:date', async (request, response) => {
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: { $in: user.friends }}
-        ]}
-      ]
-    }).sort({ _id: 1 }).populate('user')
+        ]},
+      { "$lookup": {
+        "from": "users",
+        "localField": "user",
+        "foreignField": "_id",
+        "as": "user"
+      }},
+      { "$unwind": "$user" }]
+    })
+
 
     const responsedata = {
       posts,
@@ -146,6 +153,7 @@ postRouter.post('/new', async (request, response, next) => {
       pictureThumb: request.body.picture, // TBD change this to real thumbnail
       type: request.body.type,
       user: decodedToken.id,
+      likesLength: 0,
       likes: [],
       comments: [],
       date: new Date()
@@ -169,24 +177,23 @@ postRouter.post('/new', async (request, response, next) => {
 
 postRouter.post('/:id/comment', async (request, response) => {
   try {
-    const post = await Post.findById(request.params.id)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
 
     if(!decodedToken) {
       return response.status(401).end()
     }
-    if(!post) {
-      return response.status(400).end()
-    }
 
-    const newComments = post.comments.concat({ content: request.body.comment, user: decodedToken.username })
-
-    const postToUpdate = {
-      ...post.toObject(),
-      comments: newComments
-    }
-    const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true }).populate('user')
+    const updatedPost = await Post.findOneAndUpdate(
+      { "_id": request.params.id },
+      { $push: { "comments": {
+        "content": request.body.comment,
+        "user": decodedToken.username
+      }}},
+      { new: true })
     
+    if (updatedPost === null) {
+      return response.status(204).end()
+    }
     request.io.emit('comment_post', { 
       username: decodedToken.username, 
       userid: decodedToken.id,
@@ -194,37 +201,30 @@ postRouter.post('/:id/comment', async (request, response) => {
       postid: updatedPost._id 
     })
 
-    activityHelper.setActivity(decodedToken.id, 'comment', post._id)
+    activityHelper.setActivity(decodedToken.id, 'comment', updatedPost._id)
     return response.status(200).json(updatedPost)
   } catch(error) {
+    console.log(error.message)
     return response.status(400).send({ error: error.message })
   }
 })
 
 postRouter.post('/:id/like', async (request, response) => {
   try {
-    const post = await Post.findById(request.params.id)
     const decodedToken = await jwt.verify(request.token, config.SECRET)
 
     if(!decodedToken) {
       return response.status(401).end()
     }
-    if(!post) {
-      return response.status(400).end()
-    }
 
-    let newLikes = post.likes.filter(like => like !== decodedToken.id)
-    if (newLikes.length === 0) {
-      newLikes = post.likes.concat(decodedToken.id)
-    }
-
-    const postToUpdate = {
-      ...post.toObject(),
-      likes: newLikes,
-      likesLength: newLikes.length
-    }
+    const updatedPost = await Post.findOneAndUpdate(
+      { "_id": request.params.id, "likes": { $ne: decodedToken.id } },
+      { $push: { "likes": decodedToken.id }, $inc: { "likesLength": 1 }},
+      { new: true })
     
-    const updatedPost = await Post.findByIdAndUpdate(request.params.id, postToUpdate, { new: true }).populate('user')
+      if (updatedPost === null) {
+        return response.status(204).end()
+      }
 
     activityHelper.setActivity(decodedToken.id, 'like', updatedPost._id)
     request.io.emit('like_post', { 
@@ -235,6 +235,7 @@ postRouter.post('/:id/like', async (request, response) => {
 
     return response.status(200).json(updatedPost)
   } catch (error) {
+    console.log(error.message)
     return response.status(400).json({ error: error.message })
   }
 })
