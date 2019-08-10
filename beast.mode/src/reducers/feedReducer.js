@@ -65,8 +65,8 @@ export const initFeed = () => {
     while (feedPosts.length === 0) {
       const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
       const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
-      const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
       const myDoneworkouts = await communicationService.get(`/users/${user.id}/doneworkouts/${dateString}`)
+      const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
 
       feedPosts = feedPosts
       .concat(friendPosts.posts)
@@ -107,15 +107,15 @@ export const loadMorePosts = () => {
     let startdate = 0
 
     let feedPosts = []
-    dispatch({ type: 'SET_LOADING_TO', data: true })
+    dispatch({ type: 'SET_LOADING_TO', data: true }) 
     
     while (feedPosts.length === 0) {
       if(moment(dateString, 'YYYY-M-D-H-m').isBefore(moment(getState().feed.endDate, 'YYYY-M-D-H-m'))) break
 
       const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
-      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
-      const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
+      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)      
       const myDoneworkouts = await communicationService.get(`/users/${user.id}/doneworkouts/${dateString}`)
+      const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
 
       feedPosts = feedPosts
       .concat(friendPosts.posts)

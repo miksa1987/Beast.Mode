@@ -84,15 +84,7 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: { $in: user.friends }}
-        ]},
-      { "$lookup": {
-        "from": "users",
-        "localField": "user",
-        "foreignField": "_id",
-        "as": "user"
-      }},
-      { "$unwind": "$user" }]
-    })
+      ]}]}).populate('user')
 
     const responsedata = {
       doneworkouts,

@@ -56,6 +56,7 @@ export const addFriend = (friendId) => {
   return async (dispatch, getState) => {
     if (friendId !== getState().currentUser.id) {
       const updatedUser = await communicationService.post('/users/addfriend', { newfriend: friendId })
+      console.log(updatedUser)
       dispatch({ type: 'SET_USER', data: updatedUser })
     }
   }
@@ -64,6 +65,7 @@ export const addFriend = (friendId) => {
 export const removeFriend = (friendId) => {
   return async dispatch => {
     const updatedUser = await communicationService.post('/users/removefriend', { friendToRemove: friendId })
+    console.log(updatedUser)
     
     dispatch({ type: 'SET_USER', data: updatedUser })
   }
