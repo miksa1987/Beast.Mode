@@ -1,3 +1,15 @@
+@media (max-width: 600px) {
+  .button-style {
+    margin-top: 10px;
+    padding: 0px;
+  }
+}
+
+@media (min-width: 620px) {
+  .button-style {
+    margin-top: 10px;
+  }
+}
 .newpost-component {
   padding: 10px 10px 10px 10px;
   border: 1px solid #dddddd;
