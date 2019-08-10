@@ -7,7 +7,7 @@ import '../../Animation.css'
 
 const WorkoutOfSetsDone = (props) => {
   const [file, setFile] = useState('')
-  const [image, setImage] = useState('https://react.semantic-ui.com/images/wireframe/image.png')
+  const [image, setImage] = useState('')
 
   const postFile = async (event) => {
     const chosenFile = event.target.files[0]
@@ -33,7 +33,8 @@ const WorkoutOfSetsDone = (props) => {
   }
 
   return ( <div className='preview-component fade-in-fast'>
-    <Image src={image} floated='right' size='tiny' rounded />
+    <Image src={image ? image 
+      : 'https://react.semantic-ui.com/images/wireframe/image.png'} floated='right' size='tiny' rounded />
     <h1>Workout done!</h1>
     <h3>{props.workout.textcontent}</h3>
     <p>Want to save a picture with the workout?</p>

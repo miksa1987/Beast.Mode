@@ -241,7 +241,9 @@ workoutRouter.post('/:id/comment', async (request, response) => {
       { "_id": request.params.id },
       { $push: { "comments": {
         "content": request.body.comment,
-        "user": decodedToken.username
+        "user": decodedToken.username,
+        "userid": decodedToken.id,
+        "date": new Date()
       }}},
       { new: true })
       

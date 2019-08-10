@@ -37,12 +37,7 @@ const Menubar = (props) => {
 
   const dash = () => {
     window.scrollTo(0, 0)
-    props.history.push('/dash')
-  }
-
-  const settings = () => {
-    window.scrollTo(0, 0)
-    props.history.push('/settings')
+    props.history.push(`/profile/${props.userid}`)
   }
 
   const logout = () => {

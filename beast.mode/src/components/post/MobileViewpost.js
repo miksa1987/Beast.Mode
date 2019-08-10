@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Input, Image, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
-import Comment from './Comment'
+import Comments from './Comments'
 import LikeButton from '../universal/LikeButton'
 import './MobileViewpost.css'
 
@@ -27,16 +27,13 @@ const MobileViewpost = (props) => {
               <strong><Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link></strong>
             </div>
           </td>
-          {props.post.type === 'doneworkout' ? <td><div className='div-style'><p>{` did a workout`}</p></div></td> : null}
+          {props.post.type === 'doneworkout' ? <td><div className='div-style'><p>{`did a workout`}</p></div></td> : null}
         </tr>
       </tbody>
     </table>
     <p>{props.post.content}</p>
-    <img src={props.post.picture} width='100%' alt='pic' /> 
-    <div className='div-style'>
-      <strong>Comments:</strong>
-        {props.post.comments.map((c, i) => <Comment key={c._id} comment={c.content} user={c.user} />)} 
-    </div>
+    <img src={props.post.picture} width='100%' alt='pic' />   
+      <Comments comments={props.post.comments} showAll={true} postid={props.post._id} /> 
     <table><tbody>
       <tr>
         <td>

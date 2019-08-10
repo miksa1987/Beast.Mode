@@ -126,7 +126,9 @@ userRouter.get('/:id/posts/:date', async (request, response) => {
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: decodedToken.id }
-      ]}]}).populate('user')
+        ]}
+      ]
+    }).sort({ _id: 1 }).populate('user')
 
     const responsedata = {
       posts,
@@ -151,7 +153,6 @@ userRouter.get('/:id/workouts/:date', async (request, response) => {
     return response.status(401).end()
   }
   const user = await User.findById(decodedToken.id)
-  dates.setFetchInterval(user.fetchInterval)
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
@@ -179,7 +180,9 @@ userRouter.get('/:id/workouts/:date', async (request, response) => {
       $and: [
         { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
         { user: decodedToken.id }
-      ]}]}).populate('user')
+      ]}
+    ]
+    }).sort({ _id: 1 }).populate('user')
 
     const responsedata = {
       workouts,
@@ -204,8 +207,7 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
     return response.status(401).end()
   }
   const user = await User.findById(decodedToken.id)
-  dates.setFetchInterval(user.fetchInterval)
-  
+
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
@@ -232,7 +234,9 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
       $and: [
         { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
         { user: decodedToken.id }
-      ]}]}).populate('user')
+      ]}
+    ]
+    }).sort({ _id: 1 }).populate('user')
 
     const responsedata = {
       doneworkouts,
@@ -293,15 +297,17 @@ userRouter.post('/addfriend', async (request, response, next) => {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
 
-    const updatedUser = await User.updateOne( 
-      { _id: decodedToken.id, friends: { $ne: request.body.newfriend } }, 
-      { "$push": { "friends": request.body.newfriend } }, 
-      { new: true })
-    const newFriend = await User.updateOne( 
-      { _id: request.body.newfriend, friends: { $ne: decodedToken.id } }, 
-      { "$push": { "friends": decodedToken.id } }, 
-      { new: true })
-   
+    const user = await User.findById(decodedToken.id)
+    const newFriend = await User.findById(request.body.newfriend)
+
+    if (user.friends.indexOf(newFriend.id) < 0) {
+      user.friends = user.friends.concat(newFriend.id)
+      newFriend.friends = newFriend.friends.concat(user.id)
+    }
+    
+    const updatedUser = await user.save()
+    await newFriend.save()
+
     request.io.emit('user_add_friend', newFriend)
     activityHelper.setActivity(decodedToken.id, 'addfriend', newFriend.id)
     return response.status(200).json(updatedUser)
@@ -322,14 +328,9 @@ userRouter.post('/removefriend', async (request, response) => {
       return response.status(400).json({ error: 'Friend to remove missing' })
     }
     
-    const updatedUser = await User.updateOne( 
-      { _id: decodedToken.id }, 
-      { "$pull": { "friends": request.body.friendToRemove } }, 
-      { new: true })
-    await User.updateOne( 
-      { _id: request.body.friendToRemove }, 
-      { "$pull": { "friends": decodedToken.id } }, 
-      { new: true })
+    await User.updateOne( { _id: decodedToken.id }, { "$pull": { "friends": request.body.friendToRemove } })
+    await User.updateOne( { _id: request.body.friendToRemove }, { "$pull": { "friends": decodedToken.id } })
+    const updatedUser = await User.findById(decodedToken.id)
    
     return response.json(updatedUser)
   } catch (error) {

@@ -26,7 +26,9 @@ const Dashboard  = (props) => {
     return ( <div><Spinner /></div> )
   }
 
-  return ( <div className='fade-in-fast'>
+  console.log(props.currentProfile)
+  
+  return ( <div>
     <div className='element'>
       <table>
         <tbody>

@@ -19,11 +19,6 @@ import LoginForm from './components/login/LoginForm'
 import NewUser from './components/login/NewUser'
 import SearchResults from './components/search/SearchResults'
 import DoWorkout from './components/workout/workoutview/DoWorkout'
-import Friends from './components/profile/Friends'
-import Activity from './components/profile/Activity'
-import Photos from './components/profile/Photos'
-import UsersWorkouts from './components/profile/UsersWorkouts'
-import UsersDoneWorkouts from './components/profile/UsersDoneWorkouts'
 import Viewpost from './components/post/Viewpost'
 
 const App = (props) => {
@@ -61,7 +56,7 @@ const App = (props) => {
       <Route exact path='/workout/:id/' render={ ({ match }) => <Viewpost type='workout' id={match.params.id} />} />
       <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />
     
-      <Menubar />
+      <Menubar userid={props.currentUser.id} />
       <Notification />
     </Router> 
   </div> )

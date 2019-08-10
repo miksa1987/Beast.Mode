@@ -9,6 +9,7 @@ const workoutSchema = mongoose.Schema({
   type: String,
   comments: [ { 
     user: String,
+    userid: mongoose.Schema.Types.ObjectId,
     content: String,
     date: Date
   } ],

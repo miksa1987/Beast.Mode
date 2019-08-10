@@ -19,7 +19,7 @@ const Posts = (props) => {
 
   return ( <div>
     <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
-      {[ ...props.currentUserPosts ].reverse().map(doneWorkout => <Post key={doneWorkout._id} post={doneWorkout} />)}
+      {props.currentUserPosts.map(doneWorkout => <Post key={doneWorkout._id} post={doneWorkout} />)}
     </Masonry>
   </div> )
 }
