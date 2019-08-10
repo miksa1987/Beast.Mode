@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Form, TextArea, Button, Image } from 'semantic-ui-react'
+import { Form, TextArea, Button, Image, Icon } from 'semantic-ui-react'
 import communicationService from '../../service/communication'
 import { addNewToFeed } from '../../reducers/feedReducer'
 import { addWorkout } from '../../reducers/workoutsReducer'
@@ -14,6 +14,11 @@ const Newpost = (props) => {
   const [text, resetText] = useField('text')
   const [file, setFile] = useState('')
   const [image, setImage] = useState('')
+
+  const addFile = () => {
+    const input = document.getElementById('real-input')
+    input.click()
+  }
 
   const postFile = async (event) => {
     const chosenFile = event.target.files[0]
@@ -61,11 +66,18 @@ const Newpost = (props) => {
             <td><Image src={image ? image 
               : 'https://react.semantic-ui.com/images/wireframe/image.png'} size='mini' /></td>
             <td>
-              <input type='file' onChange={postFile} />
+              <div>
+                <input type='file' id='real-input' name='real-input' onChange={postFile} />
+                <span>Upload a picture</span>
+                <Button type='button' compact icon onClick={addFile}>
+                  <Icon name='plus' />
+                </Button>
+              </div>
             </td>
           </tr>
         </tbody>
       </table>
+      
   
       <Button id='postbutton' primary className='button-style' type='submit'>Post</Button>
       {!props.isWorkout && <Button.Group>

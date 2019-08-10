@@ -10,6 +10,11 @@
     margin-top: 10px;
   }
 }
+
+input[type='file'] {
+  display: none;
+}
+
 .newpost-component {
   padding: 10px 10px 10px 10px;
   border: 1px solid #dddddd;
@@ -18,7 +23,8 @@
 }
 
 .input-style {
-  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border: 0px;
 }
 
 .button-style {
