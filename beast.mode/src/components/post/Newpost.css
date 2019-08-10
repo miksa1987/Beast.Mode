@@ -11,15 +11,19 @@
   }
 }
 
-input[type='file'] {
-  display: none;
-}
-
 .newpost-component {
   padding: 10px 10px 10px 10px;
   border: 1px solid #dddddd;
   border-radius: 4px;
   background-color: #ffffff;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.image-preview {
+  width: 15em;
 }
 
 .input-style {
@@ -37,23 +41,4 @@ input[type='file'] {
   border: 1px solid #dddddd;
   border-radius: 4px;
   background-color: #ffffff;
-}
-
-.fileContainer {
-  overflow: hidden;
-  position: relative;
-}
-
-.fileContainer [type=file] {
-  cursor: inherit;
-  display: block;
-  font-size: 999px;
-  filter: alpha(opacity=0);
-  min-height: 100%;
-  min-width: 100%;
-  opacity: 0;
-  position: absolute;
-  right: 0;
-  text-align: right;
-  top: 0;
 }

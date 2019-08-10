@@ -2,20 +2,13 @@ import React, { useState } from 'react'
 import { Button, Image } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
 import communicationService from '../../../service/communication'
+import FileInput from '../../universal/FileInput'
 import './Preview.css'
 import '../../Animation.css'
 
 const WorkoutOfSetsDone = (props) => {
   const [file, setFile] = useState('')
   const [image, setImage] = useState('')
-
-  const postFile = async (event) => {
-    const chosenFile = event.target.files[0]
-    if (chosenFile !== file) {
-      setFile(chosenFile)
-      setImage(await communicationService.postImage(chosenFile))
-    }
-  }
 
   const submit = (event) => {
     event.preventDefault()
@@ -39,8 +32,18 @@ const WorkoutOfSetsDone = (props) => {
     <h3>{props.workout.textcontent}</h3>
     <p>Want to save a picture with the workout?</p>
     <form onSubmit={submit}>
-      <input type='file' onChange={postFile} />
-      <Button id='workoutdone-savebutton' color='green' type='submit'>Save done workout</Button>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <FileInput file={file} setFile={setFile} setImage={setImage} compact />
+            </td>
+            <td>
+              <Button id='workoutdone-savebutton' color='green' type='submit'>Save done workout</Button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </form>
   </div>)
 }

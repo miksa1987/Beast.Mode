@@ -5,6 +5,7 @@ import communicationService from '../../service/communication'
 import { addNewToFeed } from '../../reducers/feedReducer'
 import { addWorkout } from '../../reducers/workoutsReducer'
 import useField from '../../hooks/useField'
+import FileInput from '../universal/FileInput'
 import './Newpost.css'
 import '../Animation.css'
 
@@ -14,19 +15,6 @@ const Newpost = (props) => {
   const [text, resetText] = useField('text')
   const [file, setFile] = useState('')
   const [image, setImage] = useState('')
-
-  const addFile = () => {
-    const input = document.getElementById('real-input')
-    input.click()
-  }
-
-  const postFile = async (event) => {
-    const chosenFile = event.target.files[0]
-    if (chosenFile !== file) {
-      setFile(chosenFile)
-      setImage(await communicationService.postImage(chosenFile))
-    }
-  }
 
   const post = async (event) => {
     event.preventDefault()
@@ -60,19 +48,15 @@ const Newpost = (props) => {
     <Form onSubmit={post}>
       <TextArea id='post-textarea' style={{ resize: 'none' }} rows={6} {...text} />
       
-      <table>
+      <table className='full-width'>
         <tbody>
           <tr>
-            <td><Image src={image ? image 
-              : 'https://react.semantic-ui.com/images/wireframe/image.png'} size='mini' /></td>
             <td>
-              <div>
-                <input type='file' id='real-input' name='real-input' onChange={postFile} />
-                <span>Upload a picture</span>
-                <Button type='button' compact icon onClick={addFile}>
-                  <Icon name='plus' />
-                </Button>
-              </div>
+              <Image src={image ? image 
+              : 'https://react.semantic-ui.com/images/wireframe/image.png'} size='mini' />
+            </td>
+            <td>
+              <FileInput file={file} setFile={setFile} setImage={setImage} />
             </td>
           </tr>
         </tbody>
