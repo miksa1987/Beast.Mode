@@ -17,7 +17,7 @@ const Menubar = (props) => {
   const [search, resetSearch] = useField('text')
 
   const barStyle = {
-    width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 5*60 - 40)
+    width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 5*60 - 160)
   }
 
   const home = () => {
@@ -87,6 +87,9 @@ const Menubar = (props) => {
 
   return ( <div className='menubar-component menubar-component-device'>
     <Menu className='full-width' inverted secondary color='red'>
+      <Menu.Item>
+        <h4>Beast.MODE</h4>
+      </Menu.Item>
       <Menu.Item id='home' onClick={home}>
         <Icon name='home' />
       </Menu.Item>

@@ -127,7 +127,7 @@ doneWorkoutRouter.post('/new', async (request, response, next) => {
     if (request.body.picture !== '') userUpdater.addToPictures(decodedToken.id, request.body.picture)
 
     request.io.emit('user_add_doneworkout', doneWorkoutToReturn)
-    activityHelper.setActivity(decodedToken.id, 'workout', doneWorkoutToReturn._id)
+    activityHelper.setActivity(decodedToken.id, 'doneworkout', doneWorkoutToReturn._id)
     userUpdater.addToDoneWorkouts(decodedToken.id, doneWorkoutToReturn._id)
     
     return response.status(201).json(doneWorkoutToReturn)
@@ -163,7 +163,7 @@ doneWorkoutRouter.post('/:id/comment', async (request, response, next) => {
       comment: request.body.comment, 
       doneworkoutid: updatedDoneWorkout._id 
     })
-    activityHelper.setActivity(decodedToken.id, 'comment', updatedDoneWorkout._id)
+    activityHelper.setActivity(decodedToken.id, 'commentdoneworkout', updatedDoneWorkout._id)
     return response.status(200).json(updatedDoneWorkout)
 
   } catch (error) {
@@ -188,7 +188,7 @@ doneWorkoutRouter.post('/:id/like', async (request, response, next) => {
       return response.status(204).end()
     }
 
-    activityHelper.setActivity(decodedToken.id, 'like', updatedDoneWorkout._id)
+    activityHelper.setActivity(decodedToken.id, 'likedoneworkout', updatedDoneWorkout._id)
     request.io.emit('like_doneworkout', { 
       username: decodedToken.username, 
       userid: decodedToken.id,

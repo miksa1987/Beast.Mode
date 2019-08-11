@@ -53,8 +53,9 @@ const App = (props) => {
       <Route exact path='/profile/:id/doneworkouts' render={({ match }) => <Dashboard user={match.params.id} view='doneworkouts' />} />
     
       <Route exact path='/post/:id/' render={ ({ match }) => <Viewpost type='post' id={match.params.id} />} />
-      <Route exact path='/workout/:id/' render={ ({ match }) => <Viewpost type='workout' id={match.params.id} />} />
+      <Route exact path='/workout/:id/' render={ ({ match }) => <DoWorkout workoutid={match.params.id} />} />
       <Route exact path='/doworkout/:id' render={ ({ match }) => <DoWorkout workoutid={match.params.id} /> } />
+      <Route exact path='/doneworkout/:id' render={ ({ match }) => <Viewpost type='doneworkout' id={match.params.id} /> } />
     
       <Menubar userid={props.currentUser.id} />
       <Notification />

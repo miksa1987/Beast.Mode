@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, Input, Image, Icon } from 'semantic-ui-react'
+import { Input, Image, Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import useField from '../../hooks/useField'
 import Comments from './Comments'
@@ -27,7 +27,7 @@ const Viewpost = (props) => {
     props.initCurrentPost(props.type, props.id)
   }, [])
 
-  if (!props.post.content) {
+  if (!props.post || !props.post.content) {
     return ( <div></div> )
   }
 

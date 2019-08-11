@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { initAllWorkouts } from '../../reducers/workoutsReducer'
-import useOrientation from './../../hooks/useOrientation'
+import useWindowSize from './../../hooks/useWindowSize'
 import Workout from './Workout'
 import Sidebar from './Sidebar'
 import MobileSelection from './MobileSelection'
@@ -11,7 +11,7 @@ import { Button } from 'semantic-ui-react'
 import Spinner from '../Spinner'
 
 const Workouts = (props) => {
-  const orientation = useOrientation()
+  const screen = useWindowSize()
   const [showNewpost, setShowNewpost] = useState(false)
 
   useEffect(() => {
@@ -22,13 +22,13 @@ const Workouts = (props) => {
     return ( <div><Spinner /></div> )
   }
   
-  return ( <div className={orientation === 'portrait' ? null : 'workouts-component'}>
-    {orientation === 'portrait' && <MobileSelection currentUser={props.currentUser} /> }
+  return ( <div className={screen.width < screen.height ? null : 'workouts-component'}>
+    {screen.width < screen.height && <MobileSelection currentUser={props.currentUser} /> }
     <Button color='blue' onClick={() => setShowNewpost(true) }>Create new workout</Button>
-    {(orientation === 'portrait' && showNewpost) && <Newpost setShowNewpost={setShowNewpost} />}
-    {(orientation !== 'portrait' && showNewpost) && <Newpost setShowNewpost={setShowNewpost} isWorkout={true} />}
+    {(screen.width < screen.height && showNewpost) && <Newpost setShowNewpost={setShowNewpost} />}
+    {(screen.width > screen.height && showNewpost) && <Newpost setShowNewpost={setShowNewpost} isWorkout={true} />}
     {props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} workout={workout} /> ) : null}
-    {orientation !== 'portrait' && <Sidebar currentUser={props.currentUser} />}
+    {screen.width > screen.height && <Sidebar currentUser={props.currentUser} />}
   </div> )
 }
 

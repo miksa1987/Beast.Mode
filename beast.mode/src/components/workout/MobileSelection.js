@@ -10,8 +10,8 @@ const MobileSelection = (props) => {
     <Dropdown fluid button text='Filters'>
       <Dropdown.Menu>
         <Dropdown.Item text='Featured workouts' onClick={props.initRandomWorkouts} />
-        <Dropdown.Item text='Newest workouts' onClick={props.initNewest} />
-        <Dropdown.Item text='Most liked workouts' onClick={props.initMostLiked} />
+        <Dropdown.Item text='Newest workouts' onClick={props.initNewestWorkouts} />
+        <Dropdown.Item text='Most liked workouts' onClick={props.initMostLikedWorkouts} />
         <Dropdown.Item text={`Friends' workouts`} onClick={() => props.initFriendWorkouts(props.currentUser.id)} />
       </Dropdown.Menu>
     </Dropdown>

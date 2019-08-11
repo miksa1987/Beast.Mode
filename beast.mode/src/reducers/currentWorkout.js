@@ -86,11 +86,18 @@ export const setCurrentWorkoutTime = (time, visible) => {
 }
 
 export const setCurrentWorkoutDone = (doneWorkout) => {
-  return async dispatch => {
-    console.log('send done workout')
+  return async (dispatch, getState) => {
     const savedDoneWorkout = await communicationService.post('/doneworkouts/new', doneWorkout)
     dispatch({ type: 'ADD_NEW_TO_FEED', data: savedDoneWorkout})
     dispatch({ type: 'SET_CURRENT_WORKOUT_DONE' })
+
+    const updatedActivity = getState().currentUser.activity
+      .concat({ 
+        text: `${getState().currentUser.username} did a workout`, 
+        uri: `/doneworkout/${savedDoneWorkout._id}` 
+      })
+    const updatedUser = { ...getState().currentUser, activity: updatedActivity }
+    dispatch({ type: 'SET_USER', data: updatedUser})
   }
 }
 

@@ -81,4 +81,5 @@ export const updateUser = (data) => {
   }
 }
 
+
 export default currentUserReducer

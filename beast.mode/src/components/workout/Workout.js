@@ -1,11 +1,13 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
-import { Button, Image, Divider } from 'semantic-ui-react'
+import { Button, Image } from 'semantic-ui-react'
 import parser from '../../service/parser'
+import useWindowSize from '../../hooks/useWindowSize'
 import './Workout.css'
 import '../Animation.css'
 
 const Workout = (props) => {
+  const screen = useWindowSize()
   // Get first lines from content
   const getExercises = () => {
     const lines = props.workout.content.split('\n')
@@ -31,10 +33,11 @@ const Workout = (props) => {
     <table>
       <tbody>
         <tr>
-          <td className='workout-image'>
+          {screen.width > screen.height && <td className='workout-image'>
             <Image width='130px' height='130px' src={props.workout.picture && props.workout.picture !== '' 
               ? props.workout.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
-          </td>
+          </td>}
+
           <td className='workout-info'>
             <table className='third'>
               <tbody>
@@ -71,7 +74,7 @@ const Workout = (props) => {
           </td>
           <td className='workout-button'>
             <Button onClick={() => props.history.push(`/doworkout/${props.workout._id}`)}>
-              View this workout
+              View
             </Button>
           </td>
         </tr>

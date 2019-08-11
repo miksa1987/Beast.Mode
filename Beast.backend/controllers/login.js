@@ -40,6 +40,7 @@ loginRouter.post('/', async (request, response, next) => {
       posts: user.posts,
       workouts: user.workouts,
       doneworkouts: user.doneWorkouts,
+      activity: user.activity,
       fetchInterval: dates.fetchInterval
     }
 

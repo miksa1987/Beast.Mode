@@ -47,6 +47,18 @@ const setActivity = async (userid, type, id) => {
         uri: `/workout/${id}`
       }
       break
+    case 'commentdoneworkout':
+      activity = {
+        text: `${user.username}`,
+        uri: `/doneworkout/${id}`
+      }
+      break
+    case 'likedoneworkout':
+      activity = {
+        text: `${user.username}`,
+        uri: `/doneworkout/${id}`
+      }
+      break
     case 'addfriend':
         activity = {
           text: `${user.username} added a friend`,
@@ -59,20 +71,8 @@ const setActivity = async (userid, type, id) => {
   const newActivity = user.activity.concat(activity)
 
   const userToUpdate = {
-    username: user.username,
-    passwordHash: user.passwordHash,
-    picture: user.picture,
-    pictures: user.pictures,
-    info: user.info,
-    age: user.age,
-    activity: newActivity,
-    postCount: user.postCount,
-    workoutCount: user.workoutCount,
-    doneWorkoutCount: user.doneWorkoutCount,
-    friends: user.friends,
-    posts: user.posts,
-    workouts: user.workouts,
-    doneWorkouts: user.doneWorkouts
+    ...user.toObject(),
+    activity: newActivity
   }
 
   const savedUser = await User.findByIdAndUpdate(userid, userToUpdate, { new: true })
