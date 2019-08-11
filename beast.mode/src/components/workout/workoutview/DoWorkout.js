@@ -37,7 +37,7 @@ const DoWorkout = (props) => {
   // Workout type 0 default
   return ( <div className='doworkout-component fade-in-fast'>
     {view === 'preview' ?
-    <Button.Group fluid>
+    <Button.Group>
       <Button color='red' onClick={start}>Start</Button>
       <Button color='green' onClick={() => setView('done')}>
         Mark done</Button>

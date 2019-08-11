@@ -4,12 +4,12 @@ import { connect } from 'react-redux'
 import './Preview.css'
 import Comments from '../../post/Comments'
 import LikeButton from '../../universal/LikeButton'
-import useOrientation from '../../../hooks/useOrientation'
 import useField from '../../../hooks/useField'
 import { likeWorkout, commentWorkout } from '../../../reducers/currentWorkout'
+import useWindowSize from '../../../hooks/useWindowSize'
 
 const Preview = (props) => {
-  const orientation = useOrientation()
+  const screen = useWindowSize()
   const [comment, resetComment] = useField('text')
 
   console.log(props.workout)
@@ -20,40 +20,54 @@ const Preview = (props) => {
     resetComment()
   }
   
-  if (orientation === 'portrait') {
+  if (screen.width < screen.height) {
     return ( <div className='preview-component'>
       <h2>Preview workout</h2>
       {(props.workout.picture && props.workout.picture !== '') &&
         <Image floated='right' src={props.workout.picture} size='medium' />}
       <h3>{props.workout.textcontent}</h3>
-      <Comments comments={props.workout.comments} />
+      <Comments showAll={true} comments={props.workout.comments} />
+
+      <table className='full-width'>
+        <tbody>
+          <tr>
+            <td>
+              <LikeButton likes={props.workout.likes.length} like={props.likeWorkout} id={props.workout.id} type='workout' />
+            </td>
+            <td className='full-width'>
+              <form onSubmit={addComment}>
+                <Input fluid size='small' icon={{ name: 'comment' }} placeholder='Comment' {...comment} />
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>)
   }
 
   return ( <div className='preview-component'>
     <h2>Preview workout</h2>
-    <table className='content-style'>
+    <table className='preview-component'>
       <tbody>
         <tr>
           <td className='content-style'>
             <h3>{props.workout.textcontent}</h3>
+            <Comments showAll={true} comments={props.workout.comments} />
           </td>
-          <td className='fullwidth'>
-            <Image src='https://react.semantic-ui.com/images/wireframe/image.png' size='medium' />
-            {(props.workout.picture && props.workout.picture !== '') &&
-              <Image floated='right' src={props.workout.picture} size='medium' />}
-            <Comments comments={props.workout.comments} />           
+          <td className='fullwidth rightcolumn-style'>
+            <Image src={(props.workout.picture && props.workout.picture) !== '' ?
+            props.workout.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
           </td>
         </tr>
       </tbody>
     </table>
-    <table className='fullwidth'>
+    <table className='full-width'>
       <tbody>
         <tr>
           <td>
             <LikeButton likes={props.workout.likes.length} like={props.likeWorkout} id={props.workout.id} type='workout' />
           </td>
-          <td>
+          <td className='full-width'>
             <form onSubmit={addComment}>
               <Input fluid size='small' icon={{ name: 'comment' }} placeholder='Comment' {...comment} />
             </form>

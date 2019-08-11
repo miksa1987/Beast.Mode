@@ -102,29 +102,24 @@ export const setCurrentWorkoutDone = (doneWorkout) => {
 }
 
 export const commentWorkout = (comment, id) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     const updatedWorkout = await communicationService.post(`/workouts/${id}/comment`, { comment })
-    const workout = parser.doWorkout(updatedWorkout.content)
+    console.log(updatedWorkout.content)
     dispatch({ type: 'COMMENT_WORKOUT', data: {
-      ...workout, 
-      id: updatedWorkout._id,
-      picture: updatedWorkout.picture, 
-      comments: updatedWorkout.comments,
-      likes: updatedWorkout.likes
+      ...getState().currentWorkout,  
+      comments: updatedWorkout.comments || getState().currentWorkout.comments
     } })
   }
 }
 
 export const likeWorkout = (placeholder, id) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
     const updatedWorkout = await communicationService.post(`/workouts/${id}/like`, { wee: 'wee' })
-    const workout = parser.doWorkout(updatedWorkout.content)
+    console.log(updatedWorkout)
+    
     dispatch({ type: 'LIKE_WORKOUT', data: {
-      ...workout, 
-      id: updatedWorkout._id,
-      picture: updatedWorkout.picture, 
-      comments: updatedWorkout.comments,
-      likes: updatedWorkout.likes
+      ...getState().currentWorkout, 
+      likes: updatedWorkout.likes || getState().currentWorkout.likes
     } })
   }
 }

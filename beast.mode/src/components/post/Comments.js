@@ -13,9 +13,10 @@ const Comments = (props) => {
     </div> )
   }
 
-  return ( <div className='component'>
+  return ( <div className='comments-component comments-container'>
     {(!props.showAll && props.comments.length > 3) 
       && <Link to={`/post/${props.postid}`}>Show all comments</Link>}
+    <div >
     {!props.showAll && shownComments.map((comment, i) => 
       <div key={i} className='fade-in-fast'>
         <Link to={`/profile/${comment.userid}`}><strong>{comment.user}</strong></Link>{` `}{comment.content}
@@ -24,6 +25,7 @@ const Comments = (props) => {
       <div key={i} className='fade-in-fast'>
         <Link to={`/profile/${comment.userid}`}><strong>{comment.user}</strong></Link>{` `}{comment.content}
       </div> )}
+      </div>
   </div> )
 }
 

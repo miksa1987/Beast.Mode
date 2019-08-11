@@ -5,10 +5,14 @@
 }
 
 .content-style {
-  width: 60%;
+  width: 50%;
   vertical-align: top;
 }
 
-.fullwidth {
+.rightcolumn-style {
+  vertical-align: top;
+}
+
+.full-width {
   width: 100%;
 }
