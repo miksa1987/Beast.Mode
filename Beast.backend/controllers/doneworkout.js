@@ -9,16 +9,16 @@ const userUpdater         = require('../util/userUpdater')
 const dates               = require('../util/dates')
 const oldest              = require('../util/oldest')
 
-doneWorkoutRouter.get('/all', async (request, response) => {
+doneWorkoutRouter.get('/all', async (request, response, next) => {
   try {
     const doneWorkouts = await DoneWorkout.find({})
     return response.status(200).json(doneWorkouts)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-doneWorkoutRouter.get('/oldest', async (request, response) => {
+doneWorkoutRouter.get('/oldest', async (request, response, next) => {
   if(!request.token) {
     return response.status(401).end()
   }
@@ -33,20 +33,20 @@ doneWorkoutRouter.get('/oldest', async (request, response) => {
     
     return response.json({ oldest: date })
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-doneWorkoutRouter.get('/:id', async (request, response) => {
+doneWorkoutRouter.get('/:id', async (request, response, next) => {
   try {
     const doneWorkout = await DoneWorkout.findById(request.params.id)
     return response.status(200).json(doneWorkout)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
+doneWorkoutRouter.get('/byfriends/:date', async (request, response, next) => {
   if (!request.token) {
     return response.status(401).end()
   }
@@ -56,7 +56,7 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
     return response.status(401).end()
   }
   const user = await User.findById(decodedToken.id)
-  dates.setFetchInterval(user.fetchInterval)
+  dates.setFetchInterval(user.fetchInterval || -128)
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
@@ -95,8 +95,7 @@ doneWorkoutRouter.get('/byfriends/:date', async (request, response) => {
 
     return response.json(responsedata)
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
@@ -133,8 +132,7 @@ doneWorkoutRouter.post('/new', async (request, response, next) => {
     
     return response.status(201).json(doneWorkoutToReturn)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).send({ error: error.message })
+    next(error)
   }
 })
 
@@ -169,12 +167,11 @@ doneWorkoutRouter.post('/:id/comment', async (request, response, next) => {
     return response.status(200).json(updatedDoneWorkout)
 
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message})
+    next(error)
   }
 })
 
-doneWorkoutRouter.post('/:id/like', async (request, response) => {
+doneWorkoutRouter.post('/:id/like', async (request, response, next) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
 
@@ -200,11 +197,11 @@ doneWorkoutRouter.post('/:id/like', async (request, response) => {
 
     return response.status(200).json(updatedDoneWorkout)
   } catch(error) {
-    return response.status(400).send({ error: error.message })
+    next(error)
   }
 })
 
-doneWorkoutRouter.put('/:id', async (request, response) => {
+doneWorkoutRouter.put('/:id', async (request, response, next) => {
   if(!request.token) {
     return response.status(401).end()
   }
@@ -228,7 +225,7 @@ doneWorkoutRouter.put('/:id', async (request, response) => {
     
     return response.status(200).json(savedDoneWorkout)
   } catch(error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 

@@ -10,7 +10,7 @@ const oldest        = require('../util/oldest')
 
 // Very simple search feature for now
 
-searchRouter.post('/', async (request, response) => {
+searchRouter.post('/', async (request, response, next) => {
   if (!request.body.type) return response.status(400).json({ error: 'Search type missing'})
   if (!request.body.keyword) return response.status(400).json({ error: 'Keyword string missing'})
   if (!request.token) return response.status(401).json({ error: 'Not authorized'})
@@ -66,11 +66,11 @@ searchRouter.post('/', async (request, response) => {
 
     return response.status(200).json(results)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-searchRouter.post('/:date', async (request, response) => {
+searchRouter.post('/:date', async (request, response, next) => {
   console.log(request.body)
   if (!request.body.type) return response.status(400).json({ error: 'Search type missing'})
   if (!request.body.keyword) return response.status(400).json({ error: 'Keyword string missing'})
@@ -200,8 +200,7 @@ searchRouter.post('/:date', async (request, response) => {
       end: false
     })
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 

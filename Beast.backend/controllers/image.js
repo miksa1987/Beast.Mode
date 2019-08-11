@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const { cloudinary, imgparser } = require('../util/imageupload')
 const config = require('../util/config')
 
-imageRouter.post('/new', imgparser.single('image'), async (request, response) => {
+imageRouter.post('/new', imgparser.single('image'), async (request, response, next) => {
   if (!request.token) {
     return response.status(401).end()
   }
@@ -24,8 +24,7 @@ imageRouter.post('/new', imgparser.single('image'), async (request, response) =>
 
     return response.json({ imageuri })
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 }) 
 

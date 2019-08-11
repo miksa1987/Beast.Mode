@@ -10,14 +10,16 @@ const tokenExtractor = (request, response, next) => {
 }
 
 const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
   if (error.name === 'CastError') {
     return response.status(400).json({ error: 'Malformatted id' })
-  }
-  if (error.name === 'ValidationError') {
+  } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
-  }
-  if (error.name === 'JSonWebTokenError') {
+  } else if (error.name === 'JSonWebTokenError') {
     return response.status(401).json({ error: 'Invalid token' })
+  } else {
+    return response.status(400).json({ error: error.message })
   }
 
   next(error)

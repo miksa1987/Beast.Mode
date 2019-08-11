@@ -48,7 +48,7 @@ app.use('/image', imageRouter)
 
 app.use('/resetonlyifyouarecompletelysureaboutthis', resetRouter) // This has to be changed to TEST env variable only and different collection
 
-app.use(middleware.errorHandler) // This might cause the whole shit to crash and burn....
+app.use(middleware.errorHandler)
 
 oldest.setOldest()
 

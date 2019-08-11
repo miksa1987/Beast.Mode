@@ -6,7 +6,7 @@ const dates         = require('../util/dates')
 const userUpdater   = require('../util/userUpdater')
 const loginRouter   = require('express').Router()
 
-loginRouter.post('/', async (request, response) => {
+loginRouter.post('/', async (request, response, next) => {
   try {
     const user = await User.findOne({ username: new RegExp(`^${request.body.username}`, 'i')})
     
@@ -45,7 +45,7 @@ loginRouter.post('/', async (request, response) => {
 
     return response.status(200).json(data)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 

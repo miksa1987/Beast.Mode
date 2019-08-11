@@ -8,16 +8,16 @@ const activityHelper    = require('../util/activity')
 const dates             = require('../util/dates')
 const oldest            = require('../util/oldest')
 
-workoutRouter.get('/all', async (request, response) => {
+workoutRouter.get('/all', async (request, response, next) => {
   try {
     const workouts = await Workout.find({}).populate('user')
     return response.json(workouts)
   } catch(error) {
-    return response.status(404).end()
+    next(error)
   }
 })
 
-workoutRouter.get('/random', async (request, response) => {
+workoutRouter.get('/random', async (request, response, next) => {
   try {
     const workouts = await Workout.aggregate([
       { $sample: { size: 15 }},
@@ -31,34 +31,31 @@ workoutRouter.get('/random', async (request, response) => {
     console.log(workouts)
     return response.json(workouts)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-workoutRouter.get('/newest', async (request, response) => {
+workoutRouter.get('/newest', async (request, response, next) => {
   try {
     const workouts = await Workout.find().sort({ _id: -1 }).limit(15).populate('user')
     console.log(workouts)
     return response.json(workouts)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-workoutRouter.get('/mostliked', async (request, response) => {
+workoutRouter.get('/mostliked', async (request, response, next) => {
   try {
     const workouts = await Workout.find().sort({ likesLength: -1 }).limit(15).populate('user')
     console.log(workouts)
     return response.json(workouts)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-workoutRouter.get('/oldest', async (request, response) => {
+workoutRouter.get('/oldest', async (request, response, next) => {
   if(!request.token) {
     return response.status(401).end()
   }
@@ -74,11 +71,11 @@ workoutRouter.get('/oldest', async (request, response) => {
 
     return response.json({ oldest: date })
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-workoutRouter.get('/byfriends', async (request, response) => {
+workoutRouter.get('/byfriends', async (request, response, next) => {
   if (!request.token) {
     return response.status(401).end()
   }
@@ -95,12 +92,11 @@ workoutRouter.get('/byfriends', async (request, response) => {
 
     return response.json(workouts)
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-workoutRouter.get('/byfriends/:date', async (request, response) => {
+workoutRouter.get('/byfriends/:date', async (request, response, next) => {
   if (!request.token) {
     return response.status(401).end()
   }
@@ -110,7 +106,8 @@ workoutRouter.get('/byfriends/:date', async (request, response) => {
     return response.status(401).end()
   }
   const user = await User.findById(decodedToken.id)
-
+  dates.setFetchInterval(user.fetchInterval || -128)
+  
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
@@ -151,20 +148,20 @@ workoutRouter.get('/byfriends/:date', async (request, response) => {
 
     return response.json(responsedata)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-workoutRouter.get('/:id', async (request, response) => {
+workoutRouter.get('/:id', async (request, response, next) => {
   try {
     const workout = await Workout.findById(request.params.id).populate('user')
     return response.json(workout)
   } catch(error) {
-    return response.status(404).send('Workout not found!')
+    next(error)
   }
 })
 
-workoutRouter.put('/:id', async (request, response) => {
+workoutRouter.put('/:id', async (request, response, next) => {
   if(!request.token) {
     return response.status(401).end()
   }
@@ -188,7 +185,7 @@ workoutRouter.put('/:id', async (request, response) => {
     
     return response.status(200).json(result)
   } catch(error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
@@ -224,12 +221,12 @@ workoutRouter.post('/new', async (request, response, next) => {
     
     return response.status(201).json(workoutToReturn)
   } catch(error) {
-    return response.status(400).send({ error: error.message })
+    next(error)
   }
 })
 
 
-workoutRouter.post('/:id/comment', async (request, response) => {
+workoutRouter.post('/:id/comment', async (request, response, next) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     
@@ -254,12 +251,11 @@ workoutRouter.post('/:id/comment', async (request, response) => {
     activityHelper.setActivity(decodedToken.id, 'comment', updatedWorkout._id)
     return response.status(200).json(updatedWorkout)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).send({ error: error.message })
+    next(error)
   }
 })
 
-workoutRouter.post('/:id/like', async (request, response) => {
+workoutRouter.post('/:id/like', async (request, response, next) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     
@@ -284,8 +280,8 @@ workoutRouter.post('/:id/like', async (request, response) => {
 
     return response.status(200).json(updatedWorkout)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).send({ error: error.message })
+    next(error)
   }
 })
+
 module.exports = workoutRouter

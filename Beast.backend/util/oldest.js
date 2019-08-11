@@ -12,10 +12,11 @@ const setOldest = async () => {
   const post = await Post.findOne().sort({ _id: 1 }).limit(1)
   const workout = await Workout.findOne().sort({ _id: 1 }).limit(1)
   const doneworkout = await DoneWorkout.findOne().sort({ _id: 1 }).limit(1)
+  const defaultOldest = new Date('2019-01-01')
 
-  oldestPost = post.date
-  oldestWorkout = workout.date
-  oldestDoneWorkout = doneworkout.date
+  oldestPost = post.date || defaultOldest
+  oldestWorkout = workout.date || defaultOldest
+  oldestDoneWorkout = doneworkout.date || defaultOldest
 }
 
 const getOldestPost = () => oldestPost

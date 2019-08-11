@@ -4,12 +4,13 @@ let fetchInterval = -128
 
 const setFetchInterval = (interval) => {
   fetchInterval = Number(interval)
+  if (fetchInterval === NaN) fetchInterval = -128
   console.log(`fetchInterval set to ${fetchInterval}`)
 }
 
 const getFetchDates = (dateString) => {
   console.log(`fetch ${fetchInterval} hours`)
-  const first = moment(dateString, 'YYYY-M-D-H-m').add(fetchInterval, 'hours')
+  const first = moment(dateString, 'YYYY-M-D-H-m').add((fetchInterval || -128), 'hours')
   const second = moment(dateString, 'YYYY-M-D-H-m')
   const startdate = new Date(first.format('MMMM D, YYYY HH:mm:ss'))
   const enddate = new Date(second.format('MMMM D, YYYY HH:mm:ss'))

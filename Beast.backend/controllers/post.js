@@ -9,16 +9,16 @@ const jwt             = require('jsonwebtoken')
 const moment          = require('moment')
 const activityHelper  = require('../util/activity')
 
-postRouter.get('/all', async (request, response) => {
+postRouter.get('/all', async (request, response, next) => {
   try {
     const posts = await Post.find({}).populate('user')
     return response.status(200).json(posts)
   } catch(error) {
-    return response.status(404).end()
+    next(error)
   }
 })
 
-postRouter.get('/oldest', async (request, response) => {
+postRouter.get('/oldest', async (request, response, next) => {
   if(!request.token) {
     return response.status(401).end()
   }
@@ -32,23 +32,22 @@ postRouter.get('/oldest', async (request, response) => {
     const date = moment(oldest.getOldestPost()).format('YYYY-M-D-H-m')
     return response.json({ oldest: date })
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-postRouter.get('/:id', async (request, response) => {
+postRouter.get('/:id', async (request, response, next) => {
   try {
     const post = await Post.findById(request.params.id).populate('user')
     return response.status(200).json(post)
   } catch(error) {
-    return response.status(404).send('Post not found')
+    next(error)
   }
 })
 
 // Date format: YYYY-MM-DD-hh-mm 
 // CAUTION: No zero in front of single-digit values!
-postRouter.get('/byfriends/:date', async (request, response) => {
+postRouter.get('/byfriends/:date', async (request, response, next) => {
   if (!request.token) {
     return response.status(401).end()
   }
@@ -58,7 +57,7 @@ postRouter.get('/byfriends/:date', async (request, response) => {
     return response.status(401).end()
   }
   const user = await User.findById(decodedToken.id)
-  dates.setFetchInterval(user.fetchInterval)
+  dates.setFetchInterval(user.fetchInterval || -128)
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
     
@@ -96,12 +95,11 @@ postRouter.get('/byfriends/:date', async (request, response) => {
 
     return response.json(responsedata)
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-postRouter.put('/:id', async (request, response) => {
+postRouter.put('/:id', async (request, response, next) => {
   if(!request.token) {
     return response.status(401).end()
   }
@@ -125,7 +123,7 @@ postRouter.put('/:id', async (request, response) => {
     
     return response.status(200).json(result)
   } catch(error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
@@ -161,13 +159,12 @@ postRouter.post('/new', async (request, response, next) => {
 
     return response.status(201).json(populatedPost)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).send({ error: error.message })
+    next(error)
   }
   
 })
 
-postRouter.post('/:id/comment', async (request, response) => {
+postRouter.post('/:id/comment', async (request, response, next) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
 
@@ -198,12 +195,11 @@ postRouter.post('/:id/comment', async (request, response) => {
     activityHelper.setActivity(decodedToken.id, 'comment', updatedPost._id)
     return response.status(200).json(updatedPost)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).send({ error: error.message })
+    next(error)
   }
 })
 
-postRouter.post('/:id/like', async (request, response) => {
+postRouter.post('/:id/like', async (request, response, next) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
 
@@ -229,8 +225,7 @@ postRouter.post('/:id/like', async (request, response) => {
 
     return response.status(200).json(updatedPost)
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 

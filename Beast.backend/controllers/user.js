@@ -6,21 +6,20 @@ const Workout                     = require('../models/Workout')
 const DoneWorkout                 = require('../models/DoneWorkout')
 const bcrypt                      = require('bcrypt')
 const jwt                         = require('jsonwebtoken')
-const { cloudinary, imgparser }   = require('../util/imageupload')
 const activityHelper              = require('../util/activity')
 const dates                       = require('../util/dates')
 const oldest                      = require('../util/oldest')
 
-userRouter.get('/all', async (request, response) => {
+userRouter.get('/all', async (request, response, next) => {
   try {
     const users = await User.find({}).populate('friends')
     return response.status(200).json(users)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-userRouter.get('/randoms', async (request, response) => {
+userRouter.get('/randoms', async (request, response, next) => {
   try {
     const users = await User.find({}).populate('friends')
     
@@ -39,57 +38,57 @@ userRouter.get('/randoms', async (request, response) => {
 
     return response.status(200).json(randomUsers)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-userRouter.get('/:id', async (request, response) => {
+userRouter.get('/:id', async (request, response, next) => {
   try {
     const user = await User.findById(request.params.id).populate('friends')
     return response.status(200).json(user).end()
   } catch(error) {
-    return response.status(404).send('User not found!')
+    next(error)
   }
 })
 
-userRouter.get('/:id/name', async (request, response) => {
+userRouter.get('/:id/name', async (request, response, next) => {
   try {
     const user = await User.findById(request.params.id)
     const username = user.username
     return response.status(200).json(username)
   } catch(error) {
-    return response.status(404).send('User not found!')
+    next(error)
   }
 })
 
-userRouter.get('/:id/posts', async (request, response) => {
+userRouter.get('/:id/posts', async (request, response, next) => {
   try {
     const posts = await Post.find({ user: request.params.id }).populate('user')
     return response.status(200).json(posts)
   } catch(error) {
-    return response.status(404).end()
+    next(error)
   }
 })
 
-userRouter.get('/:id/workouts', async (request, response) => {
+userRouter.get('/:id/workouts', async (request, response, next) => {
   try {
     const workouts = await Workout.find({ user: request.params.id }).populate('user')
     return response.status(200).json(workouts)
   } catch(error) {
-    return response.status(404).end()
+    next(error)
   }
 })
 
-userRouter.get('/:id/doneworkouts', async (request, response) => {
+userRouter.get('/:id/doneworkouts', async (request, response, next) => {
   try {
     const doneworkouts = await DoneWorkout.find({ user: request.params.id }).populate('user')
     return response.status(200).json(doneworkouts)
   } catch(error) {
-    return response.status(404).end()
+    next(error)
   }
 })
 
-userRouter.get('/:id/posts/:date', async (request, response) => {
+userRouter.get('/:id/posts/:date', async (request, response, next) => {
   if (!request.token) {
     return response.status(401).end()
   }
@@ -139,11 +138,11 @@ userRouter.get('/:id/posts/:date', async (request, response) => {
 
     return response.json(responsedata)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-userRouter.get('/:id/workouts/:date', async (request, response) => {
+userRouter.get('/:id/workouts/:date', async (request, response, next) => {
   if (!request.token) {
     return response.status(401).end()
   }
@@ -193,11 +192,11 @@ userRouter.get('/:id/workouts/:date', async (request, response) => {
 
     return response.json(responsedata)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
+userRouter.get('/:id/doneworkouts/:date', async (request, response, next) => {
   if (!request.token) {
     return response.status(401).end()
   }
@@ -247,12 +246,12 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response) => {
 
     return response.json(responsedata)
   } catch (error) {
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
 
-userRouter.post('/new', async (request, response) => {
+userRouter.post('/new', async (request, response, next) => {
   try {
     // This solution for now till I figure out why uniqueIgnoreCase on User model doesn't work
     const userCheck = await User.findOne({ username: {
@@ -285,8 +284,7 @@ userRouter.post('/new', async (request, response) => {
     const savedUser = await user.save()
     return response.status(201).json(savedUser)
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
@@ -312,12 +310,11 @@ userRouter.post('/addfriend', async (request, response, next) => {
     activityHelper.setActivity(decodedToken.id, 'addfriend', newFriend.id)
     return response.status(200).json(updatedUser)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-userRouter.post('/removefriend', async (request, response) => {
+userRouter.post('/removefriend', async (request, response, next) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     
@@ -334,12 +331,11 @@ userRouter.post('/removefriend', async (request, response) => {
    
     return response.json(updatedUser)
   } catch (error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
-userRouter.put('/me', async (request, response) => {
+userRouter.put('/me', async (request, response, next) => {
   try {
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!request.token || !decodedToken.id) {
@@ -366,8 +362,7 @@ userRouter.put('/me', async (request, response) => {
     const updatedUser = await User.findByIdAndUpdate(decodedToken.id, userToUpdate, { new: true })
     return response.status(200).json(updatedUser)
   } catch(error) {
-    console.log(error.message)
-    return response.status(400).json({ error: error.message })
+    next(error)
   }
 })
 
