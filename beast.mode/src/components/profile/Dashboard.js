@@ -27,7 +27,7 @@ const Dashboard  = (props) => {
   }
 
   console.log(props.currentProfile)
-  
+    
   return ( <div>
     <div className='element'>
       <table>

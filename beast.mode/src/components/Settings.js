@@ -4,6 +4,7 @@ import { Input, Form, Button, Image, TextArea } from 'semantic-ui-react'
 import { updateUser } from '../reducers/currentUser'
 import { setNotification } from '../reducers/notificationReducer'
 import communicationService from '../service/communication'
+import FileInput from './universal/FileInput'
 import useField from '../hooks/useField'
 import useWindowSize from '../hooks/useWindowSize'
 
@@ -73,21 +74,21 @@ const Settings = (props) => {
     return ( <div className='fade-in-fast element'>
       <h3>Settings</h3>
       <Form onSubmit={saveChanges}>
-        <Image size='small' rounded src={imagesrc} />
-        Update your profile picture:<br/>
-        <input type='file' onChange={postFile} />
+      <Image size='medium' circlular='true' src={imagesrc} className='settings-item' />
+        <FileInput file={file} setFile={setFile} setImage={setImage} className='settings-item' />
+        
         <Input fluid size='small' width='8' placeholder={props.currentUser.email ? 
-          props.currentUser.email : 'No email set!'} {...email} />
+          props.currentUser.email : 'No email set!'} {...email} className='settings-item' />
         <TextArea rows='6' style={textAreaStyle} placeholder={props.currentUser.info ? 
-          props.currentUser.info : ''} {...info} />
-        <Input fluid size='small' placeholder='Change password?' {...password} />
-        <Input fluid size='small' placeholder='Repeat new password' {...repeatedPassword} />
-        <Button fluid color='green' type='submit'>Save changes</Button>
+          props.currentUser.info : ''} {...info} className='settings-item' />
+        <Input fluid size='small' placeholder='Change password?' {...password} className='settings-item' />
+        <Input fluid size='small' placeholder='Repeat new password' {...repeatedPassword} className='settings-item' />
+        <Button fluid color='green' type='submit' className='settings-item'>Save changes</Button>
       </Form>
     </div> )
   }
 
-  return ( <div className='fade-in-fast element'>
+  return ( <div className='fade-in-fast settings-element'>
     <h3>Settings</h3>
     <Form onSubmit={saveChanges}>
     <table style={picStyle}>
@@ -99,8 +100,7 @@ const Settings = (props) => {
         </tr>
         <tr>
           <td>
-            Update your profile picture:<br/>
-            <input type='file' onChange={postFile} />
+            <FileInput file={file} setFile={setFile} setImage={setImage} />
           </td>
         </tr>
       </tbody>

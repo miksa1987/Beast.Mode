@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Form, TextArea, Button, Image, Icon } from 'semantic-ui-react'
+import { Form, TextArea, Button, Image } from 'semantic-ui-react'
 import communicationService from '../../service/communication'
 import { addNewToFeed } from '../../reducers/feedReducer'
 import { addWorkout } from '../../reducers/workoutsReducer'
@@ -61,20 +61,22 @@ const Newpost = (props) => {
           </tr>
         </tbody>
       </table>
-      
   
-      <Button id='postbutton' primary className='button-style' type='submit'>Post</Button>
+      <Button compact id='postbutton' primary className='button-style' type='submit'>Post</Button>
+
       {!props.isWorkout && <Button.Group>
-        <Button id='updatebutton' className='button-style' type='button' color={!isWorkout ? 'blue' : 'black'} 
+        <Button compact id='updatebutton' className='button-style' type='button' color={!isWorkout ? 'blue' : 'black'} 
           onClick={() => setIsWorkout(false)}>Update</Button>
-        <Button id='workoutbutton' className='button-style' type='button' color={isWorkout ? 'blue' : 'black'} 
+        <Button compact id='workoutbutton' className='button-style' type='button' color={isWorkout ? 'blue' : 'black'} 
           onClick={() => setIsWorkout(true)}>Workout</Button>
       </Button.Group>}
+
       {` `}
-      {isWorkout && <Button id='didworkoutbutton' className='button-style' type='button' color={didWorkout ? 'blue' : 'black'}
-        onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
-      {props.setShowNewpost && <Button id='didworkoutbutton' className='button-style' color='blue' floated='right' 
-        onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
+
+      {props.setShowNewpost && <Button compact id='didworkoutbutton' className='button-style' color='blue' floated='right' 
+      onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
+      {isWorkout && <Button compact id='didworkoutbutton' className='button-style' type='button' color={didWorkout ? 'blue' : 'black'}
+        floated='right' onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
     </Form>
   </div> )
 }

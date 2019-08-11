@@ -1,7 +1,12 @@
-.element {
-  background-color: white;
-  border: 1px solid #dddddd;
+.settings-element {
   border-radius: 4px;
   padding: 10px;
-  height: auto;
+  height: 90%;
+}
+
+.settings-item {
+  padding: 10px;
+  width: 100%;
+  left: 50%;
+  margin-left: -50%;
 }
