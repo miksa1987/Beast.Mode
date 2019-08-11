@@ -180,7 +180,7 @@ postRouter.post('/:id/comment', async (request, response, next) => {
         "userid": decodedToken.id,
         "date": new Date()
       }}},
-      { new: true })
+      { new: true }).populate('user')
     
     if (updatedPost === null) {
       return response.status(204).end()
@@ -210,7 +210,7 @@ postRouter.post('/:id/like', async (request, response, next) => {
     const updatedPost = await Post.findOneAndUpdate(
       { "_id": request.params.id, "likes": { $ne: decodedToken.id } },
       { $push: { "likes": decodedToken.id }, $inc: { "likesLength": 1 }},
-      { new: true })
+      { new: true }).populate('user')
     
       if (updatedPost === null) {
         return response.status(204).end()

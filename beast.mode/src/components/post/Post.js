@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, Icon, Image } from 'semantic-ui-react'
+import { Input, Icon, Image } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import { withRouter, Link } from 'react-router-dom'
 import { addComment, like } from '../../reducers/feedReducer'
@@ -30,14 +30,14 @@ const Post = (props) => {
       <tbody>
         <tr>
           <td>
-            <div className='div-style'>
+            <div className='post-component-header'>
               {props.post.user.picture && props.post.user.picture !== '' ?
                 <Image width='32px' height='32px' circular src={props.post.user.picture} />
                 : <Icon name='user' /> }
             </div>
           </td>
           <td>
-            <div className='div-style'>
+            <div className='post-component-header'>
               <strong><Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link></strong>
             </div>
           </td>
@@ -50,15 +50,17 @@ const Post = (props) => {
         ? <p>{props.post.content}</p> : <h3>{props.post.content}</h3>}
     </div>
     {props.post.picture && props.post.picture !== '' ? <Image size='big' src={props.post.picture} /> : null }
-    <Comments comments={props.post.comments} showAll={false} postid={props.post._id} />
+    <Comments data-testid='comments' comments={props.post.comments} showAll={false} postid={props.post._id} />
     <table><tbody>
       <tr>
         <td>        
-          <LikeButton like={props.like} likes={props.post.likes.length} type={props.post.type} id={props.post._id} />
+          <LikeButton data-testid='likebutton' like={props.like} 
+            likes={props.post.likes.length} type={props.post.type} id={props.post._id} />
         </td>
         <td width='100%'>
           <form onSubmit={sendComment}>
-            <Input fluid size='small' icon={{ name: 'comment' }} {...comment} placeholder='Comment' />
+            <Input data-testid='comment-input' fluid size='small' 
+              icon={{ name: 'comment' }} {...comment} placeholder='Comment' />
           </form>
         </td>
       </tr>

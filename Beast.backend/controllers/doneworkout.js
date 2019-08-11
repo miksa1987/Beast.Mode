@@ -182,7 +182,7 @@ doneWorkoutRouter.post('/:id/like', async (request, response, next) => {
     const updatedDoneWorkout = await DoneWorkout.findOneAndUpdate(
       { "_id": request.params.id, "likes": { $ne: decodedToken.id } },
       { $push: { "likes": decodedToken.id }, $inc: { "likesLength": 1 }},
-      { new: true })
+      { new: true }).populate('user')
 
     if (updatedDoneWorkout === null) {
       return response.status(204).end()
