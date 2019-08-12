@@ -6,6 +6,8 @@ const workoutsReducer = (state = [], action) => {
       return action.data
     case 'ADD_WORKOUT':
       return [ ...state, action.data ]
+    case 'EMPTY_WORKOUTS':
+      return []
     default:
       return state
   }

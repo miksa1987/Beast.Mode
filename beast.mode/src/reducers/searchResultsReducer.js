@@ -15,8 +15,6 @@ const searchResultReducer = (state = initialState, action) => {
     case 'SET_SEARCH_RESULTS':
       const newResults = state.results.concat(action.data)
       const filteredResults = uniqWith(newResults, isEqual)
-      console.log(newResults)
-      console.log(filteredResults)
       return { ...state, results: filteredResults }
     case 'EMPTY_SEARCH_RESULTS':
       return initialState

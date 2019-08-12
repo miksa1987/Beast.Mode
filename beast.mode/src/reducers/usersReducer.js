@@ -10,7 +10,7 @@ const usersReducer = (state = [], action) => {
 }
 
 export const initUsers = () => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     const users = await communicationService.get('/users/randoms')
     dispatch({ type: 'INIT_USERS', data: users })
   }

@@ -22,12 +22,12 @@ const feedReducer = (state = initialState, action) => {
       // I'll keep this here just in case it's needed
       return { ...state, feed: state.feed.concat(action.data) }
     case 'REMOVE_FROMFEED':
-      return {...state, feed: state.feed.filter(p => p._id !== action.data._id) }
+      return {...state, feed: state.feed.filter(p => p._id !== action.data) }
     case 'EDIT_POST_ON_FEED':
       return { ...state, feed: state.feed.map(post => post._id === action.data._id ? action.data : post) }
-    case 'SET_LOADING_TO':
+    case 'SET_FEED_LOADING_TO':
       return { ...state, loading: action.data }
-    case 'SET_LOADED_UNTIL_TO':
+    case 'SET_FEED_LOADED_UNTIL_TO':
       return { ...state, loadedUntil: action.data }
     case 'SET_FEED_END_DATE':
       return { ...state, endDate: action.data }
@@ -52,16 +52,16 @@ export const initFeed = () => {
     const user = getState().currentUser
     console.log(user)
     if (user.friends.length === 0 && user.posts.length === 0 && user.doneworkouts.length === 0) {
-      dispatch({ type: 'SET_LOADED_UNTIL_TO', data: getState().feed.endDate})
+      dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: getState().feed.endDate})
       dispatch({ type: 'SET_FEED_END', data: true })
-      dispatch({ type: 'SET_LOADING_TO', data: false })
+      dispatch({ type: 'SET_FEED_LOADING_TO', data: false })
       return
     }
 
     let feedPosts = []
     let startdate = 0
 
-    dispatch({ type: 'SET_LOADING_TO', data: true })
+    dispatch({ type: 'SET_FEED_LOADING_TO', data: true })
     while (feedPosts.length === 0) {
       const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
       const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
@@ -86,8 +86,8 @@ export const initFeed = () => {
       }
     }   
 
-    dispatch({ type: 'SET_LOADING_TO', data: false })
-    dispatch({ type: 'SET_LOADED_UNTIL_TO', data: startdate})
+    dispatch({ type: 'SET_FEED_LOADING_TO', data: false })
+    dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: startdate})
     dispatch({ type: 'INIT_FEED', data: feedPosts })
   }
 }
@@ -100,14 +100,14 @@ export const loadMorePosts = () => {
     const user = getState().currentUser
     
     if (user.friends.length === 0 && user.posts.length === 0 && user.doneworkouts.length === 0) {
-      dispatch({ type: 'SET_LOADED_UNTIL_TO', data: getState().feed.endDate})
+      dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: getState().feed.endDate})
       return
     }
 
     let startdate = 0
 
     let feedPosts = []
-    dispatch({ type: 'SET_LOADING_TO', data: true }) 
+    dispatch({ type: 'SET_FEED_LOADING_TO', data: true }) 
     
     while (feedPosts.length === 0) {
       if(moment(dateString, 'YYYY-M-D-H-m').isBefore(moment(getState().feed.endDate, 'YYYY-M-D-H-m'))) break
@@ -134,8 +134,8 @@ export const loadMorePosts = () => {
       }
     } 
 
-    dispatch({ type: 'SET_LOADING_TO', data: false })
-    dispatch({ type: 'SET_LOADED_UNTIL_TO', data:startdate})
+    dispatch({ type: 'SET_FEED_LOADING_TO', data: false })
+    dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data:startdate})
     dispatch({ type: 'ADD_TOFEED', data: feedPosts })
   }
 }
