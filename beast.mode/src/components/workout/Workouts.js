@@ -10,7 +10,8 @@ import './Workouts.css'
 import { Button } from 'semantic-ui-react'
 import Spinner from '../Spinner'
 
-const Workouts = (props) => {
+// export for testing
+export const Workouts = (props) => {
   const screen = useWindowSize()
   const [showNewpost, setShowNewpost] = useState(false)
 

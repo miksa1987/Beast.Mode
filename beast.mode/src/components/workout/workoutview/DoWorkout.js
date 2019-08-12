@@ -10,7 +10,6 @@ import {
   setCurrentWorkoutTime,
   setCurrentWorkoutDone
 } from '../../../reducers/currentWorkout'
-import useWindowSize from '../../../hooks/useWindowSize'
 
 import Preview from './Preview'
 import DoWorkoutOfSets from './DoWorkoutOfSets'
@@ -22,7 +21,6 @@ import '../../Animation.css'
 
 const DoWorkout = (props) => {
   const timer = useTimer(0)
-  const screen = useWindowSize()
   const [view, setView] = useState('preview')
   
   useEffect(() => {

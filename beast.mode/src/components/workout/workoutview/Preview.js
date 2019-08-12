@@ -8,7 +8,7 @@ import useField from '../../../hooks/useField'
 import { likeWorkout, commentWorkout } from '../../../reducers/currentWorkout'
 import useWindowSize from '../../../hooks/useWindowSize'
 
-const Preview = (props) => {
+export const Preview = (props) => {
   const screen = useWindowSize()
   const [comment, resetComment] = useField('text')
 
@@ -32,11 +32,13 @@ const Preview = (props) => {
         <tbody>
           <tr>
             <td>
-              <LikeButton likes={props.workout.likes.length} like={props.likeWorkout} id={props.workout.id} type='workout' />
+              <LikeButton likes={props.workout.likes.length} data-testid='likebutton' 
+                like={props.likeWorkout} id={props.workout.id} type='workout' />
             </td>
             <td className='full-width'>
               <form onSubmit={addComment}>
-                <Input fluid size='small' icon={{ name: 'comment' }} placeholder='Comment' {...comment} />
+                <Input fluid size='small' icon={{ name: 'comment' }} data-testid='comment'
+                  placeholder='Comment' {...comment} />
               </form>
             </td>
           </tr>
@@ -65,11 +67,13 @@ const Preview = (props) => {
       <tbody>
         <tr>
           <td>
-            <LikeButton likes={props.workout.likes.length} like={props.likeWorkout} id={props.workout.id} type='workout' />
+            <LikeButton likes={props.workout.likes.length} data-testid='likebutton' 
+              like={props.likeWorkout} id={props.workout.id} type='workout' />
           </td>
           <td className='full-width'>
             <form onSubmit={addComment}>
-              <Input fluid size='small' icon={{ name: 'comment' }} placeholder='Comment' {...comment} />
+              <Input fluid size='small' icon={{ name: 'comment' }} placeholder='Comment'
+                data-testid='comment' {...comment} />
             </form>
           </td>
         </tr>

@@ -12,6 +12,6 @@
 }
 
 .comments-container {
-  max-height: 40vh;
+  max-height: 30vh;
   overflow: auto;
 }

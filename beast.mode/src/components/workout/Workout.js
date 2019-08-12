@@ -8,6 +8,7 @@ import '../Animation.css'
 
 const Workout = (props) => {
   const screen = useWindowSize()
+
   // Get first lines from content
   const getExercises = () => {
     const lines = props.workout.content.split('\n')
@@ -29,7 +30,7 @@ const Workout = (props) => {
     return ( <div>Loading</div> )
   }
 
-  return ( <div className='workout-component fade-in-fast'>
+  return ( <div data-testid='workout-component' className='workout-component fade-in-fast'>
     <table>
       <tbody>
         <tr>
@@ -42,7 +43,7 @@ const Workout = (props) => {
             <table className='third'>
               <tbody>
                 <tr>
-                  <td>
+                  <td data-testid='workout-title'>
                     <h3>WORKOUT BY {props.workout.user.username.toUpperCase()}</h3>
                   </td>
                 </tr>
@@ -51,15 +52,15 @@ const Workout = (props) => {
                     <table className='third'>
                       <tbody>
                         <tr>
-                          <td className='workout-segment first'>
+                          <td data-testid='workout-exnumber' className='workout-segment first'>
                             <h2>{exercisesNumber}</h2>
                             exercises
                           </td>
-                          <td className='workout-segment second'>
+                          <td data-testid='workout-likes' className='workout-segment second'>
                             <h2>{props.workout.likes.length}</h2>
                             likes
                           </td>
-                          <td className='workout-segment third'>
+                          <td data-testid='workout-exercises' className='workout-segment third'>
                             <ul>
                               {exercises.map((exercise, i) => <li key={i}>{exercise}</li>)}
                             </ul>
@@ -73,7 +74,8 @@ const Workout = (props) => {
             </table>
           </td>
           <td className='workout-button'>
-            <Button onClick={() => props.history.push(`/doworkout/${props.workout._id}`)}>
+            <Button data-testid='viewworkoutbutton' id='viewworkoutbutton' 
+              onClick={() => props.history.push(`/doworkout/${props.workout._id}`)}>
               View
             </Button>
           </td>

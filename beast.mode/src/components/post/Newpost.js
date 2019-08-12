@@ -43,7 +43,7 @@ const Newpost = (props) => {
     props.setShowNewpost && props.setShowNewpost(false)
   }
   
-  return ( <div className='newpost-component fade-in-fast'>
+  return ( <div data-testid='newpost-component' className='newpost-component fade-in-fast'>
     <strong>Create new</strong>
     <Form onSubmit={post}>
       <TextArea id='post-textarea' style={{ resize: 'none' }} rows={6} {...text} />

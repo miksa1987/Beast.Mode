@@ -18,12 +18,12 @@ const User = (props) => {
             <td>
               <Image className='no-padding' src={props.user.picture && props.user.picture !== '' ? 
                 props.user.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} 
-                size='medium' />
+                size='medium' data-testid='user-picture' />
             </td>
           </tr>
           <tr>
             <td>
-              <strong>{props.user.username}</strong>
+              <strong data-testid='user-username'>{props.user.username}</strong>
             </td>
           </tr>
         </tbody>
