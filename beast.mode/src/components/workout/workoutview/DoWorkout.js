@@ -7,7 +7,6 @@ import {
   setCurrentWorkoutExercises,
   setCurrentWorkoutExerciseDone,
   setCurrentWorkoutExerciseUndone,
-  setCurrentWorkoutTime,
   setCurrentWorkoutDone
 } from '../../../reducers/currentWorkout'
 
@@ -74,7 +73,6 @@ const mapDispatchToProps = {
   setCurrentWorkoutExercises,
   setCurrentWorkoutExerciseDone,
   setCurrentWorkoutExerciseUndone,
-  setCurrentWorkoutTime,
   setCurrentWorkoutDone
 }
 

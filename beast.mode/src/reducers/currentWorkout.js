@@ -18,18 +18,12 @@ const emptyWorkout = {
 
 const currentWorkoutReducer = (state = emptyWorkout, action) => {
   switch(action.type) {
-    case 'INIT_CURRENT_WORKOUT':
+    case 'SET_CURRENT_WORKOUT':
       return action.data
     case 'SET_CURRENT_WORKOUT_EXERCISES':
       return { ...state, exercises: action.data }
-    case 'SET_CURRENT_WORKOUT_TIME':
-      return { ...state, time: { time: action.data.time, visible: action.data.visible }}
     case 'SET_CURRENT_WORKOUT_DONE':
       return { ...state, done: true, posted: true }
-      case 'COMMENT_WORKOUT':
-        return action.data
-      case 'LIKE_WORKOUT':
-        return action.data
     default:
       return state
   }
@@ -39,7 +33,7 @@ export const initCurrentWorkout = (workoutid) => {
   return async dispatch => {
     const rawWorkout = await communicationService.get(`/workouts/${workoutid}`)
     const workout = parser.doWorkout(rawWorkout.content)
-    dispatch({ type: 'INIT_CURRENT_WORKOUT', data: {
+    dispatch({ type: 'SET_CURRENT_WORKOUT', data: {
       ...workout, 
       id: rawWorkout._id,
       picture: rawWorkout.picture, 
@@ -81,10 +75,6 @@ export const setCurrentWorkoutExerciseUndone = (exercise, set) => {
   }
 }
 
-export const setCurrentWorkoutTime = (time, visible) => {
-  return dispatch => dispatch({ type: 'SET_CURRENT_WORKOUT_TIME', data: { time, visible } })
-}
-
 export const setCurrentWorkoutDone = (doneWorkout) => {
   return async (dispatch, getState) => {
     const savedDoneWorkout = await communicationService.post('/doneworkouts/new', doneWorkout)
@@ -105,7 +95,7 @@ export const commentWorkout = (comment, id) => {
   return async (dispatch, getState) => {
     const updatedWorkout = await communicationService.post(`/workouts/${id}/comment`, { comment })
     console.log(updatedWorkout.content)
-    dispatch({ type: 'COMMENT_WORKOUT', data: {
+    dispatch({ type: 'SET_CURRENT_WORKOUT', data: {
       ...getState().currentWorkout,  
       comments: updatedWorkout.comments || getState().currentWorkout.comments
     } })
@@ -117,7 +107,7 @@ export const likeWorkout = (placeholder, id) => {
     const updatedWorkout = await communicationService.post(`/workouts/${id}/like`, { wee: 'wee' })
     console.log(updatedWorkout)
     
-    dispatch({ type: 'LIKE_WORKOUT', data: {
+    dispatch({ type: 'SET_CURRENT_WORKOUT', data: {
       ...getState().currentWorkout, 
       likes: updatedWorkout.likes || getState().currentWorkout.likes
     } })

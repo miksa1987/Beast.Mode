@@ -32,7 +32,7 @@ export const Preview = (props) => {
         <tbody>
           <tr>
             <td>
-              <LikeButton likes={props.workout.likes.length} data-testid='likebutton' 
+              <LikeButton likes={props.workout.likes.length} 
                 like={props.likeWorkout} id={props.workout.id} type='workout' />
             </td>
             <td className='full-width'>
@@ -67,7 +67,7 @@ export const Preview = (props) => {
       <tbody>
         <tr>
           <td>
-            <LikeButton likes={props.workout.likes.length} data-testid='likebutton' 
+            <LikeButton likes={props.workout.likes.length}  
               like={props.likeWorkout} id={props.workout.id} type='workout' />
           </td>
           <td className='full-width'>

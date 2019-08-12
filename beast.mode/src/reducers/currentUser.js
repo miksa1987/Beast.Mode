@@ -3,12 +3,8 @@ import communicationService from '../service/communication'
 
 const currentUserReducer = (state = null, action) => {
   switch(action.type) {
-    case 'LOGIN_USER':
-      return action.data
     case 'SET_USER':
       return action.data
-    case 'LOGOUT_USER':
-      return null
     default:
       return state
   }
@@ -22,7 +18,7 @@ export const loginUser = (user) => {
       communicationService.setToken(loggedUser.token)
       window.localStorage.setItem('currentUser', JSON.stringify(loggedUser))
     
-      dispatch({ type: 'LOGIN_USER', data: loggedUser })
+      dispatch({ type: 'SET_USER', data: loggedUser })
       dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: `${loggedUser.username} logged in`})
       setTimeout(() => {
         dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: ''})
@@ -48,7 +44,7 @@ export const setUser = (user) => {
 export const logoutUser = () => {
   return dispatch => {
     window.localStorage.clear()
-    dispatch({ type: 'LOGOUT_USER' })
+    dispatch({ type: 'SET_USER', data: null })
   }
 }
 
