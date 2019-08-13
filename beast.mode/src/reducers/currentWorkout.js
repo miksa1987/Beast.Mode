@@ -33,6 +33,7 @@ export const initCurrentWorkout = (workoutid) => {
   return async dispatch => {
     const rawWorkout = await communicationService.get(`/workouts/${workoutid}`)
     const workout = parser.doWorkout(rawWorkout.content)
+    console.log(workout)
     dispatch({ type: 'SET_CURRENT_WORKOUT', data: {
       ...workout, 
       id: rawWorkout._id,

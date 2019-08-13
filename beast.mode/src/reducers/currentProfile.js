@@ -9,6 +9,7 @@ const currentProfileReducer = (state = {}, action) => {
   }
 }
 
+// RETURN TO PREVIOUS CODE AND MODIFY TEST !!!!
 export const initCurrentProfile = (id) => {
   return async (dispatch, getState) => {
     console.log(getState())
