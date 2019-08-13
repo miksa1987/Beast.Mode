@@ -1,12 +1,14 @@
 
-import { initCurrentWorkout, 
+import { 
+  initCurrentWorkout, 
   setCurrentWorkoutExercises, 
   setCurrentWorkoutExerciseDone,
   setCurrentWorkoutExerciseUndone,
   setCurrentWorkoutDone,
   commentWorkout,
   likeWorkout } from '../currentWorkout'
-import { mockWorkout, 
+import { 
+  mockWorkout, 
   mockExercises, 
   mockExercisesOneDone, 
   mockWorkoutExerciseDone,
@@ -57,7 +59,6 @@ describe('currentWorkout actions', () => {
     
     await setCurrentWorkoutExerciseUndone(0, 0)(dispatch, getState)
 
-    // WTF?!
     expect(dispatch).toBeCalledWith({ type: 'SET_CURRENT_WORKOUT_EXERCISES', data: mockExercises })
   })
 
@@ -69,7 +70,6 @@ describe('currentWorkout actions', () => {
     
     await setCurrentWorkoutExerciseUndone(0, 0)(dispatch, getState)
 
-    // WTF?!
     expect(dispatch).toBeCalledWith({ type: 'SET_CURRENT_WORKOUT_EXERCISES', data: mockExercisesOneDone })
   })
 
@@ -87,7 +87,34 @@ describe('currentWorkout actions', () => {
 
     await setCurrentWorkoutDone(doneWorkout)(dispatch, getState)
 
+    // MORE TO EXPECT!
     expect(dispatch).toBeCalledWith({ type: 'ADD_NEW_TO_FEED', data: doneWorkout })
     expect(dispatch).toBeCalledWith({ type: 'SET_CURRENT_WORKOUT_DONE' })
+  })
+
+  it('commentWorkout', async () => {
+    const mockState = { currentWorkout: workout }
+    const changedWorkout = { ...workout, comments: [ 'TEST' ]}
+    communicationService.post.mockResolvedValue(changedWorkout)
+
+    const dispatch = jest.fn()
+    const getState = jest.fn(() => mockState)
+
+    await commentWorkout('TEST', '1')(dispatch, getState)
+
+    expect(dispatch).toBeCalledWith({ type: 'SET_CURRENT_WORKOUT', data: changedWorkout }) // Y U NO DISPATCH NEW DATA?!?!
+  })
+
+  it('commentWorkout', async () => {
+    const mockState = { currentWorkout: workout }
+    const changedWorkout = { ...workout, likes: [ '1' ]}
+    communicationService.post.mockResolvedValue(changedWorkout)
+
+    const dispatch = jest.fn()
+    const getState = jest.fn(() => mockState)
+
+    await likeWorkout('TEST', '1')(dispatch, getState)
+
+    expect(dispatch).toBeCalledWith({ type: 'SET_CURRENT_WORKOUT', data: changedWorkout }) 
   })
 })

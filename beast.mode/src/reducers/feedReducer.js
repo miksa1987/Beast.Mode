@@ -69,11 +69,11 @@ export const initFeed = () => {
       const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
 
       feedPosts = feedPosts
-      .concat(friendPosts.posts)
-      .concat(friendDoneworkouts.doneworkouts)
-      .concat(myPosts.posts)
-      .concat(myDoneworkouts.doneworkouts)
-      .sort(sorterService.comparePostDates)
+        .concat(friendPosts.posts)
+        .concat(friendDoneworkouts.doneworkouts)
+        .concat(myPosts.posts)
+        .concat(myDoneworkouts.doneworkouts)
+        .sort(sorterService.comparePostDates)
 
       dateString = moment(dateString, 'YYYY-M-D-H-m').add(fetchInterval, 'hours').format('YYYY-M-D-H-m')
 
@@ -101,6 +101,7 @@ export const loadMorePosts = () => {
     
     if (user.friends.length === 0 && user.posts.length === 0 && user.doneworkouts.length === 0) {
       dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: getState().feed.endDate})
+      dispatch({ type: 'SET_FEED_END', data: true })
       return
     }
 
@@ -162,7 +163,7 @@ export const removeFromFeed = (post) => {
       communicationService.destroy(`/doneworkouts/${post._id}`)
     }
 
-    dispatch({ type: 'REMOVE_FROMFEED', data: { id: post._id } })
+    dispatch({ type: 'REMOVE_FROMFEED', data: post._id })
   }
 }
 
