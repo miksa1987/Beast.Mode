@@ -59,7 +59,7 @@ const Post = (props) => {
         </td>
         <td width='100%'>
           <form onSubmit={sendComment}>
-            <Input data-testid='comment-input' fluid size='small' 
+            <Input data-testid='comment-input' id='comment-input' fluid size='small' 
               icon={{ name: 'comment' }} {...comment} placeholder='Comment' />
           </form>
         </td>

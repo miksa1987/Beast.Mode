@@ -1,6 +1,6 @@
 import communicationService from '../service/communication'
 
-const currentProfileReducer = (state = {}, action) => {
+const currentProfileReducer = (state = { id: null }, action) => {
   switch (action.type) {
     case 'INIT_CURRENT_PROFILE':
       return action.data

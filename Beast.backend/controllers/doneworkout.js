@@ -143,7 +143,7 @@ doneWorkoutRouter.post('/:id/comment', async (request, response, next) => {
       return response.status(401).end()
     }
 
-    const updatedWorkout = await DoneWorkout.findOneAndUpdate(
+    const updatedDoneWorkout = await DoneWorkout.findOneAndUpdate(
       { "_id": request.params.id },
       { $push: { "comments": {
         "content": request.body.comment,
@@ -153,7 +153,7 @@ doneWorkoutRouter.post('/:id/comment', async (request, response, next) => {
       }}},
       { new: true })
 
-    if (updatedWorkout === null) {
+    if (updatedDoneWorkout === null) {
       return response.status(204).end()
     }
 
@@ -165,7 +165,6 @@ doneWorkoutRouter.post('/:id/comment', async (request, response, next) => {
     })
     activityHelper.setActivity(decodedToken.id, 'commentdoneworkout', updatedDoneWorkout._id)
     return response.status(200).json(updatedDoneWorkout)
-
   } catch (error) {
     next(error)
   }

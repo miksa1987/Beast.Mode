@@ -20,14 +20,13 @@ export const Workouts = (props) => {
   }, [])
 
   if (props.workouts.length === 0) {
-    return ( <div><Spinner /></div> )
+    return ( <div><Newpost setShowNewpost={setShowNewpost} isWorkout={true} /><Spinner /></div> )
   }
   
   return ( <div className={screen.width < screen.height ? null : 'workouts-component'}>
     {screen.width < screen.height && <MobileSelection currentUser={props.currentUser} /> }
-    <Button color='blue' onClick={() => setShowNewpost(true) }>Create new workout</Button>
-    {(screen.width < screen.height && showNewpost) && <Newpost setShowNewpost={setShowNewpost} isWorkout={true} />}
-    {(screen.width > screen.height && showNewpost) && <Newpost setShowNewpost={setShowNewpost} isWorkout={true} />}
+    <Button color='red' onClick={() => setShowNewpost(true) }>Create new workout</Button>
+    {showNewpost && <Newpost setShowNewpost={setShowNewpost} isWorkout={true} />}
     {props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} workout={workout} /> ) : null}
     {screen.width > screen.height && <Sidebar currentUser={props.currentUser} />}
   </div> )
