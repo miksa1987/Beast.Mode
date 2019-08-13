@@ -11,6 +11,7 @@ export const setNotification = (message, time) => {
   return dispatch => {
     dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: message})
     setTimeout(() => {
+      console.log('...MENEE!')
       dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: '' })
     }, time * 1000)
   }

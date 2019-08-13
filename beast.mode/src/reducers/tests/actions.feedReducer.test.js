@@ -173,13 +173,14 @@ describe('feed actions', () => {
       comments: [ 'test' ],
       likes: []
     }
-    communicationService.get.mockResolvedValue(mockData)
+    communicationService.post.mockResolvedValue(mockData)
 
     const expectedActions = [
       { type: 'EDIT_POST_ON_FEED', data: mockData }
     ]
 
     await store.dispatch(addComment('post', '1', 'test'))
+    console.log(store.getActions())
     expect(store.getActions()).toEqual(expectedActions)
   })
 
@@ -191,7 +192,7 @@ describe('feed actions', () => {
       comments: [],
       likes: [ '1' ]
     }
-    communicationService.get.mockResolvedValue(mockData)
+    communicationService.post.mockResolvedValue(mockData)
 
     const expectedActions = [
       { type: 'EDIT_POST_ON_FEED', data: mockData }

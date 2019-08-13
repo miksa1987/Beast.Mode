@@ -52,7 +52,7 @@ export const setSearchResults = (keyword, type) => {
     let search = { results: [] }
     console.log('start search')
 
-    while (!getState().search.end) {
+    do {
       console.log('while')
       search = await communicationService.post(`/search/${date}`, { keyword, type })
 
@@ -62,10 +62,10 @@ export const setSearchResults = (keyword, type) => {
       date = moment(date, 'YYYY-M-D-H-m').add(-24, 'hours').format('YYYY-M-D-H-m')
       console.log(date)
       dispatch({ type: 'SET_SEARCH_RESULTS', data: search.results })
-    }
+    } while (!getState().search.end) 
     dispatch({ type: 'SET_SEARCH_LOADED_UNTIL', data: search.startdate })
     dispatch({ type: 'SET_SEARCH_LOADING', data: false })
-  }
+  } 
 }
 
 export const setSearchLoadedUntil = (date) => {

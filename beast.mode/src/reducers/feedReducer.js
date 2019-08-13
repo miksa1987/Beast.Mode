@@ -184,7 +184,6 @@ export const addComment = (type, id, comment) => {
   return async dispatch => {
     const updatedPost = type === 'post' ? await communicationService.post(`/posts/${id}/comment`, { comment })
       : type === 'doneworkout' && await communicationService.post(`/doneworkouts/${id}/comment`, { comment })
-    console.log(updatedPost)
     dispatch({ type: 'EDIT_POST_ON_FEED', data: updatedPost })
   }
 }
@@ -193,7 +192,6 @@ export const like = (type, id) => {
   return async dispatch => {
     const updatedPost = type === 'post' ? await communicationService.post(`/posts/${id}/like`, { wee: 'wee' })
       : type === 'doneworkout' && await communicationService.post(`/doneworkouts/${id}/like`, { wee: 'wee' })
-    console.log(updatedPost)
     dispatch({ type: 'EDIT_POST_ON_FEED', data: updatedPost })
   }
 }
