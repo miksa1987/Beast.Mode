@@ -18,16 +18,17 @@
 
 .workout-button {
   width: 100%;
+  float: right;
   vertical-align: top;
 }
 
 .first {
-  width: 20%;
+  width: 1em;
   padding: 10px;
 }
 
 .second {
-  width: 20%;
+  width: 1em;
   padding: 10px;
 }
 
@@ -39,5 +40,10 @@
   line-break: strict;
   white-space: pre-line;
   text-align: left;
+  padding: 0px 10px;
   vertical-align: top;
+}
+
+.no-padding {
+  padding: 0px;
 }

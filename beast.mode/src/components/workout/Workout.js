@@ -40,10 +40,10 @@ const Workout = (props) => {
     <table className='third'>
       <tbody>
         <tr>
-          {screen.width > screen.height && <td className='workout-image'>
+          <td className='workout-image'>
             <Image size='tiny' rounded src={props.workout.picture && props.workout.picture !== '' 
               ? props.workout.picture : '/img/workout.jpg'} />
-          </td>}
+          </td>
 
           <td className='workout-info'>
             <table className='third'>
@@ -67,9 +67,7 @@ const Workout = (props) => {
                             likes
                           </td>
                           <td data-testid='workout-exercises' className='workout-segment third'>
-                            <ul>
-                              {exercises.map((exercise, i) => <li key={i}>{exercise}</li>)}
-                            </ul>
+                            {exercises.map((exercise, i) => <p key={i}>{exercise}</p>)}
                           </td>
                         </tr>
                       </tbody>
@@ -82,7 +80,7 @@ const Workout = (props) => {
           <td className='workout-button'>
             <Button data-testid='viewworkoutbutton' id='viewworkoutbutton' floated='right' 
               onClick={moveToWorkout}>
-              View
+              {` View`}
             </Button>
           </td>
         </tr>
