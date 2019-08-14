@@ -21,10 +21,10 @@ const FileInput = (props) => {
   return (
     <div>
       <input type='file' id='real-input' onChange={postFile} />
-        {props.compact ? <Button type='button' icon onClick={addFile}>
-          <Icon name='image' />
+      {props.compact ? <Button type='button' icon onClick={addFile}>
+        <Icon name='image' />
           Upload a picture
-        </Button>
+      </Button>
         :<Button fluid type='button' compact icon onClick={addFile}>
           <Icon name='image' />
           Upload a picture

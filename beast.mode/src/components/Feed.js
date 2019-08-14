@@ -17,7 +17,6 @@ const Feed = (props) => {
 
   useEffect(() => {
     if (props.feed.feed.length === 0 && !props.feed.end) {
-      console.log('init')
       props.setEndDate()
       props.initFeed()
     }
@@ -42,7 +41,7 @@ const Feed = (props) => {
   const items = []
     .concat(<Newpost key='WEEEEEE' />)
     .concat(props.feed.feed.map(post =>
-       <Post key={post._id} post={post} />))
+      <Post key={post._id} post={post} />))
 
   return ( <div>
     {screen.width < screen.height && <Newpost />}

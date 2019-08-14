@@ -31,7 +31,7 @@ const App = (props) => {
       <Router>
         <Route exact path='/' render={() => <LoginForm />} />
         <Route exact path='/newuser' render={() => <NewUser />} />
-      <Notification />
+        <Notification />
       </Router>
     </div>)
   }

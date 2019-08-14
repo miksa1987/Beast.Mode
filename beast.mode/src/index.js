@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import socket from './service/socket'
+import socket from './service/socket' // Needed for socket.IO
 
 import store from './store'
 

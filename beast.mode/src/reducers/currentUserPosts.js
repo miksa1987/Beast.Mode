@@ -3,10 +3,10 @@ import sorterService from '../service/sorter'
 
 const currentUserPostsReducer = (state = [], action) => {
   switch(action.type) {
-    case 'INIT_USER_POSTS':
-      return action.data
-    default:
-      return state
+  case 'INIT_USER_POSTS':
+    return action.data
+  default:
+    return state
   }
 }
 

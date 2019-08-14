@@ -62,7 +62,6 @@ const getRepsSetsAndExercise = (text) => {
   let setsRepsExercises = []
   for (let i = 0; i < sets; i++) setsRepsExercises.push(getRepsAndExercise(repsExercise))
 
-  console.log(setsRepsExercises)
   return setsRepsExercises
 }
 

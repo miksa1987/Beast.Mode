@@ -74,7 +74,7 @@ const Settings = (props) => {
     return ( <div className='fade-in-fast element'>
       <h3>Settings</h3>
       <Form onSubmit={saveChanges}>
-      <Image size='medium' circlular='true' src={imagesrc} className='settings-item' />
+        <Image size='medium' circlular='true' src={imagesrc} className='settings-item' />
         <FileInput file={file} setFile={setFile} setImage={setImage} className='settings-item' />
         
         <Input fluid size='small' width='8' placeholder={props.currentUser.email ? 
@@ -91,51 +91,51 @@ const Settings = (props) => {
   return ( <div className='fade-in-fast settings-element'>
     <h3>Settings</h3>
     <Form onSubmit={saveChanges}>
-    <table style={picStyle}>
-      <tbody>
-        <tr>
-          <td>
-            <Image floated='right' rounded size='medium' src={imagesrc} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <FileInput file={file} setFile={setFile} setImage={setImage} />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <table style={tableStyle}>
-      <tbody>
-        <tr>
-          <td>
-            <Input fluid size='small' width='8' placeholder={props.currentUser.email ? 
-              props.currentUser.email : 'No email set!'} {...email} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <TextArea rows='6' style={textAreaStyle} value={props.currentUser.info ? 
-              props.currentUser.info : ''} placeholder='Enter information about yourself' {...info} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <Input fluid size='small' placeholder='Change password?' {...password} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <Input fluid size='small' placeholder='Repeat new password' {...repeatedPassword} />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <Button fluid color='green' type='submit'>Save changes</Button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <table style={picStyle}>
+        <tbody>
+          <tr>
+            <td>
+              <Image floated='right' rounded size='medium' src={imagesrc} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <FileInput file={file} setFile={setFile} setImage={setImage} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table style={tableStyle}>
+        <tbody>
+          <tr>
+            <td>
+              <Input fluid size='small' width='8' placeholder={props.currentUser.email ? 
+                props.currentUser.email : 'No email set!'} {...email} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <TextArea rows='6' style={textAreaStyle} value={props.currentUser.info ? 
+                props.currentUser.info : ''} placeholder='Enter information about yourself' {...info} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Input fluid size='small' placeholder='Change password?' {...password} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Input fluid size='small' placeholder='Repeat new password' {...repeatedPassword} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <Button fluid color='green' type='submit'>Save changes</Button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </Form>
   </div> )
 }

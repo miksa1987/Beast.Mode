@@ -33,7 +33,7 @@ const MobileViewpost = (props) => {
     </table>
     <p>{props.post.content}</p>
     <img src={props.post.picture} width='100%' alt='pic' />   
-      <Comments comments={props.post.comments} showAll={true} postid={props.post._id} /> 
+    <Comments comments={props.post.comments} showAll={true} postid={props.post._id} /> 
     <table><tbody>
       <tr>
         <td>

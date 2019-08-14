@@ -26,7 +26,6 @@ const DoWorkout = (props) => {
     props.initCurrentWorkout(props.workoutid)
   }, [])
 
-  console.log(props.currentWorkout)
   const start = () => {
     timer.start()
     setView('workout')
@@ -34,12 +33,12 @@ const DoWorkout = (props) => {
   // Workout type 0 default
   return ( <div className='doworkout-component fade-in-fast'>
     {view === 'preview' ?
-    <Button.Group>
-      <Button color='red' onClick={start}>Start</Button>
-      <Button color='green' onClick={() => setView('done')}>
+      <Button.Group>
+        <Button color='red' onClick={start}>Start</Button>
+        <Button color='green' onClick={() => setView('done')}>
         Mark done</Button>
-    </Button.Group>
-    : view !== 'done' && <Button color='green' onClick={() => props.setCurrentWorkoutDone()}>
+      </Button.Group>
+      : view !== 'done' && <Button color='green' onClick={() => props.setCurrentWorkoutDone()}>
       Mark done</Button>}
 
     {view === 'preview' && <Preview workout={props.currentWorkout} />}

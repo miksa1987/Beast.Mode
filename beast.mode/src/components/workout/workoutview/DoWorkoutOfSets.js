@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button } from 'semantic-ui-react'
-import useTimer from '../../../hooks/useTimer'
 import useWindowSize from '../../../hooks/useWindowSize'
 import Timer from './Timer'
 import parser from '../../../service/parser'
@@ -14,7 +13,6 @@ const DoWorkoutOfSets = (props) => {
     .split('\n')
     .filter(line => parser.match0(line))
   
-  console.log(rows)
   const window = useWindowSize()
   
   const setDone = () => {

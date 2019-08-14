@@ -53,7 +53,7 @@ const Newpost = (props) => {
           <tr>
             <td>
               <Image src={image ? image 
-              : 'https://react.semantic-ui.com/images/wireframe/image.png'} size='mini' />
+                : 'https://react.semantic-ui.com/images/wireframe/image.png'} size='mini' />
             </td>
             <td>
               <FileInput file={file} setFile={setFile} setImage={setImage} />
@@ -66,19 +66,19 @@ const Newpost = (props) => {
 
       {!props.isWorkout && <Button.Group>
         <Button compact id='updatebutton' data-testid='updatebutton' className='button-style' type='button' 
-        color={!isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(false)}>Update</Button>
+          color={!isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(false)}>Update</Button>
 
         <Button compact id='workoutbutton' data-testid='workoutbutton' className='button-style' type='button' 
-        color={isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(true)}>Workout</Button>
+          color={isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(true)}>Workout</Button>
       </Button.Group>}
 
       {` `}
 
       {props.setShowNewpost && <Button compact data-testid='cancelbutton' id='cancelbutton' className='button-style' 
-      color='red' floated='right' onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
+        color='red' floated='right' onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
 
       {isWorkout && <Button compact id='didworkoutbutton' data-testid='didworkoutbutton' className='button-style' type='button' 
-      color={didWorkout ? 'red' : 'black'} floated='right' onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
+        color={didWorkout ? 'red' : 'black'} floated='right' onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
     </Form>
   </div> )
 }

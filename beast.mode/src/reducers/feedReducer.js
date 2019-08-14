@@ -12,29 +12,29 @@ const initialState = {
 
 const feedReducer = (state = initialState, action) => {
   switch(action.type) {
-    case 'EMPTY_FEED':
-      return initialState
-    case 'INIT_FEED':
-      return { ...state, feed: action.data }
-    case 'ADD_NEW_TO_FEED':
-      return { ...state, feed: [ action.data ].concat(state.feed) }
-    case 'ADD_TOFEED':
-      // I'll keep this here just in case it's needed
-      return { ...state, feed: state.feed.concat(action.data) }
-    case 'REMOVE_FROMFEED':
-      return {...state, feed: state.feed.filter(p => p._id !== action.data) }
-    case 'EDIT_POST_ON_FEED':
-      return { ...state, feed: state.feed.map(post => post._id === action.data._id ? action.data : post) }
-    case 'SET_FEED_LOADING_TO':
-      return { ...state, loading: action.data }
-    case 'SET_FEED_LOADED_UNTIL_TO':
-      return { ...state, loadedUntil: action.data }
-    case 'SET_FEED_END_DATE':
-      return { ...state, endDate: action.data }
-    case 'SET_FEED_END':
-      return { ...state, end: action.data }
-    default:
-      return state
+  case 'EMPTY_FEED':
+    return initialState
+  case 'INIT_FEED':
+    return { ...state, feed: action.data }
+  case 'ADD_NEW_TO_FEED':
+    return { ...state, feed: [ action.data ].concat(state.feed) }
+  case 'ADD_TOFEED':
+    // I'll keep this here just in case it's needed
+    return { ...state, feed: state.feed.concat(action.data) }
+  case 'REMOVE_FROMFEED':
+    return {...state, feed: state.feed.filter(p => p._id !== action.data) }
+  case 'EDIT_POST_ON_FEED':
+    return { ...state, feed: state.feed.map(post => post._id === action.data._id ? action.data : post) }
+  case 'SET_FEED_LOADING_TO':
+    return { ...state, loading: action.data }
+  case 'SET_FEED_LOADED_UNTIL_TO':
+    return { ...state, loadedUntil: action.data }
+  case 'SET_FEED_END_DATE':
+    return { ...state, endDate: action.data }
+  case 'SET_FEED_END':
+    return { ...state, end: action.data }
+  default:
+    return state
   }
 }
 
@@ -50,7 +50,6 @@ export const initFeed = () => {
     let dateString = moment().add(15, 'minutes').format('YYYY-M-D-H-m')
     
     const user = getState().currentUser
-    console.log(user)
     if (user.friends.length === 0 && user.posts.length === 0 && user.doneworkouts.length === 0) {
       dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: getState().feed.endDate})
       dispatch({ type: 'SET_FEED_END', data: true })
@@ -81,7 +80,6 @@ export const initFeed = () => {
 
       if (friendPosts.end && friendDoneworkouts.end && myPosts.end && myDoneworkouts.end) {
         dispatch({ type: 'SET_FEED_END', data: true })
-        console.log('feed end')
         break
       }
     }   
@@ -119,18 +117,17 @@ export const loadMorePosts = () => {
       const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
 
       feedPosts = feedPosts
-      .concat(friendPosts.posts)
-      .concat(friendDoneworkouts.doneworkouts)
-      .concat(myPosts.posts)
-      .concat(myDoneworkouts.doneworkouts)
-      .sort(sorterService.comparePostDates)
+        .concat(friendPosts.posts)
+        .concat(friendDoneworkouts.doneworkouts)
+        .concat(myPosts.posts)
+        .concat(myDoneworkouts.doneworkouts)
+        .sort(sorterService.comparePostDates)
 
       dateString = moment(dateString, 'YYYY-M-D-H-m').add(fetchInterval, 'hours').format('YYYY-M-D-H-m')
       startdate = myPosts.startdate
 
       if (friendPosts.end && friendDoneworkouts.end && myPosts.end && myDoneworkouts.end) {
         dispatch({ type: 'SET_FEED_END', data: true })
-        console.log('feed end')
         break
       }
     } 
@@ -143,7 +140,6 @@ export const loadMorePosts = () => {
 
 export const addNewToFeed = (post) => {
   return async dispatch => {
-    console.log(post)
     const addedPost = post.type === 'post' ?
       await communicationService.post('/posts/new', post) : await communicationService.post('/doneworkouts/new', post)
     dispatch({ type: 'ADD_NEW_TO_FEED', data: addedPost })
@@ -184,7 +180,6 @@ export const addComment = (type, id, comment) => {
   return async dispatch => {
     const updatedPost = type === 'post' ? await communicationService.post(`/posts/${id}/comment`, { comment })
       : type === 'doneworkout' && await communicationService.post(`/doneworkouts/${id}/comment`, { comment })
-    console.log(updatedPost)
     dispatch({ type: 'EDIT_POST_ON_FEED', data: updatedPost })
   }
 }

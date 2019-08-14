@@ -18,14 +18,14 @@ const emptyWorkout = {
 
 const currentWorkoutReducer = (state = emptyWorkout, action) => {
   switch(action.type) {
-    case 'SET_CURRENT_WORKOUT':
-      return action.data
-    case 'SET_CURRENT_WORKOUT_EXERCISES':
-      return { ...state, exercises: action.data }
-    case 'SET_CURRENT_WORKOUT_DONE':
-      return { ...state, done: true, posted: true }
-    default:
-      return state
+  case 'SET_CURRENT_WORKOUT':
+    return action.data
+  case 'SET_CURRENT_WORKOUT_EXERCISES':
+    return { ...state, exercises: action.data }
+  case 'SET_CURRENT_WORKOUT_DONE':
+    return { ...state, done: true, posted: true }
+  default:
+    return state
   }
 }
 
@@ -33,7 +33,7 @@ export const initCurrentWorkout = (workoutid) => {
   return async dispatch => {
     const rawWorkout = await communicationService.get(`/workouts/${workoutid}`)
     const workout = parser.doWorkout(rawWorkout.content)
-    console.log(workout)
+
     dispatch({ type: 'SET_CURRENT_WORKOUT', data: {
       ...workout, 
       id: rawWorkout._id,
@@ -95,7 +95,6 @@ export const setCurrentWorkoutDone = (doneWorkout) => {
 export const commentWorkout = (comment, id) => {
   return async (dispatch, getState) => {
     const updatedWorkout = await communicationService.post(`/workouts/${id}/comment`, { comment })
-    console.log(updatedWorkout.content)
     dispatch({ type: 'SET_CURRENT_WORKOUT', data: {
       ...getState().currentWorkout,  
       comments: updatedWorkout.comments || getState().currentWorkout.comments
@@ -106,7 +105,6 @@ export const commentWorkout = (comment, id) => {
 export const likeWorkout = (placeholder, id) => {
   return async (dispatch, getState) => {
     const updatedWorkout = await communicationService.post(`/workouts/${id}/like`, { wee: 'wee' })
-    console.log(updatedWorkout)
     
     dispatch({ type: 'SET_CURRENT_WORKOUT', data: {
       ...getState().currentWorkout, 

@@ -1,12 +1,11 @@
-import axios from 'axios'
 import communicationService from '../service/communication'
 
 const currentUserReducer = (state = null, action) => {
   switch(action.type) {
-    case 'SET_USER':
-      return action.data
-    default:
-      return state
+  case 'SET_USER':
+    return action.data
+  default:
+    return state
   }
 }
 

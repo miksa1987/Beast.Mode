@@ -63,21 +63,21 @@ describe('feed actions', () => {
     expect(dispatch).toBeCalledWith({ type: 'ADD_TOFEED', data: [ '0', '1', '0', '1' ] })
   })
 
-  it('loadMorePosts with no data', async () => {
-    const mockState = {
-      currentUser: { username: 'Miksa', id: '1', friends: [], posts: [], doneworkouts: [] },
-      feed: { endDate: '2019-1-11' }
-    }
-    const mockData = { posts: [], doneworkouts: [], startdate: '0', enddate: '1', end: false}
-    const dispatch = jest.fn()
-    const getState = jest.fn(() => mockState)
-    communicationService.get.mockResolvedValue(mockData)
+    it('loadMorePosts with no data', async () => {
+      const mockState = {
+        currentUser: { username: 'Miksa', id: '1', friends: [], posts: [], doneworkouts: [] },
+        feed: { endDate: '2019-1-11' }
+      }
+      const mockData = { posts: [], doneworkouts: [], startdate: '0', enddate: '1', end: false}
+      const dispatch = jest.fn()
+      const getState = jest.fn(() => mockState)
+      communicationService.get.mockResolvedValue(mockData)
 
-    await loadMorePosts()(dispatch, getState)
+      await loadMorePosts()(dispatch, getState)
 
-    expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADED_UNTIL_TO', data: '2019-1-11' })
-    expect(dispatch).toBeCalledWith({ type: 'SET_FEED_END', data: true })
-  })
+      expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADED_UNTIL_TO', data: '2019-1-11' })
+      expect(dispatch).toBeCalledWith({ type: 'SET_FEED_END', data: true })
+    })
 
   it('loadMorePosts with data, no end', async () => {
     const mockState = {

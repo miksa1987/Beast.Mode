@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Image } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
-import communicationService from '../../../service/communication'
 import FileInput from '../../universal/FileInput'
 import './Preview.css'
 import '../../Animation.css'

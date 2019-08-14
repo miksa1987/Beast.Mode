@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Input, Menu, Icon, Select } from 'semantic-ui-react'
+import React from 'react'
+import { Input, Menu, Icon } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'

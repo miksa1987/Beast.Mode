@@ -2,10 +2,10 @@ import communicationService from '../service/communication'
 
 const currentPostReducer = (state = {}, action) => {
   switch (action.type) {
-    case 'LOAD_CURRENT_POST':
-      return action.data
-    default:
-      return state
+  case 'LOAD_CURRENT_POST':
+    return action.data
+  default:
+    return state
   }
 }
 

@@ -2,14 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setSearchResults } from '../../reducers/searchResultsReducer'
-import useWindowSize from '../../hooks/useWindowSize'
-import useOrientation from '../../hooks/useOrientation'
 import './Search.css'
 
 const SearchPopup = (props) => {
-  const windowSize = useWindowSize()
-  const orientation = useOrientation()
-
   const search = (type) => {
     props.setSearchResults(props.searchterm, type)
     props.resetSearch()

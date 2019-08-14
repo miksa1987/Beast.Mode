@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button } from 'semantic-ui-react'
-import useTimer from '../../../hooks/useTimer'
 import useWindowSize from '../../../hooks/useWindowSize'
 import Timer from './Timer'
 import parser from '../../../service/parser'
@@ -10,7 +9,6 @@ const DoWorkoutOfSets = (props) => {
   const [current, setCurrent] = useState({ exercise: 0, round: 0 })
   const [currentReps, setCurrentReps] = useState(5)
   
-  console.log(current)
   const rows = props.currentWorkout.textcontent
     .split('\n')
     .filter(line => parser.match1(line))
@@ -25,19 +23,14 @@ const DoWorkoutOfSets = (props) => {
     props.setCurrentWorkoutExerciseDone(currentReps, current.exercise)
 
     if (newCurrent.exercise > props.currentWorkout.exercises.length - 1) {
-      console.log('check 1')
       if (newCurrent.round < props.currentWorkout.rounds - 1) {
-        console.log('check 2')
         newCurrent = { round: current.round + 1, exercise: 0 }
       } else {
         props.timer.stop()
         props.setView('done')
       }
     }
-    console.log(newCurrent)
     setCurrent(newCurrent)
-    
-    console.log(`ex ${current.exercise} round ${current.round}`)
   }
 
   if (props.currentWorkout.exercises.length === 0) {

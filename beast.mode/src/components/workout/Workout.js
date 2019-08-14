@@ -7,15 +7,12 @@ import './Workout.css'
 import '../Animation.css'
 
 const Workout = (props) => {
-  const screen = useWindowSize()
-
   // Get first lines from content
   const getExercises = () => {
     const lines = props.workout.content.split('\n')
     let exercises = []
     
     lines.forEach(line => {
-      console.log(`line ${line} ${parser.isWorkout(line)}`)
       if (parser.isWorkout(line)) exercises = exercises.concat(line)
     })
 

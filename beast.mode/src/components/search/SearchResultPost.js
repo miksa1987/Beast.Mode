@@ -11,17 +11,17 @@ const SearchResultPost = (props) => {
   let uri = ''
 
   switch (props.result.type) {
-    case 'post':
-      uri = `/post/${props.result._id}`
-      break
-    case 'workout':
-      uri = `/workout/${props.result._id}`
-      break
-    case 'doneworkout':
-      uri = `/doneworkout/${props.result._id}`
-      break
-    default:
-      uri = ''
+  case 'post':
+    uri = `/post/${props.result._id}`
+    break
+  case 'workout':
+    uri = `/workout/${props.result._id}`
+    break
+  case 'doneworkout':
+    uri = `/doneworkout/${props.result._id}`
+    break
+  default:
+    uri = ''
   }
 
   return ( <div className='search-result'>

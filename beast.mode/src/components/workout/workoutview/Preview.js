@@ -12,8 +12,6 @@ export const Preview = (props) => {
   const screen = useWindowSize()
   const [comment, resetComment] = useField('text')
 
-  console.log(props.workout)
-
   const addComment = (event) => {
     event.preventDefault()
     props.commentWorkout(comment.value, props.workout.id)
@@ -58,7 +56,7 @@ export const Preview = (props) => {
           </td>
           <td className='fullwidth rightcolumn-style'>
             <Image rounded src={(props.workout.picture && props.workout.picture) !== '' ?
-            props.workout.picture : '/img/workout.jpg'} />
+              props.workout.picture : '/img/workout.jpg'} />
           </td>
         </tr>
       </tbody>

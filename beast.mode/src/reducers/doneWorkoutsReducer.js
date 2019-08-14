@@ -2,12 +2,12 @@ import communicationService from '../service/communication'
 
 const doneWorkoutReducer = (state = [], action) => {
   switch (action.type) {
-    case 'INIT_DONE_WORKOUTS':
-      return action.data
-    case 'ADD_DONE_WORKOUT':
-      return [ ...state, action.data ]
-    default:
-      return state
+  case 'INIT_DONE_WORKOUTS':
+    return action.data
+  case 'ADD_DONE_WORKOUT':
+    return [ ...state, action.data ]
+  default:
+    return state
   }
 }
 

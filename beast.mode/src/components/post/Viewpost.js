@@ -57,9 +57,9 @@ const Viewpost = (props) => {
                       <tr>
                         <td>
                           <div className='title-style'>
-                          {props.post.user.picture && props.post.user.picture !== '' ?
-                            <Image width='32px' height='32px' circular src={props.post.user.picture} />
-                            : <Icon name='user' />}
+                            {props.post.user.picture && props.post.user.picture !== '' ?
+                              <Image width='32px' height='32px' circular src={props.post.user.picture} />
+                              : <Icon name='user' />}
                           </div>    
                         </td>
                         <td>
@@ -106,10 +106,10 @@ const Viewpost = (props) => {
           </table>
         </td>
       </tr>
-      </tbody>
+    </tbody>
     </table>
   </div> 
-   )
+  )
 }
 
 const mapStateToProps = (state) => {

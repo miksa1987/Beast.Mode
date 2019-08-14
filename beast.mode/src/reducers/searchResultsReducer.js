@@ -12,20 +12,20 @@ const initialState = {
 
 const searchResultReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'SET_SEARCH_RESULTS':
-      const newResults = state.results.concat(action.data)
-      const filteredResults = uniqWith(newResults, isEqual)
-      return { ...state, results: filteredResults }
-    case 'EMPTY_SEARCH_RESULTS':
-      return initialState
-    case 'SET_SEARCH_LOADING':
-      return { ...state, loading: action.data }
-    case 'SET_SEARCH_LOADED_UNTIL':
-      return { ...state, loadedUntil: action.data }
-    case 'SET_SEARCH_END':
-      return { ...state, end: action.data }
-    default:
-      return state
+  case 'SET_SEARCH_RESULTS':
+    const newResults = state.results.concat(action.data)
+    const filteredResults = uniqWith(newResults, isEqual)
+    return { ...state, results: filteredResults }
+  case 'EMPTY_SEARCH_RESULTS':
+    return initialState
+  case 'SET_SEARCH_LOADING':
+    return { ...state, loading: action.data }
+  case 'SET_SEARCH_LOADED_UNTIL':
+    return { ...state, loadedUntil: action.data }
+  case 'SET_SEARCH_END':
+    return { ...state, end: action.data }
+  default:
+    return state
   }
 }
 

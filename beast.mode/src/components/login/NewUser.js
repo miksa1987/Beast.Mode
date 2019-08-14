@@ -83,7 +83,7 @@ const NewUser = (props) => {
         </tbody>
       </table>
       <Button fluid type='submit' id='create'>Create your account</Button>
-      </Form>
+    </Form>
     <Notification />
   </div> )
 }
