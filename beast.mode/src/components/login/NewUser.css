@@ -1,24 +1,28 @@
 @media (min-width: 320px) and (max-width: 600px) {
   .style {
     width: 100%;
+    margin: auto;
   }
 }
 
 @media (min-width: 620px) and (max-width: 900px) {
   .style {
     width: 80%;
+    margin: auto;
   }
 }
 
 @media (min-width: 920px) and (max-width: 1400px) {
   .style {
     width: 60%;
+    margin: auto;
   }
 }
 
 @media (min-width: 1420px)  {
   .style {
     width: 40%;
+    margin: auto;
   }
 }
 

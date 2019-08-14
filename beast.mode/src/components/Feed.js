@@ -31,13 +31,11 @@ const Feed = (props) => {
 
   useEffect(() => {
     if (scrollPercentage > 60 && !props.feed.loading) {
-      console.log('trigger more posts')
       props.loadMorePosts()
     }
   }, [scrollPercentage])
 
   if (props.feed.feed.length === 0 && props.feed.loading) {
-    console.log('spinner')
     return ( <div><Newpost /><Spinner /></div> )
   }
 

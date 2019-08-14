@@ -28,6 +28,7 @@ const Users = (props) => {
   }
 
   return ( <div style={listStyle}>
+    <h3>Discover people</h3>
     <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
       {props.users.map(user => <User key={user.id} user={user} />)}
     </Masonry>
