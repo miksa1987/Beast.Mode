@@ -48,9 +48,9 @@ const Dashboard  = (props) => {
     </div>
 
     {props.currentUser.id !== props.currentProfile.id ? props.currentUser.friends.indexOf(props.currentProfile.id) > -1 
-    ? <Button id='addfriend-button' className='add-button' color='red' onClick={() => props.removeFriend(props.currentProfile.id)} >
+    ? <Button id='removefriend-button' className='add-button' color='red' onClick={() => props.removeFriend(props.currentProfile.id)} >
         Remove friend</Button>
-    : <Button id='removefriend-button' className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >
+    : <Button id='addfriend-button' className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >
         Add friend</Button> : null}
     
     {props.currentUser.id === props.currentProfile.id

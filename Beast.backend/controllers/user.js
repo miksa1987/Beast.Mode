@@ -97,7 +97,6 @@ userRouter.get('/:id/posts/:date', async (request, response, next) => {
   if (!decodedToken.id) {
     return response.status(401).end()
   }
-  const user = await User.findById(decodedToken.id)
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
@@ -121,7 +120,10 @@ userRouter.get('/:id/posts/:date', async (request, response, next) => {
       }
     }
 
-    let posts = await Post.find({
+    const user = await User.findById(decodedToken.id)
+    dates.setFetchInterval(user.fetchInterval || -128)
+
+    const posts = await Post.find({
       $and: [
           { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: decodedToken.id }
@@ -151,7 +153,6 @@ userRouter.get('/:id/workouts/:date', async (request, response, next) => {
   if (!decodedToken.id) {
     return response.status(401).end()
   }
-  const user = await User.findById(decodedToken.id)
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
@@ -175,7 +176,10 @@ userRouter.get('/:id/workouts/:date', async (request, response, next) => {
       }
     }
 
-    let workouts = await Workout.find({
+    const user = await User.findById(decodedToken.id)
+    dates.setFetchInterval(user.fetchInterval || -128)
+
+    const workouts = await Workout.find({
       $and: [
         { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
         { user: decodedToken.id }
@@ -205,8 +209,7 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response, next) => {
   if (!decodedToken.id) {
     return response.status(401).end()
   }
-  const user = await User.findById(decodedToken.id)
-
+  
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
 
@@ -229,7 +232,11 @@ userRouter.get('/:id/doneworkouts/:date', async (request, response, next) => {
       }
     }
 
-    let doneworkouts = await DoneWorkout.find({
+
+    const user = await User.findById(decodedToken.id)
+    dates.setFetchInterval(user.fetchInterval || -128)
+
+    const doneworkouts = await DoneWorkout.find({
       $and: [
         { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
         { user: decodedToken.id }

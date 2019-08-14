@@ -23,8 +23,8 @@ export const Preview = (props) => {
   if (screen.width < screen.height) {
     return ( <div className='preview-component'>
       <h2>Preview workout</h2>
-      {(props.workout.picture && props.workout.picture !== '') &&
-        <Image floated='right' src={props.workout.picture} size='medium' />}
+      <Image floated='right' size='tiny' rounded
+        src={props.workout.picture !== '' ? props.workout.picture : '/img/workout.jpg'}  />
       <h3>{props.workout.textcontent}</h3>
       <Comments showAll={true} comments={props.workout.comments} />
 

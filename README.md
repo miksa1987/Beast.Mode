@@ -9,6 +9,8 @@ Backendin tulen tekemään Expressillä, johon on yhdistetty MongoDB. Kuvien tal
 Frontend tehdään React + Redux-yhdistelmällä.
 
 Käyttöliittymässä on käytetty Semantic UI React-komponentteja, kuvakkeita ja tyyliä, jotka on julkaistu MIT-lisenssillä.
+Treenin esikatselussa näkyvä kuva on Edgar Chaparron käsialaa, ja sitä voi käyttää vapaasti(https://unsplash.com/license): 
+https://unsplash.com/@echaparro
 
 Sovellus löytyy käynnissä osoitteesta https://protected-anchorage-88354.herokuapp.com/
 
@@ -24,6 +26,9 @@ Idea originally came from Madbarz, but I decided to take this further and withou
 
 Backend is made with NodeJS+Express combo, with MongoDB as database and Cloudinary as picture hosting service. 
 Frontend is made with React and Redux. Semantic UI React components, icons and style are also used in the interface, these are published under MIT license.
+
+The picture on workout preview is by Edgar Chaparro, and it can be used for free (https://unsplash.com/license): 
+https://unsplash.com/@echaparro
 
 The app can be found running at https://protected-anchorage-88354.herokuapp.com/
 
