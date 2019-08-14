@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { breakPoints } from '../masonry-config'
 import { initUserPosts } from '../../reducers/currentUserPosts'
 import Post from '../post/Post'
+import Spinner from '../Spinner'
 import '../Feed.css'
 import './Dashboard.css'
 import '../Animation.css'
@@ -13,7 +14,10 @@ const Posts = (props) => {
     props.initUserPosts(props.currentProfile.id)
   }, [])
 
-  if (!props.currentUserPosts.length === 0) {
+  if (props.currentProfile.posts.length !== 0 && props.currentUserPosts.length === 0) {
+    return ( <div><Spinner /></div>)
+  }
+  if (props.currentUserPosts.length === 0) {
     return ( <div></div> )
   }
 

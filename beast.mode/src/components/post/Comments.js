@@ -9,7 +9,6 @@ const Comments = (props) => {
 
   if (props.comments.length === 0) {
     return ( <div data-testid='comments' className="component">
-      <strong>No comments yet!</strong>
     </div> )
   }
 

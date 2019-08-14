@@ -2,13 +2,17 @@ import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { initWorkouts } from '../../reducers/workoutsReducer'
 import Workout from '../workout/Workout'
+import Spinner from '../Spinner'
 
 const UsersWorkouts = (props) => {
   useEffect(() => {
     props.initWorkouts(props.currentProfile.id)
   }, [])
 
-  if (!props.workouts.length === 0) {
+  if (props.currentProfile.workouts.length !== 0 && props.workouts.length === 0) {
+    return ( <div><Spinner /></div>)
+  }
+  if (props.workouts.length === 0) {
     return ( <div></div> )
   }
 

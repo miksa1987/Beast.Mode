@@ -39,7 +39,7 @@ doneWorkoutRouter.get('/oldest', async (request, response, next) => {
 
 doneWorkoutRouter.get('/:id', async (request, response, next) => {
   try {
-    const doneWorkout = await DoneWorkout.findById(request.params.id)
+    const doneWorkout = await DoneWorkout.findById(request.params.id).populate('user')
     return response.status(200).json(doneWorkout)
   } catch (error) {
     next(error)

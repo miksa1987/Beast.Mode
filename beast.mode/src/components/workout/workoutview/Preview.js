@@ -57,8 +57,8 @@ export const Preview = (props) => {
             <Comments showAll={true} comments={props.workout.comments} />
           </td>
           <td className='fullwidth rightcolumn-style'>
-            <Image src={(props.workout.picture && props.workout.picture) !== '' ?
-            props.workout.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
+            <Image rounded src={(props.workout.picture && props.workout.picture) !== '' ?
+            props.workout.picture : '/img/workout.jpg'} />
           </td>
         </tr>
       </tbody>

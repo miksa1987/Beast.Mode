@@ -6,8 +6,7 @@ import Searchbar from './Searchbar'
 
 const MobileSelection = (props) => {
   return ( <div>
-    <Searchbar />
-    <Dropdown fluid button text='Filters'>
+    <Dropdown className='mobile-topitems' fluid button text='Filters'>
       <Dropdown.Menu>
         <Dropdown.Item text='Featured workouts' onClick={props.initRandomWorkouts} />
         <Dropdown.Item text='Newest workouts' onClick={props.initNewestWorkouts} />
@@ -15,6 +14,7 @@ const MobileSelection = (props) => {
         <Dropdown.Item text={`Friends' workouts`} onClick={() => props.initFriendWorkouts(props.currentUser.id)} />
       </Dropdown.Menu>
     </Dropdown>
+    <Searchbar className='mobile-topitems' />
   </div> )
 }
 

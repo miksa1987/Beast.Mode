@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { initDoneWorkouts } from '../../reducers/doneWorkoutsReducer'
 import { breakPoints } from '../masonry-config'
 import Post from '../post/Post'
+import Spinner from '../Spinner'
 import '../Feed.css'
 
 const UsersDoneWorkouts = (props) => {
@@ -11,7 +12,10 @@ const UsersDoneWorkouts = (props) => {
     props.initDoneWorkouts(props.currentProfile.id)
   }, [])
 
-  if (!props.doneWorkouts.length === 0) {
+  if (props.currentProfile.doneWorkouts.length !== 0 && props.doneWorkouts.length === 0) {
+    return ( <div><Spinner /></div>)
+  }
+  if (props.doneWorkouts.length === 0) {
     return ( <div></div> )
   }
 

@@ -38,7 +38,6 @@ const DoWorkout = (props) => {
       <Button color='red' onClick={start}>Start</Button>
       <Button color='green' onClick={() => setView('done')}>
         Mark done</Button>
-      <Button color='blue'>Edit</Button>
     </Button.Group>
     : view !== 'done' && <Button color='green' onClick={() => props.setCurrentWorkoutDone()}>
       Mark done</Button>}

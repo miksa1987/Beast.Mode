@@ -34,7 +34,10 @@ const ViewpostNophoto = (props) => {
                 </td>
                   <td>
                     <div className='title-style'><strong>{props.post.user.username}</strong></div>
-                  </td>     
+                  </td>
+                  {props.post.type === 'doneworkout' && <td>
+                    <div className='title-style'>did a workout</div>
+                  </td>}     
                 </tr>
               </tbody>
             </table>

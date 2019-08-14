@@ -8,11 +8,11 @@
 }
 
 .workout-image {
-  width: 35%;
+  width: 30%;
 }
 
 .workout-info {
-  width: 80%;
+  width: 70%;
   vertical-align: top;
 }
 
@@ -22,11 +22,13 @@
 }
 
 .first {
-  width: 33%;
+  width: 20%;
+  padding: 10px;
 }
 
 .second {
-  width: 50%;
+  width: 20%;
+  padding: 10px;
 }
 
 .third {
@@ -38,5 +40,4 @@
   white-space: pre-line;
   text-align: left;
   vertical-align: top;
-  padding: 0px;
 }

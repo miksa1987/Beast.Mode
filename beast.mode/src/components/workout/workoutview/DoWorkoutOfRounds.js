@@ -85,15 +85,6 @@ const DoWorkoutOfSets = (props) => {
           </tr>
         </tbody>
       </table>
-      <Timer secs={props.timer.value} />
-      <h2>Round {current.round + 1}</h2>
-      <h3>Exercise {current.exercise + 1}</h3>
-      <h4>How many reps did you do? {currentReps} reps</h4>
-      <Button.Group>
-        <Button id='workout-decreasebutton' icon='left chevron' onClick={() => setCurrentReps(currentReps - 1)}></Button>
-        <Button id='workout-increasebutton' icon='right chevron'  onClick={() => setCurrentReps(currentReps + 1)}></Button>
-      </Button.Group>
-      <Button id='workout-exercisedonebutton' color='green' onClick={setDone}>Exercise done</Button>
     </div> )
   }
 

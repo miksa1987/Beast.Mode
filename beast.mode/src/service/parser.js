@@ -1,5 +1,5 @@
-const regex0 = /^\d\d?x\d\d?\s+\D+/
-const regex1 = /^\d\d?\s+\D+/
+const regex0 = /^\d\d?x\d\d?[ ]+\D+/
+const regex1 = /(?!\d+ rounds)(^\d\d?[ ]+\D+)/
 const rounds = /^\d\d\s+rounds/
 
 const isWorkout = (post) => {
@@ -78,7 +78,6 @@ const doExercises = (type, text) => {
 
   if (type === '0') {
     lines.forEach(line => {
-      console.log(`do ${line}`)
       if(match0(line)) exercises.push(getRepsSetsAndExercise(line))
     })
   }
@@ -87,7 +86,7 @@ const doExercises = (type, text) => {
       if(match1(line) && !matchRounds(line)) exercises.push(getRepsAndExercise(line))
     })
   }
-  console.log(exercises)
+
   return exercises
 }
 
@@ -107,19 +106,15 @@ const doWorkout = (text) => {
   if(/^\d\d?x\d\d?\s+\D+/gm.exec(text)) workout.type = '0'
   if(/^\d\d?\s+\D+/gm.exec(text)) workout.type = '1'
 
-  console.log(`workout type ${workout.type}`)
-
   workout.exercises = doExercises(workout.type, text)
 
   if (workout.type === '1') {
     const lines = text.split('\n')
     lines.forEach(line => {
       if (matchRounds(line)) workout.rounds = getRounds(line)
-      console.log('set rounds')
     })
   }
 
-  console.log(workout)
   return workout
 }
 
