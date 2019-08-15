@@ -47,19 +47,19 @@ export const setSearchResults = (keyword, type) => {
       dispatch({ type: 'SET_SEARCH_LOADING', data: false })
       return
     }
-    let date = moment().add(-24, 'hours').format('YYYY-M-D-H-m')
+    let date = moment().format('YYYY-M-D-H-m')
 
     let search = { results: [] }
-
+    
     do {
       search = await communicationService.post(`/search/${date}`, { keyword, type })
-
+      
       if (search.end) {
         dispatch({ type: 'SET_SEARCH_END', data: true })
       }
       date = moment(date, 'YYYY-M-D-H-m').add(-24, 'hours').format('YYYY-M-D-H-m')
       dispatch({ type: 'SET_SEARCH_RESULTS', data: search.results })
-    } while (!getState().search.end) 
+    } while (!getState().search.end)
     dispatch({ type: 'SET_SEARCH_LOADED_UNTIL', data: search.startdate })
     dispatch({ type: 'SET_SEARCH_LOADING', data: false })
   } 

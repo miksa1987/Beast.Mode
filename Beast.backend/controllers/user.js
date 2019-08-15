@@ -285,7 +285,8 @@ userRouter.post('/new', async (request, response, next) => {
       friends: [],
       posts: [],
       workouts: [],
-      doneWorkouts: []
+      doneWorkouts: [],
+      fetchInterval: -128
     })
 
     const savedUser = await user.save()

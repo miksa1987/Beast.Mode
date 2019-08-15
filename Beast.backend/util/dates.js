@@ -8,7 +8,8 @@ const setFetchInterval = (interval) => {
 }
 
 const getFetchDates = (dateString) => {
-  const first = moment(dateString, 'YYYY-M-D-H-m').add((fetchInterval || -128), 'hours')
+  console.log(`fetch ${fetchInterval} hrs`)
+  const first = moment(dateString, 'YYYY-M-D-H-m').add((fetchInterval ? fetchInterval : -128), 'hours')
   const second = moment(dateString, 'YYYY-M-D-H-m')
   const startdate = new Date(first.format('MMMM D, YYYY HH:mm:ss'))
   const enddate = new Date(second.format('MMMM D, YYYY HH:mm:ss'))

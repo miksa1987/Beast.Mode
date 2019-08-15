@@ -77,6 +77,7 @@ searchRouter.post('/:date', async (request, response, next) => {
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
+
     // Might remove this verification
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!decodedToken.id) return response.status(401).json({ error: 'Not authorized' })
