@@ -35,14 +35,11 @@ export const commentCurrentPost = (type, id, comment) => {
 
 export const likeCurrentPost = (type, id) => {
   return async dispatch => {
-    console.log(type)
-    console.log(id)
     let post = {}
 
     if (type === 'post') post = await communicationService.post(`/posts/${id}/like`, { wee: 'wee' })
     if (type === 'workout') post = await communicationService.post(`/workouts/${id}/like`, { wee: 'wee' })
     if (type === 'doneworkout') post = await communicationService.post(`/doneworkouts/${id}/like`, { wee: 'wee' })
-    console.log(post)
 
     dispatch({ type: 'LOAD_CURRENT_POST', data: post })
   }

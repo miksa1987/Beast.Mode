@@ -15,7 +15,6 @@ const ViewpostNophoto = (props) => {
     resetComment()
   }
 
-  console.log(props.post._id)
   return (
     <div className='viewpost-component component-width fade-in-fast'>
       <table className='table-style'>

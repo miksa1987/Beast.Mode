@@ -28,7 +28,6 @@ const postImage = async (imageFile) => {
   }}
 
   const response = await axios.post('/image/new', data, config)
-  console.log(response)
   return response.data.imageuri
 }
 

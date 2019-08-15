@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, Image, Icon } from 'semantic-ui-react'
+import { Input, Image, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import Comments from './Comments'
 import LikeButton from '../universal/LikeButton'
@@ -9,7 +9,6 @@ const MobileViewpost = (props) => {
   if(!props.post.content) {
     return ( <div></div> )
   }
-  console.log(props.post._id)
 
   return ( <div className='viewpost-element'>     
     <table>

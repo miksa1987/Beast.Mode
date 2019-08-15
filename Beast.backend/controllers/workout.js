@@ -28,7 +28,6 @@ workoutRouter.get('/random', async (request, response, next) => {
         "as": "user"
       }},
       { "$unwind": "$user" }])
-    console.log(workouts)
     return response.json(workouts)
   } catch(error) {
     next(error)
@@ -38,7 +37,6 @@ workoutRouter.get('/random', async (request, response, next) => {
 workoutRouter.get('/newest', async (request, response, next) => {
   try {
     const workouts = await Workout.find().sort({ _id: -1 }).limit(15).populate('user')
-    console.log(workouts)
     return response.json(workouts)
   } catch(error) {
     next(error)
@@ -48,7 +46,6 @@ workoutRouter.get('/newest', async (request, response, next) => {
 workoutRouter.get('/mostliked', async (request, response, next) => {
   try {
     const workouts = await Workout.find().sort({ likesLength: -1 }).limit(15).populate('user')
-    console.log(workouts)
     return response.json(workouts)
   } catch(error) {
     next(error)
@@ -67,7 +64,6 @@ workoutRouter.get('/oldest', async (request, response, next) => {
     }
 
     const date = moment(oldest.getOldestWorkout()).format('YYYY-M-D-H-m')
-    console.log(`oldest ${date}`)
 
     return response.json({ oldest: date })
   } catch (error) {
@@ -121,7 +117,6 @@ workoutRouter.get('/byfriends/:date', async (request, response, next) => {
       })
 
       if (all.length === 0) {
-        console.log('ENDDDD')
         return response.json({
           workouts: [],
           startdate: dates.getDateString(oldest.getOldestWorkout()),

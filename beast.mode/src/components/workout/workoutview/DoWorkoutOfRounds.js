@@ -53,11 +53,6 @@ const DoWorkoutOfSets = (props) => {
           </tr>
           <tr>
             <td className='doworkout-component-mobile-tr'>
-              <h3>Set {current.set + 1}</h3>    
-            </td>
-          </tr>
-          <tr>
-            <td className='doworkout-component-mobile-tr'>
               <h4>Now do at least 
                 {props.currentWorkout.exercises[current.exercise].reps} {props.currentWorkout.exercises[current.exercise].exercise}</h4>
             </td>

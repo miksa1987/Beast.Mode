@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Image, Divider } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import './Search.css'
 
 

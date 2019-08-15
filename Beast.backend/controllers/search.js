@@ -71,21 +71,19 @@ searchRouter.post('/', async (request, response, next) => {
 })
 
 searchRouter.post('/:date', async (request, response, next) => {
-  console.log(request.body)
   if (!request.body.type) return response.status(400).json({ error: 'Search type missing'})
   if (!request.body.keyword) return response.status(400).json({ error: 'Keyword string missing'})
   if (!request.token) return response.status(401).json({ error: 'Not authorized'})
 
   try {
     let [startdate, enddate] = dates.getFetchDates(request.params.date)
-    // Might remove this
+    // Might remove this verification
     const decodedToken = await jwt.verify(request.token, config.SECRET)
     if (!decodedToken.id) return response.status(401).json({ error: 'Not authorized' })
 
     let results = []
     switch (request.body.type) {
       case 'user':
-        console.log('user')
         results = await User.find({ username: {
           '$regex': request.body.keyword,
           '$options': 'i'
@@ -98,7 +96,6 @@ searchRouter.post('/:date', async (request, response, next) => {
             $and: [ { date: { $gte: oldest.getOldestPost() }}, { date: { $lte: enddate }} ]
           })  
           if (all.length === 0) {
-            console.log('ENDDDD')
             return response.json({
               results: [],
               startdate: dates.getDateString(oldest.getOldestPost()),
@@ -118,7 +115,6 @@ searchRouter.post('/:date', async (request, response, next) => {
             $and: [ { date: { $gte: oldest.getOldestWorkout() }}, { date: { $lte: enddate }} ]
           })  
           if (all.length === 0) {
-            console.log('ENDDDD')
             return response.json({
               results: [],
               startdate: dates.getDateString(oldest.getOldestWorkout()),
@@ -139,7 +135,6 @@ searchRouter.post('/:date', async (request, response, next) => {
             $and: [ { date: { $gte: oldest.getOldestDoneWorkout() }}, { date: { $lte: enddate }} ]
           })  
           if (all.length === 0) {
-            console.log('ENDDDD')
             return response.json({
               results: [],
               startdate: dates.getDateString(oldest.getOldestDoneWorkout()),
@@ -165,7 +160,6 @@ searchRouter.post('/:date', async (request, response, next) => {
             $and: [ { date: { $gte: oldest.getOldestDoneWorkout() }}, { date: { $lte: enddate }} ]
           }))
           if (all.length === 0) {
-            console.log('ENDDDD')
             return response.json({
               results: [],
               startdate: dates.getDateString(oldest.getOldest()),

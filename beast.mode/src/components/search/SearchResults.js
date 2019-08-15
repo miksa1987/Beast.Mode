@@ -9,8 +9,6 @@ const SearchResults = (props) => {
     return ( <div>Search did not find anything.</div> )
   }
 
-  console.log(props.search)
-
   return ( <div>
     {props.search.results.map((result, i) => result.type 
       ? <SearchResultPost key={i} result={result} /> : <SearchResultUser key={i} result={result} /> )}

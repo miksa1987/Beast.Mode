@@ -19,8 +19,6 @@ const NewUser = (props) => {
     event.preventDefault()
 
     if (password.value !== rPassword.value) {
-      console.log(password)
-      console.log(rPassword)
       props.setNotification('Passwords do not match. Please re-enter passwords.', 3)
       resetPassword()
       resetRPassword()
@@ -45,7 +43,7 @@ const NewUser = (props) => {
       props.setNotification(`User ${user.username} created. You may now log in.`, 3)
       props.history.push('/')
     } catch (error) {
-      console.log(error.message)
+      props.setNotification('Something went wrong. Please try again.')
     }
   }
 

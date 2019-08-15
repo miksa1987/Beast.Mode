@@ -1,19 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import moment from 'moment'
-import m from 'moment-duration-format'
+import 'moment-duration-format'
 
 const Timer = (props) => {
-  const [time, setTime] = useState('00:00:00')
-  const secs = props.secs
-
-  useEffect(() => {
-    const duration = moment.duration(secs, 'seconds')
-    const formatted = moment.duration.format([duration], 'hh:mm:ss')
-    setTime(formatted)
-  }, [secs])
+  const time = moment.duration(props.secs, 'seconds').format('hh:mm:ss')
 
   return ( <div>
-    <h3>Workout time: {time}</h3>
+    <h3>Workout time: {props.secs < 60 ? `00:${time}` : time}</h3>
   </div> )
 }
 

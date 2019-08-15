@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Input, Form, Button, Image, TextArea } from 'semantic-ui-react'
 import { updateUser } from '../reducers/currentUser'
 import { setNotification } from '../reducers/notificationReducer'
-import communicationService from '../service/communication'
 import FileInput from './universal/FileInput'
 import useField from '../hooks/useField'
 import useWindowSize from '../hooks/useWindowSize'
@@ -38,14 +37,6 @@ const Settings = (props) => {
 
   const textAreaStyle = {
     resize: 'none'
-  }
-  
-  const postFile = async (event) => {
-    const chosenFile = event.target.files[0]
-    if (chosenFile !== file) {
-      setFile(chosenFile)
-      setImage(await communicationService.postImage(chosenFile))
-    }
   }
 
   const saveChanges = (event) => {

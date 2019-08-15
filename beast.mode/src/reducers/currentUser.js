@@ -23,7 +23,6 @@ export const loginUser = (user) => {
         dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: ''})
       }, 3000)
     } catch (error) {
-      console.log(error.message)
       dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: 'Username or password incorrect'})
       setTimeout(() => {
         dispatch({ type: 'SET_NOTIFICATION_MESSAGE', data: ''})
@@ -51,7 +50,6 @@ export const addFriend = (friendId) => {
   return async (dispatch, getState) => {
     if (friendId !== getState().currentUser.id) {
       const updatedUser = await communicationService.post('/users/addfriend', { newfriend: friendId })
-      console.log(updatedUser)
       dispatch({ type: 'SET_USER', data: updatedUser })
     }
   }
@@ -60,7 +58,6 @@ export const addFriend = (friendId) => {
 export const removeFriend = (friendId) => {
   return async dispatch => {
     const updatedUser = await communicationService.post('/users/removefriend', { friendToRemove: friendId })
-    console.log(updatedUser)
     
     dispatch({ type: 'SET_USER', data: updatedUser })
   }
@@ -70,7 +67,6 @@ export const updateUser = (data) => {
   return async dispatch => {
     const updatedUser = await communicationService.update('/users/me', data)
     
-    console.log(updatedUser)
     window.localStorage.setItem('currentUser', JSON.stringify(updatedUser))
     dispatch({ type: 'SET_USER', data: updatedUser})
   }

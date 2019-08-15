@@ -151,7 +151,7 @@ doneWorkoutRouter.post('/:id/comment', async (request, response, next) => {
         "userid": decodedToken.id,
         "date": new Date()
       }}},
-      { new: true })
+      { new: true }).populate('user')
 
     if (updatedDoneWorkout === null) {
       return response.status(204).end()

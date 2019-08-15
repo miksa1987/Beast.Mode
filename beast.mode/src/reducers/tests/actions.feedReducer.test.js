@@ -180,7 +180,6 @@ describe('feed actions', () => {
     ]
 
     await store.dispatch(addComment('post', '1', 'test'))
-    console.log(store.getActions())
     expect(store.getActions()).toEqual(expectedActions)
   })
 

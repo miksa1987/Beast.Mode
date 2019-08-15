@@ -12,12 +12,12 @@ import SearchPopup from './search/SearchPopup'
 import './Menubar.css'
 
 const Menubar = (props) => {
-  const windowSize = useWindowSize()
+  const screen = useWindowSize()
   const orientation = useOrientation()
   const [search, resetSearch] = useField('text')
 
   const barStyle = {
-    width: orientation === 'portrait' ? (windowSize.width - 30) : (windowSize.width - 5*60 - 160)
+    width: screen.width < screen.height ? (screen.width - 30) : (screen.width - 5*60 - 160)
   }
 
   const home = () => {

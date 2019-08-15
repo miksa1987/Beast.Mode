@@ -37,7 +37,7 @@ const Newpost = (props) => {
     if(isWorkout && !didWorkout) newPost = await communicationService.post('/workouts/new', post)
     if(isWorkout && didWorkout) props.addNewToFeed(post)
 
-    isWorkout ? props.addWorkout(newPost) : console.log('HII')
+    isWorkout && props.addWorkout(newPost)
 
     resetText()
     props.setShowNewpost && props.setShowNewpost(false)

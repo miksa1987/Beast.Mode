@@ -1,5 +1,5 @@
 import React from 'react'
-import { Image, Input, Button, Icon } from 'semantic-ui-react'
+import { Image, Input } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import './Preview.css'
 import Comments from '../../post/Comments'

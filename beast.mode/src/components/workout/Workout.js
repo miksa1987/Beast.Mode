@@ -2,7 +2,6 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import { Button, Image } from 'semantic-ui-react'
 import parser from '../../service/parser'
-import useWindowSize from '../../hooks/useWindowSize'
 import './Workout.css'
 import '../Animation.css'
 
