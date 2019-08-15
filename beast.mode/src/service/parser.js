@@ -1,6 +1,6 @@
 const regex0 = /^\d\d?x\d\d?[ ]+\D+/
-const regex1 = /(?!\d+ rounds)(^\d\d?[ ]+\D+)/
-const rounds = /^\d\d\s+rounds/
+const regex1 = /(?!\d+ round)(^\d\d?[ ]+\D+)/
+const rounds = /^\d\d\s+round/
 
 const isWorkout = (post) => {
   if (regex0.exec(post) || regex1.exec(post)) {

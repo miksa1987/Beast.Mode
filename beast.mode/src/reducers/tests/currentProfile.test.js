@@ -8,7 +8,7 @@ const testprofile = {
 
 describe('currentProfileReducer', () => {
   it('Returns initial state', () => {
-    expect(currentProfileReducer(undefined, {})).toEqual({})
+    expect(currentProfileReducer(undefined, {})).toEqual({ id: null })
   })
 
   it('INIT_CURRENT_PROFILE, no initial state', () => {

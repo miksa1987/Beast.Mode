@@ -65,22 +65,22 @@ describe('Initially there is one user in DB', () => {
     expect(response.body.username).toEqual('Terppa')
   })
 
-  test('Request nonexisting user will return 404', async () => {
+  test('Request nonexisting user will return 400', async () => {
     await api
       .get('/users/xzibit')
-      .expect(404)
+      .expect(400)
   })
 
   test('Request nonexisting users workouts fails', async () => {
     await api
       .get('/users/5d27680bt7f9f802870dbaf51/workouts')
-      .expect(404)
+      .expect(400)
   })
 
   test('Request nonexisting users posts fails', async () => {
     await api
       .get('/users/5d27680b7f9f802870dbaf51t/posts')
-      .expect(404)
+      .expect(400)
   })
 
   test('User can update his/her settings', async () => {

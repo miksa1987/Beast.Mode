@@ -9,7 +9,6 @@ const currentProfileReducer = (state = { id: null }, action) => {
   }
 }
 
-// RETURN TO PREVIOUS CODE AND MODIFY TEST !!!!
 export const initCurrentProfile = (id) => {
   return async dispatch => {
     dispatch({ type: 'INIT_CURRENT_PROFILE', data: {} })

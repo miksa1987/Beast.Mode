@@ -16,6 +16,16 @@ const Newpost = (props) => {
   const [file, setFile] = useState('')
   const [image, setImage] = useState('')
 
+  const workoutTip = `Write your workout like:
+    WORKOUT TITLE OR DESCRIPTION
+    5x5 pull ups
+    5x10 push ups\n
+    or\n
+    WORKOUT TITLE OR DESCRIPTION
+    5 pull ups
+    10 push ups
+    5 rounds`
+
   const post = async (event) => {
     event.preventDefault()
 
@@ -46,7 +56,8 @@ const Newpost = (props) => {
   return ( <div data-testid='newpost-component' className='newpost-component fade-in-fast'>
     <strong>Create new</strong>
     <Form onSubmit={post}>
-      <TextArea id='post-textarea' style={{ resize: 'none' }} rows={6} {...text} />
+      <TextArea id='post-textarea' style={{ resize: 'none' }} rows={6} {...text} 
+        placeholder={isWorkout && workoutTip} />
       
       <table className='full-width'>
         <tbody>

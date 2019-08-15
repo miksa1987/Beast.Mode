@@ -50,7 +50,7 @@ describe('Create one user and test that search finds everything', () => {
   })
 
   test('Search finds user with exact case and search type', async () => {
-    const search = { search: 'Miksa', type: 'user' }
+    const search = { keyword: 'Miksa', type: 'user' }
 
     const response = await api
       .post('/search')
@@ -63,7 +63,7 @@ describe('Create one user and test that search finds everything', () => {
   })
 
   test('Search finds user with non-exact case and text and search type', async () => {
-    const search = { search: 'iksa', type: 'use' }
+    const search = { keyword: 'iksa', type: 'use' }
 
     const response = await api
       .post('/search')
@@ -76,7 +76,7 @@ describe('Create one user and test that search finds everything', () => {
   })
 
   test('Search finds all items that include TEST', async () => {
-    const search = { search: 'test', type: 'jotain' }
+    const search = { keyword: 'test', type: 'jotain' }
     
     const response = await api
       .post('/search')
@@ -89,7 +89,7 @@ describe('Create one user and test that search finds everything', () => {
   })
 
   test('Search finds done workout that includes TEST', async () => {
-    const search = { search: 'test', type: 'doneworkout' }
+    const search = { keyword: 'test', type: 'doneworkout' }
     
     const response = await api
       .post('/search')
@@ -102,7 +102,7 @@ describe('Create one user and test that search finds everything', () => {
   })
 
   test('Search finds workout that includes TEST', async () => {
-    const search = { search: 'test', type: 'workout' }
+    const search = { keyword: 'test', type: 'workout' }
     
     const response = await api
       .post('/search')
@@ -115,7 +115,7 @@ describe('Create one user and test that search finds everything', () => {
   })
   
   test('Search finds done post that includes TEST', async () => {
-    const search = { search: 'test', type: 'post' }
+    const search = { keyword: 'test', type: 'post' }
     
     const response = await api
       .post('/search')
@@ -129,7 +129,7 @@ describe('Create one user and test that search finds everything', () => {
 
   
   test('Search finds all items that include TEST with incomplete keyword', async () => {
-    const search = { search: 't', type: 'jotain' }
+    const search = { keyword: 't', type: 'jotain' }
     
     const response = await api
       .post('/search')
@@ -142,11 +142,11 @@ describe('Create one user and test that search finds everything', () => {
   })
 
   test('Search finds all items that include TEST with date', async () => {
-    const search = { search: 'test', type: 'jotain' }
+    const search = { keyword: 'test', type: 'jotain' }
     const now = await moment().add(1, 'hours').format('YYYY-M-D-H-m')
 
     const response = await api
-      .post(`/search/bydate/${now}`)
+      .post(`/search/${now}`)
       .send(search)
       .set({ Authorization: token })
       .expect(200)
@@ -156,11 +156,11 @@ describe('Create one user and test that search finds everything', () => {
   })
 
   test('Search finds all items that include TEST with date with incomplete keyword', async () => {
-    const search = { search: 't', type: 'jotain' }
+    const search = { keyword: 't', type: 'jotain' }
     const now = await moment().add(1, 'hours').format('YYYY-M-D-H-m')
 
     const response = await api
-      .post(`/search/bydate/${now}`)
+      .post(`/search/${now}`)
       .send(search)
       .set({ Authorization: token })
       .expect(200)

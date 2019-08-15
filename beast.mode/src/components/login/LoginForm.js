@@ -5,12 +5,12 @@ import { Form, Input, Button } from 'semantic-ui-react'
 
 import { loginUser } from '../../reducers/currentUser'
 import { setNotification } from '../../reducers/notificationReducer'
-import NewUser from './NewUser'
+import About from './About'
 import './LoginForm.css'
 import '../Animation.css'
 
 const LoginForm = (props) => {
-  const [view, setView] = useState('login')
+  const [showAbout, setShowAbout] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -23,13 +23,15 @@ const LoginForm = (props) => {
     props.loginUser({ username, password })
   }
 
-  if (view === 'newuser') {
-    return ( <div><NewUser setView={setView} /></div>)
+  const showTheAbout = (event) => {
+    event.preventDefault()
+    setShowAbout(true)
   }
 
   return ( <div className='background fade-in-fast'>
     <div className='login'>
-      <p className='bottom'>About Beast.MODE</p>
+      { showAbout && <About setShowAbout={setShowAbout} />}
+      <a href='' className='bottom' onClick={showTheAbout}>About Beast.MODE</a>
       <Form onSubmit={login}>
         <table className='login-element'>
           <tbody>
