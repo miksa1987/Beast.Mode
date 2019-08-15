@@ -15,7 +15,7 @@ https://unsplash.com/@echaparro
 Sovellus löytyy käynnissä osoitteesta https://protected-anchorage-88354.herokuapp.com/
 
 Käyttöohjeet(englanniksi): https://github.com/miksa1987/Beast.Mode/blob/master/userguide.md
-Työajanseuranta: https://github.com/miksa1987/Beast.Mode/blob/master/Tyoajanseuranta.xls
+Työajanseuranta: https://github.com/miksa1987/Beast.Mode/blob/master/Tyoajanseuranta.md
 
 
 # In english
@@ -33,4 +33,4 @@ https://unsplash.com/@echaparro
 The app can be found running at https://protected-anchorage-88354.herokuapp.com/
 
 User guide: https://github.com/miksa1987/Beast.Mode/blob/master/userguide.md
-Work hours tracking: https://github.com/miksa1987/Beast.Mode/blob/master/Tyoajanseuranta.xls
+Work hours tracking: https://github.com/miksa1987/Beast.Mode/blob/master/Tyoajanseuranta.md

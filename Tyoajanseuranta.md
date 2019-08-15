@@ -1,6 +1,6 @@
 **Työaikaseuranta Full Stack Open-harjoitusprojektille Beast.MODE**
 
-Työaikaa käytetty yhteensä h: 182
+Työaikaa käytetty yhteensä 182h.
   
 |Päivä|Aika(h)|Mitä tehty|
 |-----|:-----:|---------:|
