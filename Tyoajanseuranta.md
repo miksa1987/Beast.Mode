@@ -2,7 +2,8 @@
 
 Työaikaa käytetty yhteensä h: 182
   
-Päivä|Aika(h)|Mitä tehty
+|Päivä|Aika(h)|Mitä tehty|
+|-----|:-----:|---------:|
 27.06.19|1|Käyttöliittymän ja käyttöliittymälogiikan suunnittelua paperille
 27.06.19|1|Käyttöliittymän hyvin karkea alkutoteutus
 27.06.19|1,5|Käyttöliittymän toteutusta lisää ja backendin hahmottelua
