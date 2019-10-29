@@ -12,13 +12,19 @@ const tokenExtractor = (request, response, next) => {
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
 
-  if (error.name === 'CastError') {
+  if (error.message === 'unauthorized') {
+    return response.status(401).end()
+  }
+  else if (error.name === 'CastError') {
     return response.status(400).json({ error: 'Malformatted id' })
-  } else if (error.name === 'ValidationError') {
+  } 
+  else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
-  } else if (error.name === 'JSonWebTokenError') {
+  } 
+  else if (error.name === 'JSonWebTokenError') {
     return response.status(401).json({ error: 'Invalid token' })
-  } else {
+  } 
+  else {
     return response.status(400).json({ error: error.message })
   }
 

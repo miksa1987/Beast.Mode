@@ -26,7 +26,7 @@ const addToPosts = async (id, postid) => {
   const userToUpdate = {
     ...user.toObject(),    
     posts: newPosts
-}
+  }
 
   const updatedUser = await User.findByIdAndUpdate(id, userToUpdate, { new: true })
   return updatedUser

@@ -1,31 +1,21 @@
-const imageRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
-const { cloudinary, imgparser } = require('../util/imageupload')
-const config = require('../util/config')
+const imageRouter                         = require('express').Router()
+const { cloudinary, imgparser }           = require('../util/imageupload')
+const { asyncHandler, checkTokenGetUser}  = require('./common')
+const config                              = require('../util/config')
 
-imageRouter.post('/new', imgparser.single('image'), async (request, response, next) => {
-  if (!request.token) {
-    return response.status(401).end()
-  }
+imageRouter.post('/new', imgparser.single('image'), asyncHandler(async (request, response, next) => {
   if (!request.file) {
     return response.status(400).json({ error: 'File missing' })
   }
 
-  const decodedToken = await jwt.verify(request.token, config.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).end()
-  }
+  await checkTokenGetUser(request.user)
 
-  try {
-    await cloudinary.uploader.upload_stream(request.file.buffer, { 
-      resource_type: 'raw' }).end(request.file.buffer)
-    const splittedUri = request.file.secure_url.split('upload')
-    const imageuri = splittedUri[0].concat('upload/w_1280').concat(splittedUri[1])
+  await cloudinary.uploader.upload_stream(request.file.buffer, { 
+    resource_type: 'raw' }).end(request.file.buffer)
+  const splittedUri = request.file.secure_url.split('upload')
+  const imageuri = splittedUri[0].concat('upload/w_1280').concat(splittedUri[1])
 
-    return response.json({ imageuri })
-  } catch (error) {
-    next(error)
-  }
-}) 
+  return response.json({ imageuri })
+}))
 
 module.exports = imageRouter

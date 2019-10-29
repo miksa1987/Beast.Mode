@@ -110,7 +110,7 @@ workoutRouter.get('/byfriends/:date', async (request, response, next) => {
     if (oldest.getOldestWorkout() !== '') {
       const all = await Workout.find({
         $and: [
-            { $and: [ { date: { $gte: oldest.getOldestWorkout() }}, { date: { $lte: enddate }},
+          { $and: [ { date: { $gte: oldest.getOldestWorkout() }}, { date: { $lte: enddate }},
             { user: { $in: user.friends }}
           ]}
         ]
@@ -128,7 +128,7 @@ workoutRouter.get('/byfriends/:date', async (request, response, next) => {
     
     const workouts = await Workout.find({
       $and: [
-          { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
+        { $and: [ { date: { $gte: startdate }}, { date: { $lte: enddate }},
           { user: { $in: user.friends }}
         ]}
       ]
