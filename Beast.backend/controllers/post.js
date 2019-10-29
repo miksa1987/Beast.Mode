@@ -22,6 +22,23 @@ postRouter.get('/:id', asyncHandler(async (request, response, next) => {
   return response.json(post)
 }))
 
+postRouter.get('/byfriends/skip/:skip', asyncHandler(async (request, response, next) => {
+  const user = await checkTokenGetUser(request.token)
+  const postsCount = await Post.countDocuments({ user: { $in: user.friends } })
+
+  if (postsCount > Number(request.params.skip)) {
+    const posts = await Post.find({ user: { $in: user.friends } })
+      .sort({ _id: -1 })
+      .skip(Number(request.params.skip))
+      .limit(30)
+      .populate('user')
+    
+    return response.json({ posts, end: false })
+  }
+
+  return response.json({ posts: [], end: true })
+}))
+
 // Date format: YYYY-MM-DD-hh-mm 
 // CAUTION: No zero in front of single-digit values!
 postRouter.get('/byfriends/:date', asyncHandler(async (request, response, next) => {

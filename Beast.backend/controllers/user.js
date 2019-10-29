@@ -48,6 +48,51 @@ userRouter.get('/:id/doneworkouts', asyncHandler(async (request, response, next)
   return response.status(200).json(doneworkouts)
 }))
 
+userRouter.get('/:id/posts/skip/:skip', asyncHandler(async (request, response, next) => {
+  const postsCount = await Post.countDocuments({ user: request.params.id })
+  if (postsCount > Number(request.params.skip)) {
+    const posts = await Post.find({ user: request.params.id })
+      .sort({ _id: -1 })
+      .skip(Number(request.params.skip))
+      .limit(30)
+      .populate('user')
+    
+    return response.json({ posts, end: false })
+  }
+
+  return response.json({ posts: [], end: true })
+}))
+
+userRouter.get('/:id/workouts/skip/:skip', asyncHandler(async (request, response, next) => {
+  const workoutsCount = await Workout.countDocuments({ user: request.params.id })
+  if (workoutsCount > Number(request.params.skip)) {
+    const workouts = await Workout.find({ user: request.params.id })
+      .sort({ _id: -1 })
+      .skip(Number(request.params.skip))
+      .limit(30)
+      .populate('user')
+    
+    return response.json({ workouts, end: false })
+  }
+
+  return response.json({ workouts: [], end: true })
+}))
+
+userRouter.get('/:id/doneworkouts/skip/:skip', asyncHandler(async (request, response, next) => {
+  const doneworkoutsCount = await Workout.countDocuments({ user: request.params.id })
+  if (doneworkoutsCount > Number(request.params.skip)) {
+    const doneworkouts = await Workout.find({ user: request.params.id })
+      .sort({ _id: -1 })
+      .skip(Number(request.params.skip))
+      .limit(30)
+      .populate('user')
+    
+    return response.json({ doneworkouts, end: false })
+  }
+
+  return response.json({ doneworkouts: [], end: true })
+}))
+
 userRouter.get('/:id/posts/:date', asyncHandler(async (request, response, next) => {
   const user = await checkTokenGetUser(request.token)
   let [startdate, enddate] = dates.getFetchDates(request.params.date)

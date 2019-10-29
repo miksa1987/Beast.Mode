@@ -46,95 +46,49 @@ export const emptyFeed = () => {
 
 export const initFeed = () => {
   return async (dispatch, getState) => {
-    const fetchInterval = getState().currentUser.fetchInterval ? getState().currentUser.fetchInterval : -24 
-    let dateString = moment().add(15, 'minutes').format('YYYY-M-D-H-m')
-    
-    const user = getState().currentUser
-    if (user.friends.length === 0 && user.posts.length === 0 && user.doneworkouts.length === 0) {
-      dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: getState().feed.endDate})
-      dispatch({ type: 'SET_FEED_END', data: true })
-      dispatch({ type: 'SET_FEED_LOADING_TO', data: false })
-      return
-    }
-
-    let feedPosts = []
-    let startdate = 0
-
     dispatch({ type: 'SET_FEED_LOADING_TO', data: true })
-    while (feedPosts.length === 0) {
-      const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
-      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)
-      const myDoneworkouts = await communicationService.get(`/users/${user.id}/doneworkouts/${dateString}`)
-      const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
+    
+    const friendsDoneWorkouts = await communicationService.get('/doneworkouts/byfriends/skip/0')
+    const friendsPosts = await communicationService.get('/posts/byfriends/skip/0')
+    const myDoneworkouts = await communicationService.get(`/users/${getState().currentUser.id}/doneworkouts/skip/0`)
+    const myPosts = await communicationService.get(`/users/${getState().currentUser.id}/posts/skip/0`)  
 
-      feedPosts = feedPosts
-        .concat(friendPosts.posts)
-        .concat(friendDoneworkouts.doneworkouts)
-        .concat(myPosts.posts)
-        .concat(myDoneworkouts.doneworkouts)
-        .sort(sorterService.comparePostDates)
-
-      dateString = moment(dateString, 'YYYY-M-D-H-m').add(fetchInterval, 'hours').format('YYYY-M-D-H-m')
-
-      startdate = myPosts.startdate
-
-      if (friendPosts.end && friendDoneworkouts.end && myPosts.end && myDoneworkouts.end) {
-        dispatch({ type: 'SET_FEED_END', data: true })
-        break
-      }
-    }   
+    const feedContent = [ 
+      ...friendsDoneWorkouts.doneworkouts, 
+      ...friendsPosts.posts, 
+      ...myDoneworkouts.doneworkouts, 
+      ...myPosts.posts 
+    ] 
 
     dispatch({ type: 'SET_FEED_LOADING_TO', data: false })
-    dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: startdate})
-    dispatch({ type: 'INIT_FEED', data: feedPosts })
+    dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: 30})
+    dispatch({ type: 'INIT_FEED', data: feedContent })
   }
 }
 
 export const loadMorePosts = () => {
   return async (dispatch, getState) => {
-    const fetchInterval = getState().currentUser.fetchInterval ? getState().currentUser.fetchInterval : -24
-    let dateString = getState().feed.loadedUntil
-    
-    const user = getState().currentUser
-    
-    if (user.friends.length === 0 && user.posts.length === 0 && user.doneworkouts.length === 0) {
-      dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: getState().feed.endDate})
+    dispatch({ type: 'SET_FEED_LOADING_TO', data: true })
+
+    const loadedUntil = getState().feed.loadedUntil
+    const friendsDoneWorkouts = await communicationService.get(`/doneworkouts/byfriends/skip/${loadedUntil}`)
+    const friendsPosts = await communicationService.get(`/posts/byfriends/skip/${loadedUntil}`)
+    const myDoneworkouts = await communicationService.get(`/users/${getState().currentUser.id}/doneworkouts/skip/${loadedUntil}`)
+    const myPosts = await communicationService.get(`/users/${getState().currentUser.id}/posts/skip/${loadedUntil}`)  
+
+    if (friendsPosts.end && friendsDoneWorkouts.end && myDoneworkouts.end && myPosts.end) {
       dispatch({ type: 'SET_FEED_END', data: true })
-      return
     }
-
-    let startdate = 0
-
-    let feedPosts = []
-    dispatch({ type: 'SET_FEED_LOADING_TO', data: true }) 
-    
-    while (feedPosts.length === 0) {
-      if(moment(dateString, 'YYYY-M-D-H-m').isBefore(moment(getState().feed.endDate, 'YYYY-M-D-H-m'))) break
-
-      const friendDoneworkouts = await communicationService.get(`/doneworkouts/byfriends/${dateString}`)
-      const friendPosts = await communicationService.get(`/posts/byfriends/${dateString}`)      
-      const myDoneworkouts = await communicationService.get(`/users/${user.id}/doneworkouts/${dateString}`)
-      const myPosts = await communicationService.get(`/users/${user.id}/posts/${dateString}`)
-
-      feedPosts = feedPosts
-        .concat(friendPosts.posts)
-        .concat(friendDoneworkouts.doneworkouts)
-        .concat(myPosts.posts)
-        .concat(myDoneworkouts.doneworkouts)
-        .sort(sorterService.comparePostDates)
-
-      dateString = moment(dateString, 'YYYY-M-D-H-m').add(fetchInterval, 'hours').format('YYYY-M-D-H-m')
-      startdate = myPosts.startdate
-
-      if (friendPosts.end && friendDoneworkouts.end && myPosts.end && myDoneworkouts.end) {
-        dispatch({ type: 'SET_FEED_END', data: true })
-        break
-      }
-    } 
+    const feedContent = [ 
+      ...friendsDoneWorkouts.doneworkouts, 
+      ...friendsPosts.posts, 
+      ...myDoneworkouts.doneworkouts, 
+      ...myPosts.posts 
+    ]
 
     dispatch({ type: 'SET_FEED_LOADING_TO', data: false })
-    dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data:startdate})
-    dispatch({ type: 'ADD_TOFEED', data: feedPosts })
+    dispatch({ type: 'SET_FEED_LOADED_UNTIL_TO', data: getState().feed.loadedUntil + 30})
+    dispatch({ type: 'ADD_TOFEED', data: feedContent })
   }
 }
 

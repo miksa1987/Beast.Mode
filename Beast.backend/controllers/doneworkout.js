@@ -13,14 +13,30 @@ doneWorkoutRouter.get('/all', asyncHandler(async (request, response, next) => {
 }))
 
 doneWorkoutRouter.get('/oldest', asyncHandler(async (request, response, next) => {
-  const date = moment(oldest.getOldestDoneWorkout()).format('YYYY-M-D-H-m')
-    
+  const date = moment(oldest.getOldestDoneWorkout()).format('YYYY-M-D-H-m')    
   return response.json({ oldest: date })
 }))
 
 doneWorkoutRouter.get('/:id', asyncHandler(async (request, response, next) => {
   const doneWorkout = await DoneWorkout.findById(request.params.id).populate('user')
   return response.json(doneWorkout)
+}))
+
+doneWorkoutRouter.get('/byfriends/skip/:skip', asyncHandler(async (request, response, next) => {
+  const user = await checkTokenGetUser(request.token)
+  const doneworkoutsCount = await DoneWorkout.countDocuments({ user: { $in: user.friends } })
+
+  if (doneworkoutsCount > Number(request.params.skip)) {
+    const doneworkouts = await DoneWorkout.find({ user: { $in: user.friends } })
+      .sort({ _id: -1 })
+      .skip(Number(request.params.skip))
+      .limit(30)
+      .populate('user')
+    
+    return response.json({ doneworkouts, end: false })
+  }
+
+  return response.json({ doneworkouts: [], end: true })
 }))
 
 doneWorkoutRouter.get('/byfriends/:date', asyncHandler(async (request, response, next) => {
