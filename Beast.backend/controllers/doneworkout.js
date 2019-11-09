@@ -5,7 +5,12 @@ const activityHelper                      = require('../util/activity')
 const userUpdater                         = require('../util/userUpdater')
 const dates                               = require('../util/dates')
 const oldest                              = require('../util/oldest')
-const { asyncHandler, checkTokenGetUser}  = require('./common')
+
+const { asyncHandler, 
+        checkTokenGetUser,
+        create,
+        like,
+        comment }                         = require('./common')
 
 doneWorkoutRouter.get('/all', asyncHandler(async (request, response, next) => {
   const doneWorkouts = await DoneWorkout.find({})
@@ -82,22 +87,9 @@ doneWorkoutRouter.get('/byfriends/:date', asyncHandler(async (request, response,
 
 doneWorkoutRouter.post('/new', asyncHandler(async (request, response, next) => {
   const user = await checkTokenGetUser(request.token)
-
-  const doneWorkout = new DoneWorkout({
-    content: request.body.content,
-    picture: request.body.picture,
-    pictureThumb: request.body.picture, // TBD change this to real thumbnail
-    type: 'doneworkout',
-    user: user.id,
-    likes: [],
-    comments: [],
-    date: new Date(),
-    time: request.body.time ? request.body.time : 0
-  })
+  const doneWorkout = await create(DoneWorkout, request.body.content, request.body.picture, user.id)
   const savedDoneWorkout = await doneWorkout.save()
   const doneWorkoutToReturn = await savedDoneWorkout.populate('user').execPopulate()
-
-  if (request.body.picture !== '') userUpdater.addToPictures(user.id, request.body.picture)
 
   request.io.emit('user_add_doneworkout', doneWorkoutToReturn)
   activityHelper.setActivity(user.id, 'doneworkout', doneWorkoutToReturn._id)
@@ -108,16 +100,7 @@ doneWorkoutRouter.post('/new', asyncHandler(async (request, response, next) => {
 
 doneWorkoutRouter.post('/:id/comment', asyncHandler(async (request, response, next) => {
   const user = await checkTokenGetUser(request.token)
-
-  const updatedDoneWorkout = await DoneWorkout.findOneAndUpdate(
-    { "_id": request.params.id },
-    { $push: { "comments": {
-      "content": request.body.comment,
-      "user": user.username,
-      "userid": user.id,
-      "date": new Date()
-    }}},
-    { new: true }).populate('user')
+  const updatedDoneWorkout = await comment(DoneWorkout, request, user)
 
   if (updatedDoneWorkout === null) {
     return response.status(204).end()
@@ -135,11 +118,7 @@ doneWorkoutRouter.post('/:id/comment', asyncHandler(async (request, response, ne
 
 doneWorkoutRouter.post('/:id/like', asyncHandler(async (request, response, next) => {
   const user = await checkTokenGetUser(request.token)
-
-  const updatedDoneWorkout = await DoneWorkout.findOneAndUpdate(
-    { "_id": request.params.id, "likes": { $ne: user.id } },
-    { $push: { "likes": user.id }, $inc: { "likesLength": 1 }},
-    { new: true }).populate('user')
+  const updatedDoneWorkout = await like(DoneWorkout, request, user)
 
   if (updatedDoneWorkout === null) {
     return response.status(204).end()

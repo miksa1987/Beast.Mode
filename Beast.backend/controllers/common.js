@@ -15,4 +15,33 @@ const checkTokenGetUser = async (token) => {
   return user
 }
 
-module.exports = { asyncHandler, checkTokenGetUser }
+const create = (Model, content, picture, user) => {
+  return new Model({
+    content,
+    picture,
+    user,
+    likes: [],
+    comments: [],
+  })
+}
+
+const like = async (Model, request, user) => {
+  return await Model.findOneAndUpdate(
+    { "_id": request.params.id, "likes": { $ne: user.id } },
+    { $push: { "likes": user.id }, $inc: { "likesLength": 1 }},
+    { new: true }).populate('user')
+}
+
+const comment = async (Model, request, user) => {
+  return await Model.findOneAndUpdate(
+    { "_id": request.params.id },
+    { $push: { "comments": {
+      "content": request.body.comment,
+      "user": user.username,
+      "userid": user.id,
+      "date": new Date()
+    }}},
+    { new: true }).populate('user')
+}
+
+module.exports = { asyncHandler, checkTokenGetUser, create, like, comment }

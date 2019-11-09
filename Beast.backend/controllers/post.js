@@ -5,7 +5,12 @@ const dates                               = require('../util/dates')
 const oldest                              = require('../util/oldest')
 const moment                              = require('moment')
 const activityHelper                      = require('../util/activity')
-const { asyncHandler, checkTokenGetUser}  = require('./common')
+
+const { asyncHandler, 
+  checkTokenGetUser,
+  create,
+  like,
+  comment }                         = require('./common')
 
 postRouter.get('/all', asyncHandler(async (request, response, next) => {
   const posts = await Post.find({}).populate('user')
@@ -98,21 +103,9 @@ postRouter.put('/:id', asyncHandler(async (request, response, next) => {
 
 postRouter.post('/new', asyncHandler(async (request, response, next) => {
   const user = await checkTokenGetUser(request.token)
-  const post = new Post({
-    content: request.body.content,
-    picture: request.body.picture,
-    pictureThumb: request.body.picture, // TBD change this to real thumbnail
-    type: request.body.type,
-    user: user.id,
-    likesLength: 0,
-    likes: [],
-    comments: [],
-    date: new Date()
-  })
+  const post = await create(Post, request.body.content, request.body.picture, user.id)
   const savedPost = await post.save()
   const populatedPost = await savedPost.populate('user').execPopulate()
-
-  if (request.body.picture !== '') userUpdater.addToPictures(decodedToken.id, request.body.picture)
 
   activityHelper.setActivity(user.id, 'post', populatedPost._id)
   userUpdater.addToPosts(user.id, populatedPost._id)
@@ -123,16 +116,7 @@ postRouter.post('/new', asyncHandler(async (request, response, next) => {
 
 postRouter.post('/:id/comment', asyncHandler(async (request, response, next) => {
   const user = await checkTokenGetUser(request.token)
-
-  const updatedPost = await Post.findOneAndUpdate(
-    { "_id": request.params.id },
-    { $push: { "comments": {
-      "content": request.body.comment,
-      "user": decodedToken.username,
-      "userid": decodedToken.id,
-      "date": new Date()
-    }}},
-    { new: true }).populate('user')
+  const updatedPost = await comment(Post, request, user)
     
   if (updatedPost === null) {
     return response.status(204).end()
@@ -150,10 +134,7 @@ postRouter.post('/:id/comment', asyncHandler(async (request, response, next) => 
 
 postRouter.post('/:id/like', asyncHandler(async (request, response, next) => {
   const user = await checkTokenGetUser(request.token)
-  const updatedPost = await Post.findOneAndUpdate(
-    { "_id": request.params.id, "likes": { $ne: decodedToken.id } },
-    { $push: { "likes": decodedToken.id }, $inc: { "likesLength": 1 }},
-    { new: true }).populate('user')
+  const updatedPost = await like(Post, request, user)
     
   if (updatedPost === null) {
     return response.status(204).end()
