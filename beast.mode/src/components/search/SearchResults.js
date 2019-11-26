@@ -9,11 +9,12 @@ const SearchResults = (props) => {
     return ( <div>Search did not find anything.</div> )
   }
 
-  return ( <div>
-    {props.search.results.map((result, i) => result.type 
-      ? <SearchResultPost key={i} result={result} /> : <SearchResultUser key={i} result={result} /> )}
-    {props.search.loading && <Spinner />}
-  </div> )
+  return ( 
+    <div>
+      {props.search.results.map((result, i) => result.type 
+        ? <SearchResultPost key={i} result={result} /> : <SearchResultUser key={i} result={result} /> )}
+      {props.search.loading && <Spinner />}
+    </div> )
 }
 
 const mapStateToProps = (state) => {

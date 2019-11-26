@@ -1,44 +1,28 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Image } from 'semantic-ui-react'
-import './Search.css'
+import SearchResult from './SearchResult'
+import SearchResultBody from './SearchResultBody'
 
-
-const SearchResult = (props) => {
+const SearchResultUser = (props) => {
   if(!props.result.username) {
     return ( <div></div> )
   }
 
-  return ( <div className='search-result'>
-    <Link to={`/profile/${props.result.id}`}>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <Image size='tiny' src={props.result.picture !== '' ? props.result.picture
-                : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
-            </td>
-            <td>
-              <table>
-                <tbody>
-                  <tr>
-                    <td>
-                      <h3>{props.result.username}</h3>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      {props.result.info}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </Link>
-  </div> )
+  return ( 
+    <div>
+      <Link to={`/profile/${props.result.id}`}>
+        <SearchResult>
+          <Image size='tiny' src={props.result.picture !== '' ? props.result.picture
+            : 'https://react.semantic-ui.com/images/wireframe/image.png'} />
+          <SearchResultBody>
+            <h3>{props.result.username}</h3>
+            <p>{props.result.info}</p>
+          </SearchResultBody>
+        </SearchResult>
+      </Link>
+    </div> 
+  )
 }
 
-export default SearchResult
+export default SearchResultUser
