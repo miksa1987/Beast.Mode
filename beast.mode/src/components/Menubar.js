@@ -1,118 +1,135 @@
 import React from 'react'
-import { Input, Menu, Icon } from 'semantic-ui-react'
+import styled from 'styled-components'
+import { Icon , Input } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../reducers/currentUser'
 import { setSearchResults } from '../reducers/searchResultsReducer'
 import { emptyFeed } from '../reducers/feedReducer'
-import useWindowSize from '../hooks/useWindowSize'
-import useOrientation from '../hooks/useOrientation'
 import useField from '../hooks/useField'
 import SearchPopup from './search/SearchPopup'
 import './Menubar.css'
 
+const MenuContainer = styled.div`
+  background-color: #aa3333;
+  position: fixed;
+  top: 0px; 
+  left: 0px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
+
+const MenuBar = styled.div`
+  display: grid;
+  grid-template: 4rem / 10rem 4rem 4rem 4rem 1fr 4rem 4rem; 
+
+  @media screen and (max-width: 600px) {
+    grid-template: 4rem / 4rem 4rem 4rem 1fr 4rem 4rem;
+  }
+`
+
+const SearchBar = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+
+  @media screen and (min-width: 600px) {
+    display: none;
+  }
+`
+
+const MenuItem = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #aa3333;
+`
+
+const MenuItemOnlyDesktop = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
+`
+
+const Placeholder = styled.div`
+  @media screen and (min-width: 600px) {
+    display: none;
+  }
+`
+
+const Form = styled.form`
+  width: 100%;
+`
+
 const Menubar = (props) => {
-  const screen = useWindowSize()
-  const orientation = useOrientation()
   const [search, resetSearch] = useField('text')
 
-  const barStyle = {
-    width: screen.width < screen.height ? (screen.width - 30) : (screen.width - 5*60 - 160)
+  const gotoPage = (page) => {
+    window.scrollTo(0, 0)
+    props.history.push(page)
   }
 
-  const home = () => {
-    window.scrollTo(0, 0)
-    props.history.push('/')
-  }
-
-  const workouts = () => {
-    window.scrollTo(0, 0)
-    props.history.push('/workouts')
-  }
-
-  const users = () => {
-    window.scrollTo(0, 0)
-    props.history.push('/users')
-  }
-
-  const dash = () => {
-    window.scrollTo(0, 0)
-    props.history.push(`/profile/${props.userid}`)
-  }
+  const home = () => gotoPage('/')
+  const workouts = () => gotoPage('/workouts')
+  const users = () => gotoPage('/users')
+  const dash = () => gotoPage(`/profile/${props.userid}`)
 
   const logout = () => {
-    window.scrollTo(0, 0)
-    props.history.push('/')
     props.emptyFeed()
     props.logoutUser()
+    gotoPage('/')
   }
 
   const doSearch = (event) => {
     event.preventDefault()
     props.setSearchResults(search.value, 'all')
-    props.history.push('/search')
-    window.scrollTo(0, 0)
+    gotoPage('/search')
     resetSearch()
   }
 
-  if (orientation === 'portrait') {
-    return ( <div className='menubar-component menubar-component-device full-width'>
-      <Menu className='full-width' secondary inverted color='red'>
-        <Menu.Item onClick={home}>
-          <Icon name='home' />
-        </Menu.Item>
-        <Menu.Item onClick={workouts}>
-          <Icon name='hand rock' />
-        </Menu.Item>
-        <Menu.Item onClick={users}>
-          <Icon name='user circle' />
-        </Menu.Item>
-        <Menu.Item onClick={dash}>
-          <Icon name='id card' />
-        </Menu.Item>
-        <Menu.Item position='right' onClick={logout}>
-          <Icon name='log out' />
-        </Menu.Item>
-      </Menu>
-      <Menu className='full-width menurow2' inverted color='red'>
-        <Menu.Item >
-          <form onSubmit={doSearch}>
-            <Input size='mini' style={barStyle} {...search} placeholder='Search' />
-          </form>
-        </Menu.Item>
-      </Menu>
-      <SearchPopup searchterm={search.value} setSearchItems={setSearchResults} resetSearch={resetSearch} />
-    </div>)
-  }
+  return ( 
+    <MenuContainer>
+      <MenuBar>
+        <MenuItemOnlyDesktop>
+          <h4>Beast.MODE</h4>
+        </MenuItemOnlyDesktop>
+        <MenuItem id='home' onClick={home}>
+          <Icon name='home' color='yellow' />
+        </MenuItem>
+        <MenuItem id='workouts' onClick={workouts}>
+          <Icon name='hand rock' color='yellow' />
+        </MenuItem>
+        <MenuItem id='users' onClick={users}>
+          <Icon name='user circle' color='yellow' />
+        </MenuItem>
+        <MenuItemOnlyDesktop>
+          <Form onSubmit={doSearch}>
+            <Input id='globalsearch' {...search} placeholder='Search' fluid size='mini' />
+          </Form>
+        </MenuItemOnlyDesktop>
+        <Placeholder />
+        <MenuItem id='dash' onClick={dash}>
+          <Icon name='id card' color='yellow' />
+        </MenuItem>
+        <MenuItem id='logout' onClick={logout}>
+          <Icon name='log out' color='yellow' />
+        </MenuItem>
+      </MenuBar>
 
-  return ( <div className='menubar-component menubar-component-device'>
-    <Menu className='full-width' inverted secondary color='red'>
-      <Menu.Item>
-        <h4>Beast.MODE</h4>
-      </Menu.Item>
-      <Menu.Item id='home' onClick={home}>
-        <Icon name='home' />
-      </Menu.Item>
-      <Menu.Item id='workouts' onClick={workouts}>
-        <Icon name='hand rock' />
-      </Menu.Item>
-      <Menu.Item id='users' onClick={users}>
-        <Icon name='user circle' />
-      </Menu.Item>
-      <Menu.Item >
-        <form onSubmit={doSearch}>
-          <Input id='globalsearch' className='menu-searchbar' size='mini' style={barStyle} {...search} placeholder='Search' />
-        </form>
-      </Menu.Item>
-      <Menu.Item id='dash' onClick={dash}>
-        <Icon name='id card' />
-      </Menu.Item>
-      <Menu.Item id='logout' onClick={logout}>
-        <Icon name='log out' />
-      </Menu.Item>
-    </Menu>
-    <SearchPopup searchterm={search.value} setSearchItems={setSearchResults} resetSearch={resetSearch} />
-  </div>)
+      <SearchBar>
+        <Form onSubmit={doSearch}>
+          <Input id='globalsearch' {...search} placeholder='Search' fluid size='mini' />
+        </Form>
+      </SearchBar>
+      <SearchPopup searchterm={search.value} setSearchResults={props.setSearchResults} resetSearch={resetSearch} />
+    </MenuContainer>
+  )
 }
 
 export default connect(null, { logoutUser, setSearchResults, emptyFeed })(withRouter(Menubar))
