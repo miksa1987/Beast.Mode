@@ -1,8 +1,39 @@
 import React from 'react'
+import styled from 'styled-components'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setSearchResults } from '../../reducers/searchResultsReducer'
-import './Search.css'
+
+const SearchPopupBase = styled.div`
+  background-color: white;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  position: fixed;
+  right: 135px;
+  top: 45px;
+  width: calc(100% - 5 * 60px - 25px - 8.5em);
+
+  @media (max-width: 600px) {
+    background-color: white;
+    border: 1px solid #dddddd;
+    position: fixed;
+    left: 0px;
+    top: 100px;
+    width: 100%;
+  }
+`
+
+const PopupItem = styled.div`
+  border-radius: 5px;
+  background-color: white;
+  color: black;
+
+  &:hover, active {
+    border-radius: 5px;
+    background-color: #000000;
+    color: white;
+  }
+`
 
 const SearchPopup = (props) => {
   const search = (type) => {
@@ -12,43 +43,33 @@ const SearchPopup = (props) => {
   }
 
   if (props.searchterm === '') {
-    return ( <div style={{ display: 'none' }}></div> )
+    return ( <div></div> )
   }
 
-  return ( <div className='search-popup'>
-    <table className='full-width'>
-      <tbody>
-        <tr>
-          <td className='popup-menu-item full-width'>
-            <Link to='/search' onClick={() => search('user')}>
-              <div>Search for '{props.searchterm}' in users</div>
-            </Link>
-          </td>
-        </tr>
-        <tr>
-          <td className='popup-menu-item full-width'>
-            <Link to='/search' onClick={() => search('post')}>
-              <div>Search for '{props.searchterm}' in posts</div>
-            </Link>
-          </td>
-        </tr>
-        <tr>
-          <td className='popup-menu-item full-width'>
-            <Link to='/search' onClick={() => search('workout')}>
-              <div>Search for '{props.searchterm}' in workouts</div>
-            </Link>
-          </td>
-        </tr>
-        <tr>
-          <td className='popup-menu-item full-width'>
-            <Link to='/search' onClick={() => search('doneworkout')}>
-              <div>Search for '{props.searchterm}' in done workouts</div>
-            </Link>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div> )
+  return (
+    <SearchPopupBase>
+      <PopupItem>
+        <Link to='/search' onClick={() => search('user')}>
+          Search for '{props.searchterm}' in users
+        </Link>
+      </PopupItem>
+      <PopupItem>
+        <Link to='/search' onClick={() => search('post')}>
+          Search for '{props.searchterm}' in posts
+        </Link>
+      </PopupItem>
+      <PopupItem>
+        <Link to='/search' onClick={() => search('workout')}>
+          Search for '{props.searchterm}' in workouts
+        </Link>
+      </PopupItem>
+      <PopupItem>
+        <Link to='/search' onClick={() => search('doneworkout')}>
+          Search for '{props.searchterm}' in done workouts
+        </Link>
+      </PopupItem>
+    </SearchPopupBase>
+  )
 }
 
 export default connect(null, { setSearchResults })(SearchPopup)
