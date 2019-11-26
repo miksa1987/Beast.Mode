@@ -46,6 +46,7 @@ const MenuItem = styled.button`
   justify-content: center;
   align-items: center;
   background-color: #aa3333;
+  cursor: pointer;
 `
 
 const MenuItemOnlyDesktop = styled.div`
