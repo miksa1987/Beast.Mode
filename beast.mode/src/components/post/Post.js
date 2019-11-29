@@ -27,20 +27,23 @@ const PostTitleOrBottom = styled.div`
 
 const Post = (props) => {
   const [comment, resetComment] = useField('text')
+  const sendComment = props.sendComment ? props.sendComment : props.addComment
+  const sendLike = props.sendLike ? props.sendLike : props.like
 
   if(props.post === undefined || Object.entries(props.post).length === 0) {
     return null
   }
   
-  const sendComment = (event) => {
+  const handleComment = (event) => {
     event.preventDefault()
-    props.addComment(props.post.type, props.post._id, comment.value)
+    sendComment(props.post.type, props.post._id, comment.value)
     resetComment()
   }
 
   return ( 
     <Animation>
       <PostBase>
+        
         <PostTitleOrBottom>
           {props.post.user.picture && props.post.user.picture !== '' ?
             <Image width='32px' height='32px' circular src={props.post.user.picture} />
@@ -49,17 +52,20 @@ const Post = (props) => {
             <Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link>
           </strong>
         </PostTitleOrBottom>
+
         <p>{props.post.content}</p>
         {props.post.picture && props.post.picture !== '' ? <Image size='big' src={props.post.picture} /> : null }
         <Comments data-testid='comments' comments={props.post.comments} showAll={false} postid={props.post._id} />
+        
         <PostTitleOrBottom>
-          <LikeButton data-testid='likebutton' like={props.like} 
+          <LikeButton data-testid='likebutton' like={sendLike} 
             likes={props.post.likes.length} type={props.post.type} id={props.post._id} />
-          <form onSubmit={sendComment}>
+          <form onSubmit={handleComment}>
             <Input data-testid='comment-input' id='comment-input' fluid size='small' 
               icon={{ name: 'comment' }} {...comment} placeholder='Comment' />
           </form>
         </PostTitleOrBottom>
+      
       </PostBase>
     </Animation>
   )
