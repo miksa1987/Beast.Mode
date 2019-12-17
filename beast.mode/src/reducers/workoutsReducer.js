@@ -16,6 +16,7 @@ const workoutsReducer = (state = [], action) => {
 export const initAllWorkouts = () => {
   return async dispatch => {
     const workouts = await communicationService.get('/workouts/all')
+    console.log(workouts)
     return dispatch({ type: 'INIT_WORKOUTS', data: workouts })
   }
 }
