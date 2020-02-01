@@ -50,7 +50,7 @@ const Workout = (props) => {
   return (
     <Animation>
       <Base>
-        <h3>WORKOUT BY {props.workout.user.username.toUpperCase()}</h3>
+        <h3>WORKOUT BY {props.workout.user?.username?.toUpperCase()}</h3>
 
         <Columns>
           <Image size='tiny' rounded src={props.workout.picture && props.workout.picture !== '' 
