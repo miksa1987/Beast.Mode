@@ -20,7 +20,7 @@ const WorkoutOfSetsDone = (props) => {
     }
 
     props.setDone(workout)
-    // Should probably do this with localstorage for memory, to update the uri
+    // Should probably do this with localstorage for memory, to update the uri **FACEPALM**
     props.history.goBack()
   }
 

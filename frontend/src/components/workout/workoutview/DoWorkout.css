@@ -1,5 +1,7 @@
 .doworkout-component {
   padding: 10px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
   border: solid 1px#dddddd;
   border-radius: 4px;
   background-color: white;

@@ -78,6 +78,7 @@ export const setCurrentWorkoutExerciseUndone = (exercise, set) => {
 
 export const setCurrentWorkoutDone = (doneWorkout) => {
   return async (dispatch, getState) => {
+    console.log(doneWorkout)
     const savedDoneWorkout = await communicationService.post('/doneworkouts/new', doneWorkout)
     dispatch({ type: 'ADD_NEW_TO_FEED', data: savedDoneWorkout})
     dispatch({ type: 'SET_CURRENT_WORKOUT_DONE' })

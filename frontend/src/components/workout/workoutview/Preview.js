@@ -11,10 +11,22 @@ import { likeWorkout, commentWorkout } from '../../../reducers/currentWorkout'
 const LikeBar = styled.div`
   display: grid;
   grid-template: 3rem / 4.5rem 1fr;
-  width: calc(100% - 6.5rem);
+  width: 80%
+  margin-top: 3rem;
 
   @media screen and (max-width: 600px) {
     width: 100%;
+  }
+`
+
+const StyledImage = styled.img`
+  width: 100%;
+  border-radius: 10px;
+
+  @media screen and (max-width: 600px) {
+    object-fit: cover;
+    object-position: -20% 0;
+    height: 20rem;
   }
 `
 
@@ -42,12 +54,13 @@ export const Preview = (props) => {
   
   return ( 
     <Layout>
-      <Image rounded src={(props.workout.picture && props.workout.picture) !== '' ?
+      <div>
+      <h2>Preview workout</h2>
+      <StyledImage src={(props.workout.picture && props.workout.picture) !== '' ?
         props.workout.picture : '/img/workout.jpg'} />
+      </div>
 
       <div>
-        <h2>Preview workout</h2>
-      
         <h3>{props.workout.textcontent}</h3>
         
         <Comments showAll={true} comments={props.workout.comments} />

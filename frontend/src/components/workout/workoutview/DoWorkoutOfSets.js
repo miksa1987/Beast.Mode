@@ -1,14 +1,19 @@
 import React, { useState } from 'react'
 import { Button } from 'semantic-ui-react'
 import styled from 'styled-components'
-import useWindowSize from '../../../hooks/useWindowSize'
 import Timer from './Timer'
+import HiddenOnMobile from '../../universal/HiddenOnMobile'
+import HiddenOnDesktop from '../../universal/HiddenOnDesktop'
 import parser from '../../../service/parser'
-import './DoWorkout.css'
 
 const Base = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template: 100% / 50% 50%;
+
+  @media screen and (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+  }
 `
 
 const DoWorkoutOfSets = (props) => {
@@ -18,8 +23,6 @@ const DoWorkoutOfSets = (props) => {
   const rows = props.currentWorkout.textcontent
     .split('\n')
     .filter(line => parser.match0(line))
-  
-  const window = useWindowSize()
   
   const setDone = () => {
     if(props.currentWorkout.done || !props.timer.active) return
@@ -43,17 +46,25 @@ const DoWorkoutOfSets = (props) => {
 
   return ( 
     <Base>
-      <Timer secs={props.timer.value} />
-      {rows.map((row, i) => i === current.exercise ? <h2 key={i}>{row}</h2> : <h3 key={i}>{row}</h3>)}
-      <h2>Exercise {current.exercise + 1}</h2>
-      <h3>Set {current.set + 1}</h3>
-      <h4>Now do at least {props.currentWorkout.exercises[current.exercise][current.set].reps} {props.currentWorkout.exercises[current.exercise][current.set].exercise}</h4>
-      <h4>How many reps did you do? {currentReps} reps</h4>
-      <Button.Group>
-        <Button id='workout-decreasebutton' icon='left chevron' onClick={() => setCurrentReps(currentReps - 1)}></Button>
-        <Button id='workout-increasebutton' icon='right chevron'  onClick={() => setCurrentReps(currentReps + 1)}></Button>
-      </Button.Group>
-      <Button id='workout-exercisedonebutton' color='green' onClick={setDone}>Exercise done</Button>
+      <HiddenOnDesktop>
+        <Timer secs={props.timer.value} />
+        {rows.map((row, i) => i === current.exercise ? <h2 key={i}>{row}</h2> : <h3 key={i}>{row}</h3>)}
+      </HiddenOnDesktop>
+      <div>
+        <h2>Exercise {current.exercise + 1}</h2>
+        <h3>Set {current.set + 1}</h3>
+        <h4>Now do at least {props.currentWorkout.exercises[current.exercise][current.set].reps} {props.currentWorkout.exercises[current.exercise][current.set].exercise}</h4>
+        <h4>How many reps did you do? {currentReps} reps</h4>
+        <Button.Group>
+          <Button id='workout-decreasebutton' icon='left chevron' onClick={() => setCurrentReps(currentReps - 1)}></Button>
+          <Button id='workout-increasebutton' icon='right chevron'  onClick={() => setCurrentReps(currentReps + 1)}></Button>
+        </Button.Group>
+        <Button id='workout-exercisedonebutton' color='green' onClick={setDone}>Exercise done</Button>
+      </div>
+      <HiddenOnMobile>
+        <Timer secs={props.timer.value} />
+        {rows.map((row, i) => i === current.exercise ? <h2 key={i}>{row}</h2> : <h3 key={i}>{row}</h3>)}
+      </HiddenOnMobile>
     </Base> 
   )
 }
