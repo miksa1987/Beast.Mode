@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:lts
 
 RUN mkdir -p /app/backend
 WORKDIR /app/backend
