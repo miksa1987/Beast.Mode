@@ -1,0 +1,5 @@
+GET http://localhost:3001/users/5d32f74f50393622e881e6c0/posts/2019-7-29-15-00 
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1pa3NhIiwiaWQiOiI1ZDMyZjc0ZjUwMzkzNjIyZTg4MWU2YzAiLCJpYXQiOjE1NjQ1MTU2MDF9.EX0dvY9k3lA1FeSUma-8AafWVLDM-55yr0elNyvcrIU
+
+

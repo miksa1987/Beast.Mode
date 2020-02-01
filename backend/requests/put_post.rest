@@ -1,0 +1,7 @@
+PUT http://localhost:3001/posts/5d1e1700053a2124549dee9f
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1pa3NhIiwiaWQiOiI1ZDE1YTE0ZmJjNDFhODFkN2MxYjcxOGUiLCJpYXQiOjE1NjI5MDk1Mjh9.7-XjfWgtPfp78Sr1J2lVkJjinn7vuR2TkrkNC7sygdg
+
+{
+  "content": "TESTIKKELIIITÄMÄKINTOIMII"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "beast.backend",
+  "version": "1.0.0",
+  "description": "beast.mode backend",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "cloudinary": "^1.14.0",
+    "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "mongoose": "^5.6.4",
+    "mongoose-unique-validator": "^2.0.3",
+    "morgan": "^1.9.1",
+    "multer": "^1.4.1",
+    "multer-storage-cloudinary": "^2.2.1",
+    "nodemon": "^1.19.1",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "jest": "^24.8.0",
+    "supertest": "^4.0.2"
+  },
+  "scripts": {
+    "start": "cross-env BEASTMODE_ENV=production node app.js",
+    "watch": "cross-env BEASTMODE_ENV=dev nodemon app.js",
+    "test": "cross-env BEASTMODE_ENV=test jest --verbose --runInBand",
+    "start:test": "cross-env BEASTMODE_ENV=test node app.js",
+    "lint": "eslint --fix ."
+  },
+  "author": "",
+  "license": "ISC",
+  "jest": {
+    "testEnvironment": "node"
+  }
+}

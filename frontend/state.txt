@@ -1,0 +1,13 @@
+state {
+  currectUser
+  currentProfile
+  currentUserPosts
+  currentPost
+  currentWorkout
+  doneWorkouts
+  feed
+  notification
+  searchResults
+  users
+  workouts
+}

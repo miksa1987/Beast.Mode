@@ -1,0 +1,11 @@
+POST http://localhost:3001/posts 
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1pa3NhMiIsImlkIjoiNWQxNjQyODQxMjlhNmQxNGRjODYxNjc3IiwiaWF0IjoxNTYxOTE0NTY1fQ.g0Cua4RQNyJDhyLo4INzrayaat0zSRlF4HLqGqltugk
+
+{
+  "content": "This is a test post. NOW IT SHALL WORK!",
+  "picture": "",
+  "likes": 0,
+  "user": "5d15a14fbc41a81d7c1b718e",
+  "comments": []
+}

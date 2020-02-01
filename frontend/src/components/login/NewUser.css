@@ -1,0 +1,49 @@
+@media (min-width: 320px) and (max-width: 600px) {
+  .style {
+    width: 100%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 620px) and (max-width: 900px) {
+  .style {
+    width: 80%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 920px) and (max-width: 1400px) {
+  .style {
+    width: 60%;
+    margin: auto;
+  }
+}
+
+@media (min-width: 1420px)  {
+  .style {
+    width: 40%;
+    margin: auto;
+  }
+}
+
+.block {
+  animation: fade-in 1.5s;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #ffffff;
+}
+
+.element {
+  width: 100%;
+  resize: none;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1;
+  }
+}

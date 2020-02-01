@@ -1,0 +1,49 @@
+.workout-component {
+  width: 100%;
+  background-color: #ffffff;
+  margin: 15px 15px 15px 0px;
+  padding: 0px 0px 0px 0px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+}
+
+.workout-image {
+  width: 30%;
+}
+
+.workout-info {
+  width: 70%;
+  vertical-align: top;
+}
+
+.workout-button {
+  width: 100%;
+  float: right;
+  vertical-align: top;
+}
+
+.first {
+  width: 1em;
+  padding: 10px;
+}
+
+.second {
+  width: 1em;
+  padding: 10px;
+}
+
+.third {
+  width: 100%;
+}
+
+.workout-segment {
+  line-break: strict;
+  white-space: pre-line;
+  text-align: left;
+  padding: 0px 10px;
+  vertical-align: top;
+}
+
+.no-padding {
+  padding: 0px;
+}

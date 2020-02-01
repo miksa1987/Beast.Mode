@@ -1,0 +1,11 @@
+.element {
+  margin: 0px 0px 10px 0px;
+  padding: 0px;
+  border: solid 1px#dddddd;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.no-padding {
+  padding: 0px;
+}

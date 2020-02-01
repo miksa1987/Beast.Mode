@@ -1,0 +1,7 @@
+POST http://localhost:3001/users/new
+Content-type: application/json
+
+{
+  "username": "miksa",
+  "password": "Gener4lE"
+}

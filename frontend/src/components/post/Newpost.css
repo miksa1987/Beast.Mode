@@ -1,0 +1,44 @@
+@media (max-width: 600px) {
+  .button-style {
+    margin-top: 10px;
+    padding: 0px;
+  }
+}
+
+@media (min-width: 620px) {
+  .button-style {
+    margin-top: 10px;
+  }
+}
+
+.newpost-component {
+  padding: 10px 10px 10px 10px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.image-preview {
+  width: 15em;
+}
+
+.input-style {
+  padding-bottom: 10px;
+  border: 0px;
+}
+
+.button-style {
+  margin-top: 10px;
+}
+
+.mobile {
+  animation: fade-in 1.5s;
+  padding: 10px 10px 10px 10px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  background-color: #ffffff;
+}

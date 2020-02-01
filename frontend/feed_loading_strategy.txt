@@ -1,0 +1,22 @@
+feed: {
+  feed: []
+  loadedUntil: Date
+  loading: bool
+}
+
+initFeed = momentilla nykyinen date oikeeseen formaattiin backendille 
+ja haetaan viimeisimmät postit. Päivitetään loadedUntil siihen aikaan mihin asti
+postit on haettu.
+
+addToFeed = momentilla date oikeaan muotoon ja haetaan lisää posteja max 50h edestä.
+Tää action triggeröidään feed-komponentista kun sivusta on scrollattu 90% alas.
+
+addNewToFeed = jos Socket ilmoittaa uusista posteista niin ne lisätään feed-arrayn
+ETEEN. tyyliin reduceriin return post.concat(state.feed)..?
+
+usePercentage-hook jolla tsekataan koska ladataan lisää contenttia.
+Stateen loading-boolean joka estää turhat latauskutsut edellisen ollessa käynnissä.
+
+Joka päivityksen yhteydessä pitää yhdistää uudet doneworkoutit ja postit.
+Sen jälkeen ne sortataan päivämäärän mukaan.
+

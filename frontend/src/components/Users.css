@@ -1,0 +1,13 @@
+.masonry-grid {
+  display: -webkit-box; 
+  display: -ms-flexbox; 
+  display: flex;
+  width: auto;
+}
+.masonry-grid-column {
+  background-clip: padding-box;
+}
+
+.user-tile-style {
+  width: 100%;
+}

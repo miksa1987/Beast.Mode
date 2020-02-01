@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  backend:
+    build: ./backend
+    ports: 
+      - "3001:3001"
+    working_dir: /app/backend
+    volumes:
+      - ./backend:/app/backend
+    command: npm run watch
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    working_dir: /app/frontend
+    volumes:
+      - ./frontend:/app/frontend
+    command: npm start
+    links:
+      - backend
+    

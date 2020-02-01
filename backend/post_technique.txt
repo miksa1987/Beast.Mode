@@ -1,0 +1,16 @@
+/posts/:YYYY-MM-DD-hh-mm
+
+response:
+{
+  startdate:
+  enddate:
+  posts: []
+  end: bool
+}
+
+hakee tunti kerrallaan 10 postia
+jos tunnin ajalta tulee alle 10 postia niin haetaan seuraavalta tunnilta jne
+
+frontti tallettaa viimeisimmän daten mihin asti haettu 
+ja yrittää hakea lisää jos skrollataan 90% sivusta alaspäin
+paitsi jos responsen end === true
