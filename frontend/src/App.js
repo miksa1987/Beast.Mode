@@ -8,7 +8,7 @@ import { setUser } from './reducers/currentUser'
 import { setNotification } from './reducers/notificationReducer'
 import userHelper from './util/userHelper'
 
-import Menubar from './components/Menubar'
+import Menubar from './components/menubar/Menubar'
 import Notification from './components/Notification'
 import Feed from './components/Feed'
 import Workouts from './components/workout/Workouts'

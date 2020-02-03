@@ -1,17 +1,24 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Icon , Input } from 'semantic-ui-react'
+import { Input } from 'semantic-ui-react'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logoutUser } from '../reducers/currentUser'
-import { setSearchResults } from '../reducers/searchResultsReducer'
-import { emptyFeed } from '../reducers/feedReducer'
-import useField from '../hooks/useField'
-import SearchPopup from './search/SearchPopup'
-import './Menubar.css'
+import { logoutUser } from '../../reducers/currentUser'
+import { setSearchResults } from '../../reducers/searchResultsReducer'
+import { emptyFeed } from '../../reducers/feedReducer'
+import useField from '../../hooks/useField'
+import Logo from './Logo'
+import SearchPopup from '../search/SearchPopup'
+
+
+import HomeButton from '../universal/buttons/HomeButton'
+import WorkoutButton from '../universal/buttons/WorkoutButton'
+import PeopleButton from '../universal/buttons/PeopleButton'
+import ProfileButton from '../universal/buttons/ProfileButton'
+import LogoutButton from '../universal/buttons/LogoutButton'
 
 const MenuContainer = styled.div`
-  background-color: #aa3333;
+  background-color: #fe8019;
   position: fixed;
   top: 0px; 
   left: 0px;
@@ -22,7 +29,9 @@ const MenuContainer = styled.div`
 
 const MenuBar = styled.div`
   display: grid;
-  grid-template: 4rem / 10rem 4rem 4rem 4rem 1fr 4rem 4rem; 
+  grid-template: 4rem / 12rem 4rem 4rem 4rem 1fr 4rem 4rem; 
+  align-items: center;
+  padding-left: 10px;
 
   @media screen and (max-width: 600px) {
     grid-template: 4rem / 4rem 4rem 4rem 1fr 4rem 4rem;
@@ -45,7 +54,7 @@ const MenuItem = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #aa3333;
+  background-color: #fe8019;
   cursor: pointer;
 `
 
@@ -98,16 +107,16 @@ const Menubar = (props) => {
     <MenuContainer>
       <MenuBar>
         <MenuItemOnlyDesktop>
-          <h4>Beast.MODE</h4>
+          <Logo />
         </MenuItemOnlyDesktop>
         <MenuItem id='home' onClick={home}>
-          <Icon name='home' color='yellow' />
+          <HomeButton />
         </MenuItem>
         <MenuItem id='workouts' onClick={workouts}>
-          <Icon name='hand rock' color='yellow' />
+          <WorkoutButton />
         </MenuItem>
         <MenuItem id='users' onClick={users}>
-          <Icon name='user circle' color='yellow' />
+          <PeopleButton />
         </MenuItem>
         <MenuItemOnlyDesktop>
           <Form onSubmit={doSearch}>
@@ -116,10 +125,10 @@ const Menubar = (props) => {
         </MenuItemOnlyDesktop>
         <Placeholder />
         <MenuItem id='dash' onClick={dash}>
-          <Icon name='id card' color='yellow' />
+          <ProfileButton />
         </MenuItem>
         <MenuItem id='logout' onClick={logout}>
-          <Icon name='log out' color='yellow' />
+          <LogoutButton />
         </MenuItem>
       </MenuBar>
 
