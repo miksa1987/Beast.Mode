@@ -5,17 +5,24 @@ import { Image, Menu, Icon, Button } from 'semantic-ui-react'
 import { initUserPosts } from '../../reducers/currentUserPosts'
 import { initCurrentProfile } from '../../reducers/currentProfile'
 import { addFriend, removeFriend } from '../../reducers/currentUser'
+import UserInfo from './UserInfo'
 import Activity from './Activity'
 import Friends from './Friends'
 import Posts from './Posts'
 import UsersDoneWorkouts from './UsersDoneWorkouts'
 import UsersWorkouts from './UsersWorkouts'
 import Spinner from '../Spinner'
+
+import SettingsButton from '../universal/buttons/SettingsButton'
+
 import '../Feed.css'
 import './Dashboard.css'
 import '../Animation.css'
 
 const Dashboard  = (props) => {
+  const isFriend = props.currentUser.friends.indexOf(props.currentProfile.id) > -1 ? true : false
+  const isOwnProfile = props.currentUser.id === props.currentProfile.id ? true : false
+  
   useEffect(() => {
     props.initCurrentProfile(props.user)
   }, [])
@@ -25,34 +32,17 @@ const Dashboard  = (props) => {
   }
 
   return ( <div>
-    <div className='element'>
-      <table>
-        <tbody>
-          <tr>
-            <td>
-              <Image height='150px' width='150px' circular src={props.currentProfile.picture && props.currentProfile.picture !== '' ? 
-                props.currentProfile.picture : 'https://react.semantic-ui.com/images/wireframe/image.png'} 
-              className='profileview-image' />
-            </td>
-            <td className='info'>
-              <h2>{props.currentProfile.username}</h2>
-              <p>{props.currentProfile.info}</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    {props.currentUser.id !== props.currentProfile.id ? props.currentUser.friends.indexOf(props.currentProfile.id) > -1 
-      ? <Button id='removefriend-button' className='add-button' color='red' onClick={() => props.removeFriend(props.currentProfile.id)} >
-        Remove friend</Button>
-      : <Button id='addfriend-button' className='add-button' color='green' onClick={() => props.addFriend(props.currentProfile.id)} >
-        Add friend</Button> : null}
-    
-    {props.currentUser.id === props.currentProfile.id
-      && <Button icon id='settings-button' className='settings-button' onClick={() => props.history.push('/settings')}>
-        <Icon name='settings' />
-      </Button>}
+    <UserInfo 
+      id={props.currentProfile.id} 
+      username={props.currentProfile.username} 
+      info={props.currentProfile.info} 
+      picture={props.currentProfile.picture}
+      isOwnProfile={isOwnProfile}
+      isFriend={isFriend}
+      removeFriend={props.removeFriend}
+      addFriend={props.addFriend}
+      pushToHistory={props.history.push}
+    />
 
     <Menu pointing secondary stackable>
       <Menu.Item id='dash-menu-posts' 
