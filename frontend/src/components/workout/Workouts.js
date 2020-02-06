@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { initAllWorkouts } from '../../reducers/workoutsReducer'
 import useWindowSize from './../../hooks/useWindowSize'
 import Workout from './Workout'
-import Sidebar from './Sidebar'
 import MobileSelection from './MobileSelection'
 import Newpost from '../post/Newpost'
 import './Workouts.css'
@@ -12,7 +11,6 @@ import Spinner from '../Spinner'
 
 // export for testing
 export const Workouts = (props) => {
-  const screen = useWindowSize()
   const [showNewpost, setShowNewpost] = useState(false)
 
   useEffect(() => {
@@ -23,13 +21,14 @@ export const Workouts = (props) => {
     return ( <div><Newpost setShowNewpost={setShowNewpost} isWorkout={true} /><Spinner /></div> )
   }
   
-  return ( <div className={screen.width < screen.height ? null : 'workouts-component'}>
-    {screen.width < screen.height && <MobileSelection currentUser={props.currentUser} /> }
-    <Button color='red' onClick={() => setShowNewpost(!showNewpost) }>Create new workout</Button>
-    {showNewpost && <Newpost setShowNewpost={setShowNewpost} isWorkout={true} />}
-    {props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} workout={workout} /> ) : null}
-    {screen.width > screen.height && <Sidebar currentUser={props.currentUser} />}
-  </div> )
+  return ( 
+    <div>
+      <MobileSelection currentUser={props.currentUser} />
+      <Button color='red' onClick={() => setShowNewpost(!showNewpost) }>Create new workout</Button>
+      {showNewpost && <Newpost setShowNewpost={setShowNewpost} isWorkout={true} />}
+      {props.workouts !== [] ? props.workouts.map(workout => <Workout key={workout._id} workout={workout} /> ) : null}
+    </div> 
+  )
 }
 
 const mapStateToProps = (state) => {

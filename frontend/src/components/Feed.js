@@ -38,18 +38,11 @@ const Feed = (props) => {
     return ( <div><Newpost /><Spinner /></div> )
   }
 
-  const items = []
-    .concat(<Newpost key='WEEEEEE' />)
-    .concat(props.feed.feed.map(post =>
-      <Post key={post._id} post={post} />))
-
   return ( <div>
-    {screen.width < screen.height && <Newpost />}
-    {screen.width > screen.height  && <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
-      {items}
-    </Masonry> }
-    {screen.width < screen.height && props.feed.feed.map(post => 
+    <Newpost key='WEEEEEE' />
+    {props.feed.feed.map(post => 
       <Post key={post._id} post={post} />)}
+
     {props.feed.loading && <Spinner />}
   </div> )
 }

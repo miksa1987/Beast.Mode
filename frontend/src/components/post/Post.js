@@ -12,7 +12,8 @@ import LikeButton from '../universal/LikeButton'
 const PostBase = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 5px;
+  margin: 15px 0px;
   border: 1px solid #dddddd;
   white-space: pre-line;
   text-align: top;
