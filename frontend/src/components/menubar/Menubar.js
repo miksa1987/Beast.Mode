@@ -120,7 +120,7 @@ const Menubar = (props) => {
         </MenuItem>
         <MenuItemOnlyDesktop>
           <Form onSubmit={doSearch}>
-            <Input id='globalsearch' {...search} placeholder='Search' fluid size='mini' />
+            <span><input width='100%' id='globalsearch' {...search} placeholder='Search' /></span>
           </Form>
         </MenuItemOnlyDesktop>
         <Placeholder />
@@ -134,7 +134,7 @@ const Menubar = (props) => {
 
       <SearchBar>
         <Form onSubmit={doSearch}>
-          <Input id='globalsearch' {...search} placeholder='Search' fluid size='mini' />
+          <span><input width='100%' id='globalsearch' {...search} placeholder='Search' /></span>
         </Form>
       </SearchBar>
       <SearchPopup searchterm={search.value} setSearchResults={props.setSearchResults} resetSearch={resetSearch} />
