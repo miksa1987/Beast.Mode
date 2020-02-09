@@ -14,10 +14,8 @@ const PostBase = styled.div`
   flex-direction: column;
   padding: 5px;
   margin: 15px 0px;
-  border: 1px solid #dddddd;
   white-space: pre-line;
   text-align: top;
-  border-radius: 3px;
   background-color: #ffffff;
 `
 

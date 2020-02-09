@@ -6,8 +6,9 @@ import { addNewToFeed } from '../../reducers/feedReducer'
 import { addWorkout } from '../../reducers/workoutsReducer'
 import useField from '../../hooks/useField'
 import FileInput from '../universal/FileInput'
-import './Newpost.css'
-import '../Animation.css'
+import FlexDivColumn from '../universal/FlexDivColumn'
+import FlexDivRow from '../universal/FlexDivRow'
+import Animation from '../universal/Animation'
 
 const Newpost = (props) => {
   const [isWorkout, setIsWorkout] = useState(props.isWorkout)
@@ -53,45 +54,42 @@ const Newpost = (props) => {
     props.setShowNewpost && props.setShowNewpost(false)
   }
   
-  return ( <div data-testid='newpost-component' className='newpost-component fade-in-fast'>
-    <strong>Create new</strong>
-    <Form onSubmit={post}>
-      <TextArea id='post-textarea' style={{ resize: 'none' }} rows={6} {...text} 
+  return (
+    <Animation>
+      <FlexDivColumn>
+
+        <textarea id='post-textarea' style={{ resize: 'none' }} rows={6} {...text} 
         placeholder={isWorkout && workoutTip} />
-      
-      <table className='full-width'>
-        <tbody>
-          <tr>
-            <td>
-              <Image src={image ? image 
-                : 'https://react.semantic-ui.com/images/wireframe/image.png'} size='mini' />
-            </td>
-            <td>
-              <FileInput file={file} setFile={setFile} setImage={setImage} />
-            </td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <Button compact data-testid='postbutton' id='postbutton' color='red' className='button-style' type='submit'>Post</Button>
 
-      {!props.isWorkout && <Button.Group>
-        <Button compact id='updatebutton' data-testid='updatebutton' className='button-style' type='button' 
-          color={!isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(false)}>Update</Button>
+        <FlexDivRow>
+          <Image src={image ? image 
+            : 'https://react.semantic-ui.com/images/wireframe/image.png'} size='mini' />
+          <FileInput file={file} setFile={setFile} setImage={setImage} />
+        </FlexDivRow>
 
-        <Button compact id='workoutbutton' data-testid='workoutbutton' className='button-style' type='button' 
-          color={isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(true)}>Workout</Button>
-      </Button.Group>}
+        <FlexDivRow>
+          <Button compact data-testid='postbutton' id='postbutton' color='red' className='button-style' type='submit'>Post</Button>
 
-      {` `}
+          {!props.isWorkout && <Button.Group>
+            <Button compact id='updatebutton' data-testid='updatebutton' className='button-style' type='button' 
+              color={!isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(false)}>Update</Button>
 
-      {props.setShowNewpost && <Button compact data-testid='cancelbutton' id='cancelbutton' className='button-style' 
-        color='red' floated='right' onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
+            <Button compact id='workoutbutton' data-testid='workoutbutton' className='button-style' type='button' 
+              color={isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(true)}>Workout</Button>
+          </Button.Group>}
 
-      {isWorkout && <Button compact id='didworkoutbutton' data-testid='didworkoutbutton' className='button-style' type='button' 
-        color={didWorkout ? 'red' : 'black'} floated='right' onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
-    </Form>
-  </div> )
+              {` `}
+
+          {props.setShowNewpost && <Button compact data-testid='cancelbutton' id='cancelbutton' className='button-style' 
+            color='red' floated='right' onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
+
+          {isWorkout && <Button compact id='didworkoutbutton' data-testid='didworkoutbutton' className='button-style' type='button' 
+            color={didWorkout ? 'red' : 'black'} floated='right' onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
+        </FlexDivRow>
+
+      </FlexDivColumn>
+    </Animation>
+  )
 }
 
 const mapStateToProps = (state) => {

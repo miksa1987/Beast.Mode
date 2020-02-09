@@ -25,7 +25,7 @@ const FileInput = (props) => {
         <Icon name='image' />
           Upload a picture
       </Button>
-        :<Button fluid type='button' compact icon onClick={addFile}>
+        :<Button type='button' compact icon onClick={addFile}>
           <Icon name='image' />
           Upload a picture
         </Button> }
