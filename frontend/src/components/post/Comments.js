@@ -5,14 +5,9 @@ import { Link } from 'react-router-dom'
 
 const CommentsBase = styled.div`
   background-color: #eeeeee;
-  border: #e4e4e4;
-  border-radius: 8px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-  vertical-align: top;
-  padding: 10px 10px 10px 10px;
+  margin: 5px;
+  margin-top: 20px;
+  padding: 10px;
   width: calc(100% - 10px);
   max-height: 30vh;
   overflow: auto;
@@ -29,7 +24,7 @@ const Comments = (props) => {
   return ( 
     <Animation>
       <CommentsBase>
-
+        <h4>Comments:</h4>
         {(!props.showAll && props.comments.length > 3) 
           && <Link to={`/post/${props.postid}`}>Show all comments</Link>}
 

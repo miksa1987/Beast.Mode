@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { connect } from 'react-redux'
-import { Input, Form, Button, Image, TextArea } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import { updateUser } from '../reducers/currentUser'
 import { setNotification } from '../reducers/notificationReducer'
 import FileInput from './universal/FileInput'
