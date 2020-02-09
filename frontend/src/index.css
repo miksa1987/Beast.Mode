@@ -10,10 +10,10 @@ div {
   box-sizing: border-box;
 }
 
-button, input, textarea {
+button, input, textarea, img {
   border: none;
   margin: 5px;
-  padding: 5px;
+  padding: 10px;
 }
 
 a {

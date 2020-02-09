@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Form, TextArea, Button, Image } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import communicationService from '../../service/communication'
 import { addNewToFeed } from '../../reducers/feedReducer'
 import { addWorkout } from '../../reducers/workoutsReducer'
@@ -27,7 +27,7 @@ const Newpost = (props) => {
     10 push ups
     5 rounds`
 
-  const post = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
 
     let post = {
@@ -43,6 +43,7 @@ const Newpost = (props) => {
       else post.type = 'workout'
     }
 
+    // Note to myself: W-T-F ?!?!?!!111
     let newPost = {}
     if(!isWorkout) props.addNewToFeed(post)
     if(isWorkout && !didWorkout) newPost = await communicationService.post('/workouts/new', post)
@@ -56,38 +57,40 @@ const Newpost = (props) => {
   
   return (
     <Animation>
-      <FlexDivColumn>
+      <form onSubmit={handleSubmit}>
+        <FlexDivColumn>
 
-        <textarea id='post-textarea' style={{ resize: 'none' }} rows={6} {...text} 
-        placeholder={isWorkout && workoutTip} />
+          <textarea id='post-textarea' style={{ resize: 'none' }} rows={6} {...text} 
+          placeholder={isWorkout && workoutTip} />
 
-        <FlexDivRow>
-          <Image src={image ? image 
-            : 'https://react.semantic-ui.com/images/wireframe/image.png'} size='mini' />
-          <FileInput file={file} setFile={setFile} setImage={setImage} />
-        </FlexDivRow>
+          <FlexDivRow>
+            <Image src={image ? image 
+              : 'https://react.semantic-ui.com/images/wireframe/image.png'} size='mini' />
+            <FileInput file={file} setFile={setFile} setImage={setImage} />
+          </FlexDivRow>
 
-        <FlexDivRow>
-          <Button compact data-testid='postbutton' id='postbutton' color='red' className='button-style' type='submit'>Post</Button>
+          <FlexDivRow>
+            <button data-testid='postbutton' id='postbutton' style={{ backgroundColor: 'orange' }} className='button-style' type='submit'>Post</button>
 
-          {!props.isWorkout && <Button.Group>
-            <Button compact id='updatebutton' data-testid='updatebutton' className='button-style' type='button' 
-              color={!isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(false)}>Update</Button>
+            {!props.isWorkout && 
+              <div><button compact id='updatebutton' data-testid='updatebutton' className='button-style' type='button' 
+                style={{ backgroundColor: !isWorkout ? 'orange' : 'lightgrey' }} onClick={() => setIsWorkout(false)}>Update</button>
 
-            <Button compact id='workoutbutton' data-testid='workoutbutton' className='button-style' type='button' 
-              color={isWorkout ? 'red' : 'black'} onClick={() => setIsWorkout(true)}>Workout</Button>
-          </Button.Group>}
+              <button compact id='workoutbutton' data-testid='workoutbutton' className='button-style' type='button' 
+              style={{ backgroundColor: isWorkout ? 'orange' : 'lightgrey' }}  onClick={() => setIsWorkout(true)}>Workout</button></div>
+            }
 
-              {` `}
+            {` `}
 
-          {props.setShowNewpost && <Button compact data-testid='cancelbutton' id='cancelbutton' className='button-style' 
-            color='red' floated='right' onClick={() => props.setShowNewpost(false)}>Cancel</Button>}
+            {props.setShowNewpost && <button compact data-testid='cancelbutton' id='cancelbutton' className='button-style' 
+              style={{ backgroundColor: 'orange' }} onClick={() => props.setShowNewpost(false)}>Cancel</button>}
 
-          {isWorkout && <Button compact id='didworkoutbutton' data-testid='didworkoutbutton' className='button-style' type='button' 
-            color={didWorkout ? 'red' : 'black'} floated='right' onClick={() => setDidWorkout(!didWorkout)}>Did it?</Button>}
-        </FlexDivRow>
+            {isWorkout && <button compact id='didworkoutbutton' data-testid='didworkoutbutton' className='button-style' type='button' 
+              style={{ backgroundColor: didWorkout ? 'orange' : 'lightgrey' }} onClick={() => setDidWorkout(!didWorkout)}>Did it?</button>}
+          </FlexDivRow>
 
-      </FlexDivColumn>
+        </FlexDivColumn>
+      </form>
     </Animation>
   )
 }
