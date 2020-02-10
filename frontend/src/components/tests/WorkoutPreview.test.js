@@ -23,7 +23,12 @@ const workout = {
 afterEach(cleanup)
 
 test('Preview is rendered correctly', () => {
-  const component = render(<Router><Preview workout={workout} /></Router>)
+  const component = render(
+    <Router>
+      <Preview workout={workout} />
+    </Router>
+  )
+
   const comments = component.getByTestId('comments')
   const header = component.getByText('Preview workout')
   const exercises = component.getByText('TESTINGGG')

@@ -50,7 +50,7 @@ const Workout = (props) => {
 
   return (
     <Animation>
-      <Base>
+      <Base data-testid='workout-component'>
         <h3>WORKOUT BY {props.workout.user?.username?.toUpperCase()}</h3>
 
         <Columns>

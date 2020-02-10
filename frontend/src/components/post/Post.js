@@ -49,12 +49,13 @@ const Post = (props) => {
             : <Icon name='user' /> }
           <strong>
             <Link to={`/profile/${props.post.user.id}`}>{props.post.user.username}</Link>
+            {props.post.type === 'doneworkout' && ' did a workout'}
           </strong>
         </PostTitleOrBottom>
 
         <p>{props.post.content}</p>
         {props.post.picture && props.post.picture !== '' ? <Image size='big' src={props.post.picture} /> : null }
-        <Comments data-testid='comments' comments={props.post.comments} showAll={false} postid={props.post._id} />
+        <Comments comments={props.post.comments} showAll={false} postid={props.post._id} />
         
         <PostTitleOrBottom>
           <LikeButton data-testid='likebutton' like={sendLike} 

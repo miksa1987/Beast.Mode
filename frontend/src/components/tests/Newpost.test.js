@@ -7,9 +7,9 @@ import store from '../../store'
 
 afterEach(cleanup)
 
-test('Header is rendered', () => {
+test('Component is rendered correctly', () => {
   const component = render(<Provider store={store}><Newpost /></Provider>)
-  expect(component.container).toHaveTextContent('Create new')
+  expect(component).toMatchSnapshot()
 })
 
 test('Can set to workout type and did it button appears', () => {

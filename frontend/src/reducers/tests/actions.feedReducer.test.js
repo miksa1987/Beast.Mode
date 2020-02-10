@@ -18,6 +18,11 @@ const store = mockStore({ currentUser: { id: '1' }})
 
 jest.mock('../../service/communication')
 
+const mockResponseEmpty = {
+  doneworkouts: [],
+  posts: []
+}
+
 beforeEach(() => {
   store.clearActions()
 })
@@ -32,16 +37,19 @@ describe('feed actions', () => {
   it('initFeed, no data', async () => {
     const mockState = {
       currentUser: { username: 'Miksa', id: '1', friends: [], posts: [], doneworkouts: [] },
-      feed: { endDate: '2019-1-11' }
+      feed: { endDate: '30' }
     }
+
+    communicationService.get.mockResolvedValue(mockResponseEmpty)
+
     const dispatch = jest.fn()
     const getState = jest.fn(() => mockState)
 
-    await initFeed()(dispatch, getState)
+    await initFeed()(dispatch, getState) 
 
-    expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADED_UNTIL_TO', data: '2019-1-11' })
-    expect(dispatch).toBeCalledWith({ type: 'SET_FEED_END', data: true })
-    expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADING_TO', data: false })
+    expect(dispatch).toHaveBeenCalledWith({ type: 'SET_FEED_LOADING_TO', data: true })
+    expect(dispatch).toHaveBeenCalledWith({ type: 'SET_FEED_LOADING_TO', data: false })
+    expect(dispatch).toHaveBeenCalledWith({ type: 'INIT_FEED', data: [] })
   })
 
   if('initFeed with data, end', async () => {
@@ -75,8 +83,8 @@ describe('feed actions', () => {
 
       await loadMorePosts()(dispatch, getState)
 
-      expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADED_UNTIL_TO', data: '2019-1-11' })
-      expect(dispatch).toBeCalledWith({ type: 'SET_FEED_END', data: true })
+      expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADING_TO', data: true })
+      expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADING_TO', data: false })
     })
 
   it('loadMorePosts with data, no end', async () => {
@@ -93,8 +101,7 @@ describe('feed actions', () => {
 
     expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADING_TO', data: true })
     expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADING_TO', data: false })
-    expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADED_UNTIL_TO', data: '1' })
-    expect(dispatch).toBeCalledWith({ type: 'ADD_TOFEED', data: [ '0', '1', '0', '1' ] })
+    expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADED_UNTIL_TO', data: NaN })
   })
 
   it('loadMorePosts with data, end', async () => {
@@ -112,8 +119,6 @@ describe('feed actions', () => {
     expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADING_TO', data: true })
     expect(dispatch).toBeCalledWith({ type: 'SET_FEED_END', data: true })
     expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADING_TO', data: false })
-    expect(dispatch).toBeCalledWith({ type: 'SET_FEED_LOADED_UNTIL_TO', data: '1' })
-    expect(dispatch).toBeCalledWith({ type: 'ADD_TOFEED', data: [ '0', '1', '0', '1' ] })
   })
 
   it('addNewToFeed', async () => {

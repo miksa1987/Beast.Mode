@@ -23,7 +23,7 @@ const Comments = (props) => {
 
   return ( 
     <Animation>
-      <CommentsBase>
+      <CommentsBase data-testid='comments'>
         <h4>Comments:</h4>
         {(!props.showAll && props.comments.length > 3) 
           && <Link to={`/post/${props.postid}`}>Show all comments</Link>}

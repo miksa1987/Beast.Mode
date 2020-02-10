@@ -1,8 +1,11 @@
 #!/bin/bash
 
-cp -r ../beastmode-deploy/.git ../beastmode-git
-rm -rf ../beastmode-deploy/*
-mv ../beastmode-git ../beastmodedeploy/.git
+rm -rf ../beastmode-git
+cp -r ../beastmodedeploy/.git ../beastmode-git
+rm -rf ../beastmodedeploy
+mkdir ../beastmodedeploy
+mkdir ../beastmodedeploy/.git
+mv ../beastmode-git/* ../beastmodedeploy/.git/*
 cd frontend
 npm run build
 cp -r ./build ../../beastmodedeploy/

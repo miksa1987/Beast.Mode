@@ -20,18 +20,13 @@ const workout = {
 }
 
 test('Workout component renders everything', () => {
-  const component = render(<Provider store={store}><Router><Workout workout={workout} /></Router></Provider>)
-
-  const title = component.getByTestId('workout-title')
-  const exnumber = component.getByTestId('workout-exnumber')
-  const likes = component.getByTestId('workout-likes')
-  const exercises = component.getByTestId('workout-exercises')
-  const button = component.getByTestId('viewworkoutbutton')
-
-  expect(title).toHaveTextContent('WORKOUT BY MIKSA')
-  expect(exnumber).toHaveTextContent('4')
-  expect(likes).toHaveTextContent('2')
-  expect(exercises).toHaveTextContent('5x5 pullup')
-  expect(exercises).toHaveTextContent('5x5 push up')
-  expect(button).toBeDefined()
+  const component = render(
+    <Provider store={store}>
+      <Router>
+        <Workout workout={workout} />
+      </Router>
+    </Provider>
+  )
+  
+  expect(component).toMatchSnapshot()
 })

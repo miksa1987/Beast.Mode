@@ -16,18 +16,32 @@ const post = {
   },
   _id: '123456677777',
   likes: [],
-  comments: [],
+  comments: [
+    { userid: '1', user: 'x', content: 'x' }
+  ],
   type: 'post'
 }
 
 test('Post content is rendered', () => {
-  const component = render(<Provider store={store}><Router><Post post={post} /></Router></Provider>)
+  const component = render(
+    <Provider store={store}>
+      <Router>
+        <Post post={post} />
+      </Router>
+    </Provider>
+  )
 
   expect(component.container).toHaveTextContent('TEST')
 })
 
 test('Poster username is rendered', () => {
-  const component = render(<Provider store={store}><Router><Post post={post} /></Router></Provider>)
+  const component = render(
+    <Provider store={store}>
+      <Router>
+        <Post post={post} />
+      </Router>
+    </Provider>
+  )
 
   const header = component.getByText('Miksa')
   expect(header).toBeDefined()
@@ -35,14 +49,26 @@ test('Poster username is rendered', () => {
 
 test('Component can render done workout', () => {
   const doneworkout = { ...post, type: 'doneworkout' }
-  const component = render(<Provider store={store}><Router><Post post={doneworkout} /></Router></Provider>)
+  const component = render(
+    <Provider store={store}>
+      <Router>
+        <Post post={doneworkout} />
+      </Router>
+    </Provider>
+  )
 
   const headerAdditional = component.getByText('did a workout')
   expect(headerAdditional).toBeDefined()
 })
 
 test('Comments are rendered too', () => {
-  const component = render(<Provider store={store}><Router><Post post={post} /></Router></Provider>)
+  const component = render(
+    <Provider store={store}>
+      <Router>
+        <Post post={post} />
+      </Router>
+    </Provider>
+  )
 
   const comments = component.getByTestId('comments')
   expect(comments).toBeDefined()
@@ -55,7 +81,13 @@ test('Comments are rendered too if there are actually some', () => {
       { content: 'TESTCOMMENT', user: 'Miksa1', userid: '123' }
     ] 
   }
-  const component = render(<Provider store={store}><Router><Post post={anotherPost} /></Router></Provider>)
+  const component = render(
+    <Provider store={store}>
+      <Router>
+        <Post post={anotherPost} />
+      </Router>
+    </Provider>
+  )
 
   const comments = component.getByTestId('comments')
   expect(comments).toBeDefined()
