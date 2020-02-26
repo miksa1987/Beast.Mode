@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Image, Menu, Icon, Button } from 'semantic-ui-react'
+import { Menu, Icon } from 'semantic-ui-react'
 import { initUserPosts } from '../../reducers/currentUserPosts'
 import { initCurrentProfile } from '../../reducers/currentProfile'
 import { addFriend, removeFriend } from '../../reducers/currentUser'
@@ -13,7 +13,12 @@ import UsersDoneWorkouts from './UsersDoneWorkouts'
 import UsersWorkouts from './UsersWorkouts'
 import Spinner from '../Spinner'
 
-import SettingsButton from '../universal/buttons/SettingsButton'
+import FlexDivRow from '../universal/FlexDivRow'
+import PostsButton from '../universal/buttons/PostsButton'
+import WorkoutsButton from '../universal/buttons/WorkoutButton'
+import DoneworkoutsButton from '../universal/buttons/DoneworkoutsButton'
+import FriendsButton from '../universal/buttons/PeopleButton'
+import ActivityButton from '../universal/buttons/ActivityButton'
 
 import '../Feed.css'
 import './Dashboard.css'
@@ -44,35 +49,14 @@ const Dashboard  = (props) => {
       pushToHistory={props.history.push}
     />
 
-    <Menu pointing secondary stackable>
-      <Menu.Item id='dash-menu-posts' 
-        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/posts`)} active={props.view === 'posts'}>
-        <Icon name='sticky note' />
-          Posts 
-      </Menu.Item>
-      <Menu.Item id='dash-menu-workouts' 
-        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/workouts`)} active={props.view === 'workouts'}>
-        <Icon name='hand rock' />
-          Workouts
-      </Menu.Item>
-      <Menu.Item id='dash-menu-doneworkouts' 
-        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/doneworkouts`)} active={props.view === 'doneworkouts'}>
-        <Icon name='trophy' />
-          Done workouts
-      </Menu.Item>
-      <Menu.Item id='dash-menu-friends' 
-        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/friends`)} active={props.view === 'friends'}>
-        <Icon name='users' />
-          Friends
-      </Menu.Item>
-      <Menu.Item id='dash-menu-activity' 
-        onClick={() => props.history.push(`/profile/${props.currentProfile.id}/activity`)} active={props.view === 'activity'}>
-        <Icon name='bars' />
-          Activity
-      </Menu.Item>
-    </Menu>
+    <FlexDivRow>
+      <PostsButton onClick={() => props.history.push(`/profile/${props.currentProfile.id}/posts`)} active={props.view === 'posts'} />
+      <WorkoutsButton onClick={() => props.history.push(`/profile/${props.currentProfile.id}/workouts`)} active={props.view === 'workouts'} />
+      <DoneworkoutsButton onClick={() => props.history.push(`/profile/${props.currentProfile.id}/doneworkouts`)} active={props.view === 'doneworkouts'} />
+      <FriendsButton onClick={() => props.history.push(`/profile/${props.currentProfile.id}/friends`)} active={props.view === 'friends'} />
+      <ActivityButton onClick={() => props.history.push(`/profile/${props.currentProfile.id}/activity`)} active={props.view === 'activity'} />
+    </FlexDivRow>
 
-    { /* props.view === 'photos' && <Photos /> Disabled for now as I see no real use for this */ }
     {props.view === 'posts' && <Posts />}
     {props.view === 'workouts' && <UsersWorkouts />}
     {props.view === 'doneworkouts' && <UsersDoneWorkouts />}
