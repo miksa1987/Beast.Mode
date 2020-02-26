@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react'
-import Masonry from 'react-masonry-css'
 import { connect } from 'react-redux'
 import { initDoneWorkouts } from '../../reducers/doneWorkoutsReducer'
-import { breakPoints } from '../masonry-config'
 import Post from '../post/Post'
 import Spinner from '../Spinner'
 import '../Feed.css'
@@ -19,11 +17,11 @@ const UsersDoneWorkouts = (props) => {
     return ( <div></div> )
   }
 
-  return ( <div>
-    <Masonry className='masonry-grid' columnClassName='masonry-grid-column' breakpointCols={breakPoints}>
+  return ( 
+    <div>
       {[ ...props.doneWorkouts ].reverse().map(doneWorkout => <Post key={doneWorkout._id} post={doneWorkout} />)}
-    </Masonry>
-  </div> )
+    </div> 
+  )
 }
 
 const mapStateToProps = (state) => {
