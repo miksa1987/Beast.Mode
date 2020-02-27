@@ -29,12 +29,12 @@ const MenuContainer = styled.div`
 
 const MenuBar = styled.div`
   display: grid;
-  grid-template: 4rem / 12rem 4rem 4rem 4rem 1fr 4rem 4rem; 
+  grid-template: 4rem / 12rem 5rem 5rem 5rem 1fr 5rem 5rem; 
   align-items: center;
   padding-left: 10px;
 
   @media screen and (max-width: 600px) {
-    grid-template: 4rem / 4rem 4rem 4rem 1fr 4rem 4rem;
+    grid-template: 4rem / 5rem 5rem 5rem 1fr 5rem 5rem;
   }
 `
 
@@ -50,10 +50,11 @@ const SearchBar = styled.div`
   }
 `
 
-const MenuItem = styled.button`
+const MenuItem = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 5px;
   background-color: #fe8019;
   cursor: pointer;
 `
@@ -110,25 +111,27 @@ const Menubar = (props) => {
           <Logo />
         </MenuItemOnlyDesktop>
         <MenuItem id='home' onClick={home}>
-          <HomeButton />
+          <HomeButton active id='home' onClick={home} />
         </MenuItem>
         <MenuItem id='workouts' onClick={workouts}>
-          <WorkoutButton />
+          <WorkoutButton active id='workouts' onClick={workouts} />
         </MenuItem>
         <MenuItem id='users' onClick={users}>
-          <PeopleButton />
+          <PeopleButton active id='users' onClick={users} />
         </MenuItem>
         <MenuItemOnlyDesktop>
           <Form onSubmit={doSearch}>
-            <span><input width='100%' id='globalsearch' {...search} placeholder='Search' /></span>
+            <span>
+              <input width='100%' id='globalsearch' {...search} placeholder='Search' />
+            </span>
           </Form>
         </MenuItemOnlyDesktop>
         <Placeholder />
         <MenuItem id='dash' onClick={dash}>
-          <ProfileButton />
+          <ProfileButton active id='dash' onClick={dash} />
         </MenuItem>
         <MenuItem id='logout' onClick={logout}>
-          <LogoutButton />
+          <LogoutButton id='logout' onClick={logout}active />
         </MenuItem>
       </MenuBar>
 

@@ -5,5 +5,4 @@ export default styled.div`
   flex-direction: row;
   justify-content: space-around;
   background-color: white;
-  height: 4rem;
 `
