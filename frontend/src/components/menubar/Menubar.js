@@ -50,15 +50,6 @@ const SearchBar = styled.div`
   }
 `
 
-const MenuItem = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-  background-color: #fe8019;
-  cursor: pointer;
-`
-
 const MenuItemOnlyDesktop = styled.div`
   display: flex;
   justify-content: center;
@@ -110,15 +101,11 @@ const Menubar = (props) => {
         <MenuItemOnlyDesktop>
           <Logo />
         </MenuItemOnlyDesktop>
-        <MenuItem id='home' onClick={home}>
-          <HomeButton active id='home' onClick={home} />
-        </MenuItem>
-        <MenuItem id='workouts' onClick={workouts}>
-          <WorkoutButton active id='workouts' onClick={workouts} />
-        </MenuItem>
-        <MenuItem id='users' onClick={users}>
-          <PeopleButton active id='users' onClick={users} />
-        </MenuItem>
+    
+        <HomeButton id='home' onClick={home} />
+        <WorkoutButton id='workouts' onClick={workouts} />
+        <PeopleButton id='users' onClick={users} />    
+    
         <MenuItemOnlyDesktop>
           <Form onSubmit={doSearch}>
             <span>
@@ -127,12 +114,10 @@ const Menubar = (props) => {
           </Form>
         </MenuItemOnlyDesktop>
         <Placeholder />
-        <MenuItem id='dash' onClick={dash}>
-          <ProfileButton active id='dash' onClick={dash} />
-        </MenuItem>
-        <MenuItem id='logout' onClick={logout}>
-          <LogoutButton id='logout' onClick={logout}active />
-        </MenuItem>
+    
+        <ProfileButton id='dash' onClick={dash} />
+        <LogoutButton id='logout' onClick={logout}active />
+    
       </MenuBar>
 
       <SearchBar>

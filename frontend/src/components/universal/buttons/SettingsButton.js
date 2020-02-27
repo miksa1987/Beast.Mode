@@ -9,4 +9,5 @@ export default styled(SettingsSVG)`
   padding-left: 10px;
   padding-right: 10px;
   background-color: ${props => props.active === true ? '#fe8019' : 'rgba(0, 0, 0, 0)'};
+  cursor: pointer;
 `
