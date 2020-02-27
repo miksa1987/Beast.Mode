@@ -29,12 +29,12 @@ const MenuContainer = styled.div`
 
 const MenuBar = styled.div`
   display: grid;
-  grid-template: 4rem / 12rem 5rem 5rem 5rem 1fr 5rem 5rem; 
+  grid-template: 4rem / 12rem 4rem 4rem 4rem 1fr 4rem 4rem; 
   align-items: center;
   padding-left: 10px;
 
   @media screen and (max-width: 600px) {
-    grid-template: 4rem / 5rem 5rem 5rem 1fr 5rem 5rem;
+    grid-template: 4rem / 4rem 4rem 4rem 1fr 4rem 4rem;
   }
 `
 

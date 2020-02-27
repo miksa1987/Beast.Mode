@@ -16,6 +16,10 @@ button, input, textarea, img {
   padding: 10px;
 }
 
+textarea {
+  border: 1px solid #eaeaea;
+}
+
 a {
   animation: fade 0.4s;
   color: black;

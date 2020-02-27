@@ -72,21 +72,21 @@ const Newpost = (props) => {
           <FlexDivRow>
             <button data-testid='postbutton' id='postbutton' style={{ backgroundColor: 'orange' }} className='button-style' type='submit'>Post</button>
 
-            {!props.isWorkout && 
-              <div><button id='updatebutton' data-testid='updatebutton' className='button-style' type='button' 
-                style={{ backgroundColor: !isWorkout ? 'orange' : 'lightgrey' }} onClick={() => setIsWorkout(false)}>Update</button>
+            <div>
+              {!props.isWorkout && 
+                <div><button id='updatebutton' data-testid='updatebutton' className='button-style' type='button' 
+                  style={{ backgroundColor: !isWorkout ? 'orange' : 'lightgrey' }} onClick={() => setIsWorkout(false)}>Update</button>
 
-              <button id='workoutbutton' data-testid='workoutbutton' className='button-style' type='button' 
-              style={{ backgroundColor: isWorkout ? 'orange' : 'lightgrey' }}  onClick={() => setIsWorkout(true)}>Workout</button></div>
-            }
+                <button id='workoutbutton' data-testid='workoutbutton' className='button-style' type='button' 
+                style={{ backgroundColor: isWorkout ? 'orange' : 'lightgrey' }}  onClick={() => setIsWorkout(true)}>Workout</button></div>
+              }
 
-            {` `}
+              {props.setShowNewpost && <button data-testid='cancelbutton' id='cancelbutton' className='button-style' 
+                style={{ backgroundColor: 'orange' }} onClick={() => props.setShowNewpost(false)}>Cancel</button>}
 
-            {props.setShowNewpost && <button data-testid='cancelbutton' id='cancelbutton' className='button-style' 
-              style={{ backgroundColor: 'orange' }} onClick={() => props.setShowNewpost(false)}>Cancel</button>}
-
-            {isWorkout && <button id='didworkoutbutton' data-testid='didworkoutbutton' className='button-style' type='button' 
-              style={{ backgroundColor: didWorkout ? 'orange' : 'lightgrey' }} onClick={() => setDidWorkout(!didWorkout)}>Did it?</button>}
+              {isWorkout && <button id='didworkoutbutton' data-testid='didworkoutbutton' className='button-style' type='button' 
+                style={{ backgroundColor: didWorkout ? 'orange' : 'lightgrey' }} onClick={() => setDidWorkout(!didWorkout)}>Did it?</button>}
+            </div>
           </FlexDivRow>
 
         </FlexDivColumn>
